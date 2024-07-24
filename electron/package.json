@@ -1,0 +1,52 @@
+{
+  "name": "electron",
+  "version": "1.0.0",
+  "description": "Desktop application using react(vite), electron and spring+mysql",
+  "type": "module",
+  "main": "main.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electromon .",
+    "build": "electron-builder",
+    "clean": "rmdir /s /q dist build && electron-builder --clean"
+  },
+  "build": {
+    "appId": "DesktpAppbySQUAD_TEAM",
+    "productName": "DesktopApp",
+    "directories": {
+      "output": "./build"
+    },
+    "files": [
+      "main.mjs",
+      "frontend/build/**/*"
+    ],
+    "mac": {
+      "category": "your.app.category.type"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  },
+  "keywords": [
+    "react",
+    "electron",
+    "node",
+    "vite",
+    "spring",
+    "java",
+    "mysql"
+  ],
+  "author": "Team Squad",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "electron": "^31.2.1",
+    "electron-builder": "^24.13.3"
+  },
+  "dependencies": {
+    "electronmon": "^2.0.3"
+  }
+}
