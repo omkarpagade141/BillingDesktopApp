@@ -1,0 +1,30 @@
+/* Ensure the container occupies the full viewport height and is fixed */
+.container-fixed {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden; /* Hide overflow to manage scroll within the content-wrapper */
+}
+
+/* Allow the content-wrapper to scroll if it overflows */
+.content-wrapper {
+    overflow: auto;
+    height: 100vh; /* Full viewport height */
+    padding: 1rem; /* Optional padding for better spacing */
+    box-sizing: border-box;
+}
+.fixed-card {
+    height: 100%;
+}
+
+/* Set fixed height and scrolling for the table card */
+.scrollable-card {
+    height: 100%;
+}
+
+.table-container {
+    max-height: 70vh; /* Adjust based on your layout needs */
+    overflow-y: auto;
+}

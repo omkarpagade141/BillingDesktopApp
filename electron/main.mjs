@@ -16,7 +16,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-      preload: join(__dirname, 'preload.mjs')
+      // preload: join(__dirname, 'preload.mjs')
     },
     autoHideMenuBar: true, // Hide the default menu bar
     maximizable: true, // Prevent window from being maximizable by user
@@ -24,11 +24,11 @@ function createWindow() {
   });
 
   // Maximize the window to take full screen height
-  mainWindow.maximize();
+  
 
   mainWindow.loadURL('http://localhost:5173'); // Adjust URL as needed
 
-  mainWindow.webContents.openDevTools();
+ 
 
   mainWindow.on('closed', () => {
     mainWindow = null;

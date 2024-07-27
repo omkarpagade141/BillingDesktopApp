@@ -17,6 +17,7 @@ import com.alpha.app.Entity.User;
 import com.alpha.app.Service.IUserService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/user")
 public class UserController {
 
@@ -29,6 +30,7 @@ public class UserController {
 	{
 		return userService.addNewUser(addUser);
 	}
+	
 	
 	@PostMapping("/login")
 	ResponseEntity<?> userLogIn (@RequestBody UserSignUpDTO userLogIn)
