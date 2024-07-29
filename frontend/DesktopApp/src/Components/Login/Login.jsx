@@ -18,7 +18,11 @@ function Login({settings}) {
     event.preventDefault()
     console.log(email,password)
     try {
-      const response = await axios.post(' http://localhost:8080/api/user/login', {
+      // http://localhost:8080/api/user/login
+       // 'userName': `${email}`,
+        // 'userPassword': `${password}`
+      
+      const response = await axios.post('http://localhost:8080/api/user/login', {
         'userName': `${email}`,
         'userPassword': `${password}`
       })

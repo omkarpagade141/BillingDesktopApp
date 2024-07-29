@@ -21,9 +21,9 @@ business_logo: logo
 
 
   })
-  useEffect(()=>{
-    axios.get('http://localhost:3001/api/getSettings')
-  })
+  // useEffect(()=>{
+  //   axios.get('http://localhost:3001/api/getSettings')
+  // })
 
   
    

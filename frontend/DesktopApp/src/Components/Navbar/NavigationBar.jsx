@@ -10,7 +10,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
     width: '100%',
     top: 0,
 
-    height: 40,
+    height: 45,
     justifyContent: 'center'
 }));
 
@@ -25,15 +25,15 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 const StyledNavLink = styled(Button)(({ theme }) => ({
     textDecoration: 'none',
     color: 'inherit',
-    marginRight: theme.spacing(2), // Adjust spacing between links using theme spacing
+    marginRight: theme.spacing(5), // Adjust spacing between links using theme spacing
 }));
 
 const NavigationBar = ({settings}) => {
     return (
         <StyledAppBar  >
             <StyledToolbar component={Container}>
-                <img src={settings.business_logo} alt="EasyBilling Logo" style={{height:'15px'}} />
-                <StyledTypography variant="h6" component="div">
+                <img src={settings.business_logo} className='mr-2' alt="EasyBilling Logo" style={{height:'15px'}} />
+                <StyledTypography className='mr-4' variant="h6" component="div">
                     { settings.business_name}
                 </StyledTypography>
                 <StyledNavLink component={NavLink} to="/dashboard" >
