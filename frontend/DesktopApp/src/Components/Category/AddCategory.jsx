@@ -1,0 +1,122 @@
+// src/components/ModalComponent.jsx
+import React, { useState } from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import Button from '@mui/material/Button';
+import { Row, Col, Card, Form } from 'react-bootstrap';
+import { styled } from '@mui/material';
+import axios from 'axios';
+
+const AddCategory = ({ open, handleClose }) => {
+
+    const [categoryName, setCategoryName] = useState('');
+    const [categoryStatus, setCategoryStatus] = useState('active');
+    const [image, setImage] = useState(null);
+
+    const StyledButton = styled(Button)(({ theme }) => ({
+        backgroundColor: theme.palette.primary.main,
+        border: 'none',
+        justifyContent: 'center',
+        '&:hover': {
+            backgroundColor: theme.palette.primary.darker,
+            cursor: 'pointer',
+        },
+        '&:focus': {
+            boxShadow: 'none',
+        },
+    }));
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // Prevent the form from submitting and refreshing the page
+        const formData = new FormData();
+        formData.append('categoryname', categoryName);
+        formData.append('categoryImage', image);
+        try {
+            const response = await axios.post(' http://localhost:8080/api/saveCategory', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+            console.log(response);
+
+        } catch (error) {
+
+            console.log(error);
+        }
+
+
+    };
+    return (
+        <Dialog open={open} onClose={handleClose}>
+            <DialogContent>
+                <Row>
+                    <Col md={12}>
+                        <Card className='fixed-card'>
+                            <Card.Body>
+                                <Card.Title className='text-center'>Add Category</Card.Title>
+                                <Row>
+                                    <Col md={12}>
+                                        <Form onSubmit={handleSubmit}>
+                                            <Form.Group controlId="formCategoryName">
+                                                <Form.Label>Category Name:</Form.Label>
+                                                <Form.Control
+                                                    type="text"
+                                                    required
+                                                    placeholder="Enter category name"
+                                                    value={categoryName}
+                                                    onChange={(e) => setCategoryName(e.target.value)}
+                                                />
+                                            </Form.Group>
+                                            <Form.Group controlId="formCategoryName">
+                                                <Form.Label className='mt-3'>Category Image:</Form.Label>
+                                                <Form.Control
+                                                    type="file"
+                                                    required
+                                                    placeholder="Enter category name"
+                                                    onChange={(e) => setImage(e.target.files[0])}
+
+                                                />
+                                            </Form.Group>
+
+                                            <Form.Group>
+                                                <Form.Label className='mt-3'>Category Status:</Form.Label>
+                                                <Form.Check
+                                                    type="radio"
+                                                    label="Active"
+                                                    name="categoryStatus"
+                                                    id="active"
+                                                    value="active"
+                                                    checked={categoryStatus === 'active'}
+                                                    onChange={(e) => setCategoryStatus(e.target.value)}
+                                                />
+                                                <Form.Check
+                                                    type="radio"
+                                                    label="Inactive"
+                                                    name="categoryStatus"
+                                                    id="inactive"
+                                                    value="inactive"
+                                                    checked={categoryStatus === 'inactive'}
+                                                    onChange={(e) => setCategoryStatus(e.target.value)}
+                                                />
+                                            </Form.Group>
+                                            <Button color="primary" type='submit'>Add Category</Button>
+                                            <Button onClick={handleClose} color="primary">
+                                                Close
+                                            </Button>
+
+                                        </Form>
+
+                                    </Col>
+                                </Row>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </DialogContent>
+
+        </Dialog>
+    );
+};
+
+export default AddCategory;

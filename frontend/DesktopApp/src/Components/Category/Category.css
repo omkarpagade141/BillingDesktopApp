@@ -28,3 +28,11 @@
     max-height: 70vh; /* Adjust based on your layout needs */
     overflow-y: auto;
 }
+
+.TableRowInCategory{
+    height: 10px;
+}
+.saveIcon, .editIcon, .deleteIcon, .IconButton{
+    height: 10px;
+}
+ 
