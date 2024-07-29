@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { styled } from '@mui/system';
 import './Product.css'; // Make sure to create this CSS file or include the styles in your global CSS
@@ -11,21 +11,25 @@ import SaveIcon from '@mui/icons-material/Save';
 
 function Products() {
   
-  const [openForm, setOpenForm] = useState(false)
-  const [editMode, setEditMode] = useState(false);
-  const [products, setproducts] = useState([
-      { id: 1, categoryid : 1,name: 'Product 1', price: '299' },
-      { id: 2, categoryid : 2,name: 'Product 2', price: '399' },
-      { id: 3, categoryid : 3,name: 'Product 3', price: '299' },
-
-  ]);
+  const [open, setOpen] = useState(false)
+  const [editMode, setEditMode] = useState(null);
+  const [products, setproducts] = useState([]);
 
   const toggleProductForm = () => {
-      setOpenForm(!openForm)
+      setOpen(!open)
   }
   const handleClose = () => {
-      setOpenForm(false)
+      setOpen(false)
   }
+  const fetchProducts= async()=>{
+   const response= await axios.get('http://localhost:8080/api/product/allproducts')
+   setproducts(response.data)
+   console.log(response.data);
+
+  }
+  useEffect(()=>{
+    fetchProducts()
+  },[])
 
   const StyledButton = styled(Button)(({ theme }) => ({
       backgroundColor: theme.palette.primary.main,
@@ -43,11 +47,14 @@ function Products() {
   const handleSave=()=>{
 
   }
-  const handleEdit=()=>{
-      setEditMode(!editMode)
+  const handleEdit=(id)=>{
+      setEditMode(id)
       
   }
-  const handleDelete=()=>{
+  const handleDelete= async(prodId)=>{
+    const response = await axios.delete(`http://localhost:8080/api/product/delete/${prodId}`)
+    console.log(response.data);
+        
       
   }
 
@@ -75,7 +82,7 @@ function Products() {
                                       <thead>
                                           <tr>
                                               <th>ID</th>
-                                              <th>C_ID</th>
+                                              <th>CATEGORY</th>
                                               <th>Name</th>
                                               <th>Price</th>
                                               <th>Image</th>
@@ -85,28 +92,27 @@ function Products() {
                                       </thead>
                                       <tbody>
                                           {products.map(item => (
-                                              <tr key={item.id} className='TableRowInCategory'>
-                                                  <td>{item.id}</td>
-                                                  <td>{item.categoryid}</td>
-                                                  <td>{item.name}</td>
-                                                  <td>{item.price}</td>
+                                              <tr key={item.prodId} className='TableRowInCategory'>
+                                                  <td>{item.prodId}</td>
+                                                  <td>{item.category.cateName
+                                                  }</td>
+                                                  <td>{item.prodName}</td>
+                                                  <td>{item.prodPrice}</td>
                                                   <td>
-                                                      <img src={
-                                                          item.image
-                                                      } alt="image" style={{ width: '10px', height: '10px' }}
+                                                      <img src={`http://localhost:8080/api/images?imageName=${item.prodImageUrl}`} alt="image" style={{ width: '10px', height: '10px' }}
                                                       />
                                                   </td>
                                                   <td >
-                                                      {editMode === true ? (
+                                                      {editMode === item.prodId ? (
                                                           <IconButton className='IconButton' onClick={() => handleSave()}>
                                                               <SaveIcon className="saveIcon" />
                                                           </IconButton>
                                                        ) : ( 
-                                                          <IconButton className='IconButton' onClick={() => handleEdit(true)}>
+                                                          <IconButton className='IconButton' onClick={() => handleEdit(item.prodId)}>
                                                               <EditIcon className="editIcon" />
                                                           </IconButton>
                                                        )} 
-                                                      <IconButton className='IconButton' onClick={() => handleDelete()}>
+                                                      <IconButton className='IconButton' onClick={() => handleDelete(item.prodId)}>
                                                           <DeleteIcon className="deleteIcon" />
                                                       </IconButton>
                                                   </td>
@@ -119,7 +125,7 @@ function Products() {
                       </Card>
                   </Col>
               </Row>
-              {openForm && <AddProduct open={open} handleClose={handleClose} />}
+              {open && <AddProduct open={open} handleClose={handleClose} />}
           </div>
       </div>
   );
