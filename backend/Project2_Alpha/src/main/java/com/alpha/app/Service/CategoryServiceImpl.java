@@ -111,7 +111,7 @@ public class CategoryServiceImpl implements ICategoryService {
 		
 		if(!imageFile.isEmpty())
 		{
-		String targetPath=imageFile.getOriginalFilename();
+		String targetPath=folderName+File.separator+imageFile.getOriginalFilename();
 //		System.out.println("Target path is: "+targetPath);
 		//copy image file contents to the specified path
 		Files.copy(imageFile.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
