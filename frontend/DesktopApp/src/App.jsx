@@ -12,7 +12,7 @@ import logo from './assets/assetsLocal/loginBg.jpg'
 function App() {
   const [settings,setSettings]=useState({
     settingid:'1',
-business_name:'sdfghbgvc',
+business_name:'asdf',
 business_mobile:'7249772495',
 business_email:'omkarpagade141@gmail.com',
 business_address:'Wagholi',
