@@ -4,6 +4,7 @@ import NavigationBar from '../Navbar/NavigationBar'
 import BillingHome from '../BilliingHome/BillingHome'
 import Category from '../Category/Category';
 import Products from '../Prodoucts/Products';
+import ReportPage from '../Reports/ReportPage';
 
 function Dashboard({settings}) {
   return (
@@ -15,6 +16,7 @@ function Dashboard({settings}) {
         <Route path="/" element={<BillingHome settings={settings}/>} />
         <Route path="/category" element={<Category settings={settings} />} />
         <Route path="/products" element={<Products settings={settings} />} />
+        <Route path="/reports" element={<ReportPage settings={settings} />} />
       </Routes>
       <Outlet />  
     </div>
