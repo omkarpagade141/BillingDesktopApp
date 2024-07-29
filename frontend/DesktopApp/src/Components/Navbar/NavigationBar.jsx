@@ -45,6 +45,9 @@ const NavigationBar = ({settings}) => {
                 <StyledNavLink component={NavLink} to="/dashboard/products">
                     Products
                 </StyledNavLink>
+                <StyledNavLink component={NavLink} to="/dashboard/reports">
+                    Reports
+                </StyledNavLink>
                 {/* Add more NavLink buttons as needed */}
             </StyledToolbar>
         </StyledAppBar>
