@@ -1,0 +1,89 @@
+package com.alpha.app.Entity;
+
+import java.time.LocalDate;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name="CustomerMaster")
+public class Customer {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "customer_Id")
+	private Long custId;
+	
+	
+	@Column(name="full_name",nullable = false)
+	private String custFullName;
+	
+	@Size(max = 10, min = 10)
+	@Column(name="cust_mobile",nullable = false)
+	private int custMobile;
+	
+	@Column(name="cust_created_date")
+	private LocalDate custCreatedOn;
+	
+	public Customer() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Customer(Long custId, String custFullName, @Size(max = 10, min = 10) int custMobile,
+			LocalDate custCreatedOn) {
+		super();
+		this.custId = custId;
+		this.custFullName = custFullName;
+		this.custMobile = custMobile;
+		this.custCreatedOn = custCreatedOn;
+	}
+
+	public Long getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Long custId) {
+		this.custId = custId;
+	}
+
+	public String getCustFullName() {
+		return custFullName;
+	}
+
+	public void setCustFullName(String custFullName) {
+		this.custFullName = custFullName;
+	}
+
+	public int getCustMobile() {
+		return custMobile;
+	}
+
+	public void setCustMobile(int custMobile) {
+		this.custMobile = custMobile;
+	}
+
+	public LocalDate getCustCreatedOn() {
+		return custCreatedOn;
+	}
+
+	public void setCustCreatedOn(LocalDate custCreatedOn) {
+		this.custCreatedOn = custCreatedOn;
+	}
+
+	@Override
+	public String toString() {
+		return "Customer [custId=" + custId + ", custFullName=" + custFullName + ", custMobile=" + custMobile
+				+ ", custCreatedOn=" + custCreatedOn + "]";
+	}
+	
+	
+}
