@@ -68,7 +68,7 @@ public class ProductServiceImpl implements IProductService {
 
 		if (!imageFile.isEmpty()) {
 			// Image path process
-			String targetPath =imageFile.getOriginalFilename();
+			String targetPath =folderName+File.separator+imageFile.getOriginalFilename();
 			Files.copy(imageFile.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
 			prod.addImageToProduct(targetPath);
 			System.out.println("New Image Inserted !!!");

@@ -108,7 +108,7 @@ function Category() {
                                                     <td>{item.cateName}</td>
 
                                                     <td>
-                                                        <img src={`http://localhost:8080/api/images?imageName=${item.cateImageUrl}`} alt={item.cateName} style={{ width: '30px', height: '30px' }}
+                                                        <img src={`http://localhost:8080/api/images?imageName=rice1.jpg`} alt={item.cateName} style={{ width: '30px', height: '30px' }}
                                                         />
                                                     </td>
                                                     <td >
