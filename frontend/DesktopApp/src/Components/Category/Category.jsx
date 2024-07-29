@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Table, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { styled } from '@mui/system';
 import './Category.css'; // Make sure to create this CSS file or include the styles in your global CSS
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 import AddCategory from './AddCategory';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -11,19 +11,28 @@ import SaveIcon from '@mui/icons-material/Save';
 
 function Category() {
 
-    const [openForm, setOpenForm] = useState(false)
-    const [editMode, setEditMode] = useState(false);
-    const [categories, setCategories] = useState([
-        { id: 1, name: 'Category 1', status: 'active' },
-        { id: 2, name: 'Category 2', status: 'inactive' },
+    const [open, setOpen] = useState(false)
+    const [editMode, setEditMode] = useState(null);
+    const [categories, setCategories] = useState([]);
 
-    ]);
+
+    const fetchcategories = async () => {
+        const response = await axios.get('http://localhost:8080/api/category/allcategories')
+        setCategories(response.data)
+        console.log(response.data, '#############');
+    }
+
+    useEffect(() => {
+
+        fetchcategories()
+
+    }, [])
 
     const toggleCategoryForm = () => {
-        setOpenForm(!openForm)
+        setOpen(!open)
     }
     const handleClose = () => {
-        setOpenForm(false)
+        setOpen(false)
     }
 
     const StyledButton = styled(Button)(({ theme }) => ({
@@ -39,15 +48,26 @@ function Category() {
         },
     }));
 
-    const handleSave=()=>{
+    const handleSave = () => {
 
     }
-    const handleEdit=()=>{
-        setEditMode(!editMode)
-        
+    const handleEdit = (id) => {
+        setEditMode(id)
+
     }
-    const handleDelete=()=>{
-        
+    const handleDelete = async (id) => {
+        const confirmed = window.confirm('Delete the category?');
+        if (confirmed) {
+            const response = await axios.delete(`http://localhost:8080/api/category/delete/${id}`);
+            if (response.status === 200) {
+                fetchcategories();
+                
+            } else {
+                alert('Category not deleted');
+            }
+        }
+
+
     }
 
 
@@ -75,7 +95,7 @@ function Category() {
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Name</th>
-                                                <th>Status</th>
+
                                                 <th>Image</th>
                                                 <th>Action</th>
 
@@ -83,27 +103,25 @@ function Category() {
                                         </thead>
                                         <tbody>
                                             {categories.map(item => (
-                                                <tr key={item.id} className='TableRowInCategory'>
-                                                    <td>{item.id}</td>
-                                                    <td>{item.name}</td>
-                                                    <td>{item.status}</td>
+                                                <tr key={item.cateId} className='TableRowInCategory'>
+                                                    <td>{item.cateId}</td>
+                                                    <td>{item.cateName}</td>
+
                                                     <td>
-                                                        <img src={
-                                                            item.image
-                                                        } alt="image" style={{ width: '10px', height: '10px' }}
+                                                        <img src={`http://localhost:8080/api/images?imageName=${item.cateImageUrl}`} alt={item.cateName} style={{ width: '30px', height: '30px' }}
                                                         />
                                                     </td>
                                                     <td >
-                                                        {editMode === true ? (
-                                                            <IconButton className='IconButton' onClick={() => handleSave()}>
+                                                        {editMode === item.cateId ? (
+                                                            <IconButton className='IconButton' onClick={() => handleSave(item.cateId)}>
                                                                 <SaveIcon className="saveIcon" />
                                                             </IconButton>
-                                                         ) : ( 
-                                                            <IconButton className='IconButton' onClick={() => handleEdit(true)}>
+                                                        ) : (
+                                                            <IconButton className='IconButton' onClick={() => handleEdit(item.cateId)}>
                                                                 <EditIcon className="editIcon" />
                                                             </IconButton>
-                                                         )} 
-                                                        <IconButton className='IconButton' onClick={() => handleDelete()}>
+                                                        )}
+                                                        <IconButton className='IconButton' onClick={() => handleDelete(item.cateId)}>
                                                             <DeleteIcon className="deleteIcon" />
                                                         </IconButton>
                                                     </td>
@@ -116,7 +134,7 @@ function Category() {
                         </Card>
                     </Col>
                 </Row>
-                {openForm && <AddCategory open={open} handleClose={handleClose} />}
+                {open && <AddCategory open={open} handleClose={handleClose} fetchcategories={fetchcategories} />}
             </div>
         </div>
     );

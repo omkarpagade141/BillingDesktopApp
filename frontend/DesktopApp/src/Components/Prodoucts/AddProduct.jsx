@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -11,6 +11,7 @@ import axios from "axios";
 const AddProduct = ({ open, handleClose }) => {
   const [productName, setProductName] = useState("");
   const [Categoryid, setCategoryid] = useState("");
+  const [categories,setCategories]=useState([])
   const [image, setImage] = useState(null);
   const [productPrice, setproductPrice] = useState("");
 
@@ -26,16 +27,27 @@ const AddProduct = ({ open, handleClose }) => {
       boxShadow: "none",
     },
   }));
+
+  useEffect(()=>{
+    const fetchcategories= async()=>{
+       const response= await axios.get('http://localhost:8080/api/category/allcategories')
+       setCategories(response.data)
+       console.log(response.data,'#############');
+    }
+    fetchcategories()
+
+},[])
+
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the form from submitting and refreshing the page
     const formData = new FormData();
-    formData.append("categoryid", Categoryid);
-    formData.append("productname", productName);
-    formData.append("productprice", productPrice);
-    formData.append("productImage", image);
+    formData.append("cateId", Categoryid);
+    formData.append("prodName", productName);
+    formData.append("prodPrice", productPrice);
+    formData.append("imageName", image);
     try {
-      const response = await axios.post(
-        " http://localhost:8080/api/saveCategory",
+      const response = await axios.post(`http://localhost:8080/api/product/category/${Categoryid}/add_product`,
         formData,
         {
           headers: {
@@ -68,14 +80,12 @@ const AddProduct = ({ open, handleClose }) => {
                           onChange={(e) => setCategoryid(e.target.value)}
                         >
                           <option value="">Select a category</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          {/* {categories.map((category) => (
-                            <option key={category._id} value={category._id}>
-                              {category.name}
+                           
+                          {categories.map((category) => (
+                            <option key={category.cateId} value={category.cateId}>
+                              {category.cateName}
                             </option>
-                          ))} */}
+                          ))}
                         </Form.Control>
                       </Form.Group>
                       <Form.Group controlId="formtProductName">

@@ -9,7 +9,7 @@ import { Row, Col, Card, Form } from 'react-bootstrap';
 import { styled } from '@mui/material';
 import axios from 'axios';
 
-const AddCategory = ({ open, handleClose }) => {
+const AddCategory = ({ open, handleClose , fetchcategories }) => {
 
     const [categoryName, setCategoryName] = useState('');
     const [categoryStatus, setCategoryStatus] = useState('active');
@@ -30,15 +30,17 @@ const AddCategory = ({ open, handleClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent the form from submitting and refreshing the page
         const formData = new FormData();
-        formData.append('categoryname', categoryName);
-        formData.append('categoryImage', image);
+        formData.append('cateName', categoryName);
+        formData.append('imageName', image);
         try {
-            const response = await axios.post(' http://localhost:8080/api/saveCategory', formData, {
+            const response = await axios.post(' http://localhost:8080/api/category/add_catewithimg', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             })
             console.log(response);
+            fetchcategories();
+            handleClose();
 
         } catch (error) {
 
