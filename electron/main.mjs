@@ -8,6 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 let mainWindow;
+// let configWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -27,6 +28,38 @@ function createWindow() {
   
 
   mainWindow.loadURL('http://localhost:5173'); // Adjust URL as needed
+
+  // function createConfigWindow() {
+  //   configWindow = new BrowserWindow({
+  //     width: 400,
+  //     height: 300,
+  //     modal: true,
+  //     parent: mainWindow,
+  //     webPreferences: {
+  //       preload: path.join(__dirname, 'preload.mjs'),
+  //       nodeIntegration: true,
+  //       contextIsolation: false,
+  //     },
+  //   });
+//   configWindow.loadFile(path.join(__dirname, 'config.html'));
+// }
+
+
+// // Event listener for saving the configuration
+// ipcMain.on('save-config', (event, config) => {
+//   const configPath = path.join(__dirname, 'config.json');
+//   fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+//   event.sender.send('config-saved');
+// });
+
+
+
+
+
+// // Open the configuration window when the main window is loaded
+// mainWindow.webContents.on('did-finish-load', () => {
+//   createConfigWindow();
+// });
 
  
 

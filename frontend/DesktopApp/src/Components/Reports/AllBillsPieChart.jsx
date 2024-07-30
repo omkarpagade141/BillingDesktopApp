@@ -5,9 +5,9 @@ import { Paper } from '@mui/material';
 
 // Sample data
 const data = [
-  { name: 'Group A', value: 400 },
-  { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 },
+  { name: 'Cash', value: 400 },
+  { name: 'UPI', value: 300 },
+  { name: 'Not Selected', value: 300 },
    
 ];
 
@@ -16,8 +16,8 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 const PieChartComponent = () => {
   return (
-    <Paper style={{ padding: 20 }}>
-      <PieChart width={400} height={400}>
+    <Paper style={{ padding: 20 } } >
+      <PieChart width={370} height={370} >
         <Pie
           data={data}
           cx="50%"

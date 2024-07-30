@@ -29,17 +29,16 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class CategoryServiceImpl implements ICategoryService {
 
-
 	@Autowired
 	private CategoryRepositiory cateRepo;
 
 	@Autowired
 	private ModelMapper mapper;
-	
-	//For Image set
+
+	// For Image set
 	@Value("${content.upload.folder}")
 	private String folderName;
-	
+
 	@PostConstruct
 	public void myInit() {
 		System.out.println("in myInit " + folderName);
@@ -50,13 +49,12 @@ public class CategoryServiceImpl implements ICategoryService {
 		} else
 			System.out.println("folder alrdy exists....");
 	}
-	
+
 	@Override
 	public List<Category> getCategoryList() {
 		// To get all categories and send as List
 		return cateRepo.findAll();
 	}
-
 
 //	@Override
 //	public ResponseEntity<String> addNewCategoryRecord(CategoryDTO newCate) {
@@ -74,69 +72,78 @@ public class CategoryServiceImpl implements ICategoryService {
 //
 //	}
 
-
 	@Override
-	public ResponseEntity<String> updateCategoryDetails(Long cateId,String updtName, MultipartFile updtImageFile) throws IOException {
+	public ResponseEntity<String> updateCategoryDetails(Long cateId, String updtName, MultipartFile updtImageFile)
+			throws IOException {
 		// TODO Auto-generated method stub
-		Category oldCate = cateRepo.findById(cateId).orElseThrow(()-> new ResourceNotFoundException("Category Not found"));
+		Category oldCate = cateRepo.findById(cateId)
+				.orElseThrow(() -> new ResourceNotFoundException("Category Not found"));
 		oldCate.setCateName(updtName);
-		//To set which date category was updated
+		// To set which date category was updated
 		oldCate.setCateLastUpdatedOn(LocalDate.now());
-		if(oldCate.getCateImageUrl()!=null)
-		{
-		Path path = Paths.get(oldCate.getCateImageUrl());
-		Files.delete(path);
-		System.out.println("Old Image Deleted !!!");
-		}
-		if(!updtImageFile.isEmpty())
-		{
-		String targetPath=folderName+File.separator+updtImageFile.getOriginalFilename();
-		Files.copy(updtImageFile.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
-		oldCate.addImageToCategory(targetPath);
-		System.out.println("New Image Inserted !!!");
-		}
-		cateRepo.save(oldCate);
 		
-		return new ResponseEntity<String>("Category has been Updated!!!",HttpStatus.OK);
+			if (oldCate.getCateImageUrl() != null) {
+				Path path = Paths.get(folderName + File.separator + oldCate.getCateImageUrl());
+				Files.delete(path);
+				System.out.println("Old Image Deleted !!!");
+			}
+			if (!updtImageFile.isEmpty()) {
+				String targetPath = folderName + File.separator + updtImageFile.getOriginalFilename();
+				Files.copy(updtImageFile.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
+				oldCate.addImageToCategory(updtImageFile.getOriginalFilename());
+				System.out.println("New Image Inserted !!!");
+			}
+		
+		cateRepo.save(oldCate);
+
+		return new ResponseEntity<String>("Category has been Updated!!!", HttpStatus.OK);
 	}
 
-	
 	@Override
-	public ResponseEntity<String> addCateWithImage(String name,MultipartFile imageFile) throws IOException {
+	public ResponseEntity<String> addCateWithImage(String name, MultipartFile imageFile) throws IOException {
 		// TODO Auto-generated method stub
 //		System.out.println("In Service");
 		Category addCat = new Category();
 		addCat.setCateCreatedOn(LocalDate.now());
 		addCat.setCateName(name);
-		
-		if(!imageFile.isEmpty())
-		{
-		String targetPath=folderName+File.separator+imageFile.getOriginalFilename();
+
+		if (!imageFile.isEmpty()) {
+			String targetPath = folderName + File.separator + imageFile.getOriginalFilename();
 //		System.out.println("Target path is: "+targetPath);
-		//copy image file contents to the specified path
-		Files.copy(imageFile.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
-		addCat.addImageToCategory(targetPath);
+			// copy image file contents to the specified path
+			Files.copy(imageFile.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
+//		addCat.addImageToCategory(targetPath);
+			addCat.addImageToCategory(imageFile.getOriginalFilename());
 		}
-		
+
 		cateRepo.save(addCat);
 		return new ResponseEntity<String>("New Category added successfully ", HttpStatus.CREATED);
 	}
-	
 
 	@Override
 	public ResponseEntity<String> deleteCategoryById(Long cateId) throws IOException {
-		Category cateObj = cateRepo.findById(cateId).orElseThrow(()-> new ResourceNotFoundException("Category Not found"));	
-		if(cateObj.getCateImageUrl()!=null)
-		{
-		Path path = Paths.get(cateObj.getCateImageUrl());
-		Files.delete(path);
-		System.out.println("Category Image Deleted !!!");
+		Category cateObj = cateRepo.findById(cateId)
+				.orElseThrow(() -> new ResourceNotFoundException("Category Not found"));
+		if (cateObj.getCateImageUrl() != null) {
+			Path path = Paths.get(folderName + File.separator + cateObj.getCateImageUrl());
+			Files.delete(path);
+			System.out.println("Category Image Deleted !!!");
 		}
 		cateRepo.deleteById(cateId);
-		
+
 		return new ResponseEntity<String>("Category Deleted successfully!!!", HttpStatus.OK);
 	}
 
-	
-	
+	@Override
+	public ResponseEntity<String> updateCategoryNameOnly(Long cateId, String updtName) {
+		Category oldCate = cateRepo.findById(cateId)
+				.orElseThrow(() -> new ResourceNotFoundException("Category Not found"));
+		oldCate.setCateName(updtName);
+		// To set which date category was updated
+		oldCate.setCateLastUpdatedOn(LocalDate.now());
+		cateRepo.save(oldCate);
+
+		return new ResponseEntity<String>("Category has been Updated!!!", HttpStatus.OK);
+	}
+
 }

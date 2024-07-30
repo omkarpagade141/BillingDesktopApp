@@ -9,7 +9,7 @@ import { Row, Col, Card, Form } from 'react-bootstrap';
 import { styled } from '@mui/material';
 import axios from 'axios';
 
-const AddCategory = ({ open, handleClose , fetchcategories }) => {
+const AddCategory = ({ open, handleClose , fetchcategories, triggerMessage }) => {
 
     const [categoryName, setCategoryName] = useState('');
     const [categoryStatus, setCategoryStatus] = useState('active');
@@ -38,12 +38,19 @@ const AddCategory = ({ open, handleClose , fetchcategories }) => {
                     'Content-Type': 'multipart/form-data',
                 },
             })
-            console.log(response);
-            fetchcategories();
-            handleClose();
+            if (response.status===201) {
+                console.log(response.data);
+                fetchcategories();
+                handleClose();
+                triggerMessage('Category added successfully', 'success');
+                
+            }
+           
+            
 
         } catch (error) {
 
+            triggerMessage('Error While adding Category', 'error');
             console.log(error);
         }
 

@@ -70,7 +70,7 @@ public class ProductServiceImpl implements IProductService {
 			// Image path process
 			String targetPath =folderName+File.separator+imageFile.getOriginalFilename();
 			Files.copy(imageFile.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
-			prod.addImageToProduct(targetPath);
+			prod.addImageToProduct(imageFile.getOriginalFilename());
 			System.out.println("New Image Inserted !!!");
 		}
 		productRepo.save(prod);
@@ -83,7 +83,7 @@ public class ProductServiceImpl implements IProductService {
 		Product prod = productRepo.findById(prodId)
 				.orElseThrow(() -> new ResourceNotFoundException("Error!!Product Not found!!"));
 		if (prod.getProdImageUrl() != null) {
-			Path prodImgPath = Paths.get(prod.getProdImageUrl());
+			Path prodImgPath = Paths.get(folderName+File.separator+prod.getProdImageUrl());
 			Files.delete(prodImgPath);
 			System.out.println("Product Image path Deleted !!!");
 		}
@@ -102,14 +102,14 @@ public class ProductServiceImpl implements IProductService {
 		//Set on which date product was updated
 		oldProd.setProdLastUpdatedOn(LocalDate.now());
 		if (oldProd.getProdImageUrl() != null) {
-			Path prodImgPath = Paths.get(oldProd.getProdImageUrl());
+			Path prodImgPath = Paths.get(folderName+File.separator+oldProd.getProdImageUrl());
 			Files.delete(prodImgPath);
 			System.out.println("Product Image path Deleted !!!");
 		}
 		if (!updtProdImageFile.isEmpty()) {
 			String targetPath = folderName + File.separator + updtProdImageFile.getOriginalFilename();
 			Files.copy(updtProdImageFile.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
-			oldProd.addImageToProduct(targetPath);
+			oldProd.addImageToProduct(updtProdImageFile.getOriginalFilename());
 			System.out.println("New Image Inserted !!!");
 		}
 		productRepo.save(oldProd);

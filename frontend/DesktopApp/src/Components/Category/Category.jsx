@@ -9,11 +9,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 
-function Category() {
+function Category({ triggerMessage }) {
 
     const [open, setOpen] = useState(false)
     const [editMode, setEditMode] = useState(null);
     const [categories, setCategories] = useState([]);
+    const [updatedCatName, setUpdatedCatName] = useState('')
+    const [updatedCatImage, setUpdatedCatImage] = useState(null)
 
 
     const fetchcategories = async () => {
@@ -48,7 +50,28 @@ function Category() {
         },
     }));
 
-    const handleSave = () => {
+    const handleSave = async (id) => {
+        const category = categories.find(cat => cat.cateId == id)
+
+        if (updatedCatImage == null) {
+            triggerMessage('Please select Image', 'error')
+
+        } else {
+            const formData = new FormData();
+            formData.append('cateName', updatedCatName || category.cateName);
+            formData.append('imageName', updatedCatImage);
+            const reponse = await axios.put(`http://localhost:8080/api/category/update/${id}`, formData)
+            console.log(reponse, '@@@@@@@@@@@@@@@@@@');
+            if (reponse.status === 200) {
+                fetchcategories()
+                setEditMode(null)
+                triggerMessage('Category updated successfully', 'success')
+
+
+            }
+
+        }
+
 
     }
     const handleEdit = (id) => {
@@ -61,9 +84,10 @@ function Category() {
             const response = await axios.delete(`http://localhost:8080/api/category/delete/${id}`);
             if (response.status === 200) {
                 fetchcategories();
-                
+                triggerMessage('Category deleted successfully', 'success');
+
             } else {
-                alert('Category not deleted');
+                triggerMessage('Category not deleted', 'error');
             }
         }
 
@@ -105,12 +129,28 @@ function Category() {
                                             {categories.map(item => (
                                                 <tr key={item.cateId} className='TableRowInCategory'>
                                                     <td>{item.cateId}</td>
-                                                    <td>{item.cateName}</td>
+                                                    {editMode == item.cateId ?
+                                                        <td><input type="text" name="" id="" onChange={(e) => {
+                                                            setUpdatedCatName(e.target.value)
+                                                        }} defaultValue={item.cateName} /></td>
+                                                        : <td>{item.cateName}</td>
+                                                    }
 
-                                                    <td>
-                                                        <img src={`http://localhost:8080/api/images?imageName=rice1.jpg`} alt={item.cateName} style={{ width: '30px', height: '30px' }}
-                                                        />
-                                                    </td>
+
+                                                    {
+                                                        editMode == item.cateId ?
+                                                            <td><input type="file" name="" id="" onChange={(e) => {
+                                                                setUpdatedCatImage(e.target.files[0])
+                                                            }} /></td>
+                                                            :
+                                                            <td>
+                                                                {/* http://localhost:8080/api/images?imageName=${item.cateImageUrl} */}
+                                                                <img src={`http://localhost:8080/api/images?imageName=${item.cateImageUrl}`} alt={item.cateName} style={{ width: '30px', height: '30px' }}
+                                                                />
+                                                            </td>
+
+                                                    }
+
                                                     <td >
                                                         {editMode === item.cateId ? (
                                                             <IconButton className='IconButton' onClick={() => handleSave(item.cateId)}>
@@ -134,7 +174,7 @@ function Category() {
                         </Card>
                     </Col>
                 </Row>
-                {open && <AddCategory open={open} handleClose={handleClose} fetchcategories={fetchcategories} />}
+                {open && <AddCategory open={open} handleClose={handleClose} fetchcategories={fetchcategories} triggerMessage={triggerMessage} />}
             </div>
         </div>
     );
