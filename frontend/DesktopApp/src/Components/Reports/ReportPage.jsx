@@ -8,13 +8,17 @@ function ReportPage() {
   return (
     <div>
       <Row className='mt-4'>
-        <Col md={7}>
+        <Col md={8}>
           <Row>
             <Col md={6}>
               <Card className='fixed-card'>
                 <Card.Body>
                   <Card.Title className='text-center'>All Bills</Card.Title>
-                  <Row></Row>
+                  <Row > 
+                    <Col md={12} className='text-center'>
+                    <h3>0</h3>
+                    </Col>
+                  </Row>
                 </Card.Body>
               </Card>
             </Col>
@@ -22,19 +26,27 @@ function ReportPage() {
               <Card className='fixed-card'>
                 <Card.Body>
                   <Card.Title className='text-center'>Today's Bills</Card.Title>
-                  <Row></Row>
+                  <Row > 
+                    <Col md={12} className='text-center'>
+                    <h3>0</h3>
+                    </Col>
+                  </Row>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
 
 
-          <Row className='mt-3'>
+          <Row className='mt-4'>
             <Col md={6}>
               <Card className='fixed-card'>
                 <Card.Body>
                   <Card.Title className='text-center'>Today's Business</Card.Title>
-                  <Row></Row>
+                  <Row > 
+                    <Col md={12} className='text-center'>
+                    <h3>0 Rs</h3>
+                    </Col>
+                  </Row>
                 </Card.Body>
               </Card>
             </Col>
@@ -42,13 +54,46 @@ function ReportPage() {
               <Card className='fixed-card'>
                 <Card.Body>
                   <Card.Title className='text-center'>All Customer's</Card.Title>
-                  <Row></Row>
+                  <Row > 
+                    <Col md={12} className='text-center'>
+                    <h3>0</h3>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+
+
+          <Row className='mt-4'>
+            <Col md={6}>
+              <Card className='fixed-card'>
+                <Card.Body>
+                  <Card.Title className='text-center'>Total Products</Card.Title>
+                  <Row > 
+                    <Col md={12} className='text-center'>
+                    <h3>0</h3>
+                    </Col>
+                  </Row>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={6}>
+              <Card className='fixed-card'>
+                <Card.Body>
+                  <Card.Title className='text-center'>Demo....</Card.Title>
+                  <Row > 
+                    <Col md={12} className='text-center'>
+                    <h3>0</h3>
+                    </Col>
+                  </Row>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
         </Col>
-        <Col md={5} className=''>
+        <Col md={4} className=''>
           <Container>
             <PieChartComponent />
           </Container></Col>

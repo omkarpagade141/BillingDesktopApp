@@ -62,7 +62,11 @@ public class CategoryController {
 	@PutMapping(value="/update/{cateId}", consumes ={"multipart/form-data"})
 	ResponseEntity<String> updateCategory(@PathVariable Long cateId,@RequestParam("cateName") String updtName,@RequestParam("imageName") MultipartFile updtImageFile) throws IOException
 	{
+		if (!updtImageFile.isEmpty()) {
 		return cateService.updateCategoryDetails(cateId,updtName,updtImageFile);
+		}
+		return cateService.updateCategoryNameOnly(cateId,updtName);
+		
 	}
 	
 	@DeleteMapping("/delete/{cateId}")

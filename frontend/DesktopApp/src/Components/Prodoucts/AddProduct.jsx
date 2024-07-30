@@ -8,7 +8,7 @@ import { Row, Col, Card, Form } from "react-bootstrap";
 import { styled } from "@mui/material";
 import axios from "axios";
 
-const AddProduct = ({ open, handleClose }) => {
+const AddProduct = ({ open, handleClose , triggerMessage , fetchProducts }) => {
   const [productName, setProductName] = useState("");
   const [Categoryid, setCategoryid] = useState("");
   const [categories,setCategories]=useState([])
@@ -55,6 +55,12 @@ const AddProduct = ({ open, handleClose }) => {
           },
         }
       );
+      if (response.status==201) {
+        fetchProducts()
+        triggerMessage('Product Added Successfully','success')
+        handleClose();
+        
+      }
       console.log(response);
     } catch (error) {
       console.log(error);
