@@ -1,0 +1,12 @@
+{
+    "scripts": {
+      "dev:frontend": "cd frontend/DesktopApp && npm run dev",
+      "start:backend": "cd backend/Project2_Alpha && mvnw.cmd spring-boot:run",
+      "start:electron": "cd electron && npm start",
+      "start": "concurrently \"npm run dev:frontend\" \"npm run start:backend\" \"npm run start:electron\""
+    },
+    "devDependencies": {
+      "concurrently": "^7.0.0"
+    }
+  }
+  

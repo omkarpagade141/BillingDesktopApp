@@ -22,6 +22,8 @@ public interface ICategoryService {
 	// Cate wth Image
 	ResponseEntity<String> addCateWithImage(String name,MultipartFile imageFile) throws IllegalStateException, IOException;
 
+	ResponseEntity<String> updateCategoryNameOnly(Long cateId, String updtName);
+
 	
 
 }
