@@ -19,7 +19,7 @@ function Category({ triggerMessage }) {
 
 
     const fetchcategories = async () => {
-        const response = await axios.get('http://localhost:8080/api/category/allcategories')
+        const response = await axios.get('/myapi/api/category/allcategories')
         setCategories(response.data)
         console.log(response.data, '#############');
     }
@@ -52,24 +52,33 @@ function Category({ triggerMessage }) {
 
     const handleSave = async (id) => {
         const category = categories.find(cat => cat.cateId == id)
+        let imageToSend = updatedCatImage;
 
-        if (updatedCatImage == null) {
-            triggerMessage('Please select Image', 'error')
-
-        } else {
-            const formData = new FormData();
+        if (!imageToSend) {
+            const imageResponse = await axios.get(`/myapi/api/images?imageName=${category.cateImageUrl}`, { responseType: 'blob' });
+                imageToSend = new File([imageResponse.data], category.cateImageUrl, { type: imageResponse.headers['content-type'] });
+                const formData = new FormData();
             formData.append('cateName', updatedCatName || category.cateName);
-            formData.append('imageName', updatedCatImage);
-            const reponse = await axios.put(`http://localhost:8080/api/category/update/${id}`, formData)
+            formData.append('imageName', imageToSend);
+            const reponse = await axios.put(`/myapi/api/category/update/${id}`, formData)
             console.log(reponse, '@@@@@@@@@@@@@@@@@@');
             if (reponse.status === 200) {
                 fetchcategories()
                 setEditMode(null)
                 triggerMessage('Category updated successfully', 'success')
-
-
             }
 
+        } else {
+            const formData = new FormData();
+            formData.append('cateName', updatedCatName || category.cateName);
+            formData.append('imageName', updatedCatImage);
+            const reponse = await axios.put(`/myapi/api/category/update/${id}`, formData)
+            console.log(reponse, '@@@@@@@@@@@@@@@@@@');
+            if (reponse.status === 200) {
+                fetchcategories()
+                setEditMode(null)
+                triggerMessage('Category updated successfully', 'success')
+            }
         }
 
 
@@ -81,7 +90,7 @@ function Category({ triggerMessage }) {
     const handleDelete = async (id) => {
         const confirmed = window.confirm('Delete the category?');
         if (confirmed) {
-            const response = await axios.delete(`http://localhost:8080/api/category/delete/${id}`);
+            const response = await axios.delete(`/myapi/api/category/delete/${id}`);
             if (response.status === 200) {
                 fetchcategories();
                 triggerMessage('Category deleted successfully', 'success');
@@ -90,8 +99,6 @@ function Category({ triggerMessage }) {
                 triggerMessage('Category not deleted', 'error');
             }
         }
-
-
     }
 
 
@@ -144,8 +151,8 @@ function Category({ triggerMessage }) {
                                                             }} /></td>
                                                             :
                                                             <td>
-                                                                {/* http://localhost:8080/api/images?imageName=${item.cateImageUrl} */}
-                                                                <img src={`http://localhost:8080/api/images?imageName=${item.cateImageUrl}`} alt={item.cateName} style={{ width: '30px', height: '30px' }}
+                                                                {/* /myapi/api/images?imageName=${item.cateImageUrl} */}
+                                                                <img src={`/myapi/api/images?imageName=${item.cateImageUrl}`} alt={item.cateName} style={{ width: '30px', height: '30px' }}
                                                                 />
                                                             </td>
 

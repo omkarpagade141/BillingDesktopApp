@@ -5,8 +5,8 @@ import { Paper } from '@mui/material';
 
 // Sample data
 const data = [
-  { name: 'Cash', value: 400 },
-  { name: 'UPI', value: 300 },
+  { name: 'Cash', value: 10 },
+  { name: 'UPI', value: 30 },
   { name: 'Not Selected', value: 300 },
    
 ];

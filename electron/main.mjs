@@ -1,71 +1,63 @@
-// electron/main.mjs
-
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain } from 'electron';
 import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import path from 'path';
+import fs from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 let mainWindow;
-// let configWindow;
+let configWindow;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-      // preload: join(__dirname, 'preload.mjs')
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true, // Recommended for security
+      worldSafeExecuteJavaScript: true, // Ensures JavaScript execution is safe
+      // nodeIntegration: false, // Disabled for security reasons
     },
-    autoHideMenuBar: true, // Hide the default menu bar
-    maximizable: true, // Prevent window from being maximizable by user
-    resizable: true // Prevent window from being resized by user
+    autoHideMenuBar: true,
+    maximizable: true,
+    resizable: true,
   });
 
-  // Maximize the window to take full screen height
-  
-
   mainWindow.loadURL('http://localhost:5173'); // Adjust URL as needed
+  console.log('Preload script path:', path.join(__dirname, 'preload.js'));
 
-  // function createConfigWindow() {
-  //   configWindow = new BrowserWindow({
-  //     width: 400,
-  //     height: 300,
-  //     modal: true,
-  //     parent: mainWindow,
-  //     webPreferences: {
-  //       preload: path.join(__dirname, 'preload.mjs'),
-  //       nodeIntegration: true,
-  //       contextIsolation: false,
-  //     },
-  //   });
-//   configWindow.loadFile(path.join(__dirname, 'config.html'));
-// }
+  // Check if config.json exists
+  const configPath = path.join(__dirname, 'config.json');
+  if (!fs.existsSync(configPath)) {
+    // Create config window if config.json does not exist
+    createConfigWindow();
+  }
 
-
-// // Event listener for saving the configuration
-// ipcMain.on('save-config', (event, config) => {
-//   const configPath = path.join(__dirname, 'config.json');
-//   fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-//   event.sender.send('config-saved');
-// });
-
-
-
-
-
-// // Open the configuration window when the main window is loaded
-// mainWindow.webContents.on('did-finish-load', () => {
-//   createConfigWindow();
-// });
-
- 
+  ipcMain.on('save-config', (event, config) => {
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+    event.sender.send('config-saved');
+  });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
+}
+
+function createConfigWindow() {
+  configWindow = new BrowserWindow({
+    width: 400,
+    height: 300,
+    modal: true,
+    parent: mainWindow,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      worldSafeExecuteJavaScript: true,
+      nodeIntegration: false, // Disabled for security reasons
+    },
+  });
+  configWindow.loadFile(path.join(__dirname, 'config.html'));
 }
 
 app.on('ready', createWindow);

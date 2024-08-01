@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Row, Col, Card, Button, Form } from 'react-bootstrap';
 import { styled } from '@mui/system';
-import './Product.css';  
+import './Product.css';
 import axios from 'axios';
 import AddProduct from './AddProduct';
 import { IconButton } from '@mui/material';
@@ -25,7 +25,7 @@ function Products({ triggerMessage }) {
         setOpen(false)
     }
     const fetchProducts = async () => {
-        const response = await axios.get('http://localhost:8080/api/product/allproducts')
+        const response = await axios.get('/myapi/api/product/allproducts')
         setproducts(response.data)
         console.log(response.data);
 
@@ -47,54 +47,66 @@ function Products({ triggerMessage }) {
         },
     }));
 
-    
 
-    const handleSave = async(id) => {
-        const produc=products.find(prod=> prod.prodId==id)
-        if(updProdImage==null) {
-            triggerMessage('Please select Image', 'error')
-            
-        }else{
+
+    const handleSave = async (id) => {
+        const produc = products.find(prod => prod.prodId == id)
+        let imageToSend = updProdImage;
+
+        // If no new image is selected, fetch the existing image
+        if (!imageToSend) {
+            try {
+                const imageResponse = await axios.get(`/myapi/api/images?imageName=${produc.prodImageUrl}`, { responseType: 'blob' });
+                imageToSend = new File([imageResponse.data], produc.prodImageUrl, { type: imageResponse.headers['content-type'] });
+                const formData = new FormData();
+                formData.append('prodName', updProdName || produc.prodName);
+                formData.append('prodPrice', updProdPrice || produc.prodPrice);
+                formData.append('imageName', imageToSend);
+
+                const reponse = await axios.put(`/myapi/api/product/update_product/${id}`, formData)
+                console.log(reponse, '@@@@@@@@@@@@@@@@@@');
+
+                if (reponse.status === 200) {
+                    console.log('@@@@@@@@@@@11111');
+                    triggerMessage('Product updated successfully', 'success')
+                    setEditMode(null)
+                    fetchProducts()
+                }
+
+            } catch (error) {
+                triggerMessage('Failed to fetch existing image', 'error');
+                return;
+            }
+
+        } else {
             const formData = new FormData();
             formData.append('prodName', updProdName || produc.prodName);
             formData.append('prodPrice', updProdPrice || produc.prodPrice);
             formData.append('imageName', updProdImage);
 
-               const reponse= await axios.put(`http://localhost:8080/api/product/update_product/${id}`, formData)
-               console.log(reponse,'@@@@@@@@@@@@@@@@@@');
+            const reponse = await axios.put(`/myapi/api/product/update_product/${id}`, formData)
+            console.log(reponse, '@@@@@@@@@@@@@@@@@@');
 
-                 if(reponse.status===200) {
-                    console.log('@@@@@@@@@@@11111');
-                    triggerMessage('Product updated successfully', 'success')
-                    setEditMode(null)
-                    fetchProducts()
-                    
-                    
-    
-                    
-                 }
-
+            if (reponse.status === 200) {
+                console.log('@@@@@@@@@@@11111');
+                triggerMessage('Product updated successfully', 'success')
+                setEditMode(null)
+                fetchProducts()
+            }
         }
-
-
     }
     const handleEdit = (id) => {
         setEditMode(id)
-
     }
     const handleDelete = async (prodId) => {
         const confirmed = confirm('Delete the product')
         if (confirmed) {
-            const response = await axios.delete(`http://localhost:8080/api/product/delete/${prodId}`)
+            const response = await axios.delete(`/myapi/api/product/delete/${prodId}`)
             if (response.status == 200) {
                 triggerMessage('Product deleted Successfully', 'success')
                 fetchProducts()
-
             }
-
         }
-
-
     }
 
 
@@ -135,7 +147,7 @@ function Products({ triggerMessage }) {
                                                     <td>{item.prodId}</td>
                                                     <td>{item.category.cateName}</td>
                                                     {editMode == item.prodId ?
-                                                       <td> <input type="text" name="" id="" defaultValue={item.prodName}
+                                                        <td> <input type="text" name="" id="" defaultValue={item.prodName}
                                                             onChange={(e) => setUpdProdName(e.target.value)} /></td>
                                                         :
                                                         <td>{item.prodName}</td>
@@ -143,21 +155,21 @@ function Products({ triggerMessage }) {
 
 
                                                     {editMode == item.prodId ?
-                                                      <td>  <input type="text" name="" id="" defaultValue={item.prodPrice}
+                                                        <td>  <input type="text" name="" id="" defaultValue={item.prodPrice}
                                                             onChange={(e) => setUpdProdPrice(e.target.value)} /></td>
                                                         :
                                                         <td>{item.prodPrice}</td>
                                                     }
 
                                                     {editMode == item.prodId ?
-                                                       <td> <input type="file" name="" id="" 
-                                                        onChange={(e) => setUpdProdImage(e.target.files[0])} /></td>
-                                                         
+                                                        <td> <input type="file" name="" id=""
+                                                            onChange={(e) => setUpdProdImage(e.target.files[0])} /></td>
+
                                                         :
                                                         <td>
-                                                            {/* http://localhost:8080/api/images?imageName=${item.prodImageUrl} */}
+                                                            {/* /myapi/api/images?imageName=${item.prodImageUrl} */}
 
-                                                            <img src={`http://localhost:8080/api/images?imageName=${item.prodImageUrl}`} alt="image" style={{ width: '30px', height: '30px' }}
+                                                            <img src={`/myapi/api/images?imageName=${item.prodImageUrl}`} alt="image" style={{ width: '30px', height: '30px' }}
                                                             />
                                                         </td>
                                                     }
