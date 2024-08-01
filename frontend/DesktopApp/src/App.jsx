@@ -22,7 +22,7 @@ business_logo: logo
 
   })
   // useEffect(()=>{
-  //   axios.get('http://localhost:3001/api/getSettings')
+  //   axios.get('http://localhost:3001//myapi/api/getSettings')
   // })
 
   

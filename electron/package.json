@@ -4,6 +4,7 @@
   "description": "Desktop application using react(vite), electron and spring+mysql",
   "type": "module",
   "main": "main.mjs",
+  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electromon .",

@@ -30,7 +30,7 @@ const AddProduct = ({ open, handleClose , triggerMessage , fetchProducts }) => {
 
   useEffect(()=>{
     const fetchcategories= async()=>{
-       const response= await axios.get('http://localhost:8080/api/category/allcategories')
+       const response= await axios.get('/myapi/api/category/allcategories')
        setCategories(response.data)
        console.log(response.data,'#############');
     }
@@ -47,7 +47,7 @@ const AddProduct = ({ open, handleClose , triggerMessage , fetchProducts }) => {
     formData.append("prodPrice", productPrice);
     formData.append("imageName", image);
     try {
-      const response = await axios.post(`http://localhost:8080/api/product/category/${Categoryid}/add_product`,
+      const response = await axios.post(`/myapi/api/product/category/${Categoryid}/add_product`,
         formData,
         {
           headers: {
