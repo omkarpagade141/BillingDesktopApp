@@ -10,5 +10,7 @@ import com.alpha.app.Entity.Category;
 @Repository
 public interface CategoryRepositiory extends JpaRepository<Category, Long>{
 
+	Optional<Category> findByCateName(String name);
+
 	
 }

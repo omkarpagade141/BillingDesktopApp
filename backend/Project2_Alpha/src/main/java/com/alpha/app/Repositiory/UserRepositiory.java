@@ -10,9 +10,9 @@ import com.alpha.app.Entity.User;
 @Repository
 public interface UserRepositiory extends JpaRepository<User, Integer>{
 
-	User findByUserNameAndUserPassword(String userName, String userPassword);
+	User findByUserEmailAndUserPassword(String userEmail, String userPassword);
 
-	Optional<User> findByUserName(String username);
+	Optional<User> findByUserEmail(String userEmail);
 
 
 

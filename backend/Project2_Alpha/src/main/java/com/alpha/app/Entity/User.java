@@ -24,8 +24,8 @@ public class User {
 	@Column(name = "user_Id")
 	private Integer userId;
 	
-	@Column(name="user_name",nullable = false)
-	private String userName;
+	@Column(name="user_email",nullable = false)
+	private String userEmail;
 	@Column(name="user_pass",nullable = false)
 	private String userPassword;
 	@Column(name="created_date")
@@ -35,10 +35,10 @@ public class User {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public User(Integer userId, String userName, String userPassword, LocalDate createdOn) {
+	public User(Integer userId, String userEmail, String userPassword, LocalDate createdOn) {
 		super();
 		this.userId = userId;
-		this.userName = userName;
+		this.userEmail = userEmail;
 		this.userPassword = userPassword;
 		this.createdOn = createdOn;
 	}
@@ -51,12 +51,12 @@ public class User {
 		this.userId = userId;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUserEmail() {
+		return userEmail;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 
 	public String getUserPassword() {
@@ -77,7 +77,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", userName=" + userName + ", userPassword=" + userPassword + ", createdOn="
+		return "User [userId=" + userId + ", userEmail=" + userEmail + ", userPassword=" + userPassword + ", createdOn="
 				+ createdOn + "]";
 	}
 	
