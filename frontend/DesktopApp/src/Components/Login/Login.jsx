@@ -23,7 +23,7 @@ function Login({settings}) {
         // 'userPassword': `${password}`
       
       const response = await axios.post('/myapi/api/user/login', {
-        'userName': `${email}`,
+        'userEmail': `${email}`,
         'userPassword': `${password}`
       })
       console.log(response)

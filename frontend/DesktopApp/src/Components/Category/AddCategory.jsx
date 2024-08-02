@@ -11,8 +11,7 @@ import axios from 'axios';
 
 const AddCategory = ({ open, handleClose , fetchcategories, triggerMessage }) => {
 
-    const [categoryName, setCategoryName] = useState('');
-    const [categoryStatus, setCategoryStatus] = useState('active');
+    const [categoryName, setCategoryName] = useState('')
     const [image, setImage] = useState(null);
 
     const StyledButton = styled(Button)(({ theme }) => ({
@@ -88,27 +87,7 @@ const AddCategory = ({ open, handleClose , fetchcategories, triggerMessage }) =>
                                                 />
                                             </Form.Group>
 
-                                            <Form.Group>
-                                                <Form.Label className='mt-3'>Category Status:</Form.Label>
-                                                <Form.Check
-                                                    type="radio"
-                                                    label="Active"
-                                                    name="categoryStatus"
-                                                    id="active"
-                                                    value="active"
-                                                    checked={categoryStatus === 'active'}
-                                                    onChange={(e) => setCategoryStatus(e.target.value)}
-                                                />
-                                                <Form.Check
-                                                    type="radio"
-                                                    label="Inactive"
-                                                    name="categoryStatus"
-                                                    id="inactive"
-                                                    value="inactive"
-                                                    checked={categoryStatus === 'inactive'}
-                                                    onChange={(e) => setCategoryStatus(e.target.value)}
-                                                />
-                                            </Form.Group>
+                                             
                                             <Button color="primary" type='submit'>Add Category</Button>
                                             <Button onClick={handleClose} color="primary">
                                                 Close

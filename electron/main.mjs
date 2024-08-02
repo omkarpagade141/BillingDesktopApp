@@ -2,6 +2,8 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import fs from 'fs';
+import sendConfig from './sendConfig.js';
+import { log } from 'console';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -15,9 +17,8 @@ function createWindow() {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
-      contextIsolation: true, // Recommended for security
-      worldSafeExecuteJavaScript: true, // Ensures JavaScript execution is safe
-      // nodeIntegration: false, // Disabled for security reasons
+      contextIsolation: true,
+      worldSafeExecuteJavaScript: true,
     },
     autoHideMenuBar: true,
     maximizable: true,
@@ -34,8 +35,10 @@ function createWindow() {
     createConfigWindow();
   }
 
-  ipcMain.on('save-config', (event, config) => {
+  ipcMain.on('save-config', async (event, config) => {
     fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+    // await sendConfig();
+    console.log('sendConfigCalled'); // Call sendConfig to send the configuration to the backend
     event.sender.send('config-saved');
   });
 
@@ -54,7 +57,7 @@ function createConfigWindow() {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       worldSafeExecuteJavaScript: true,
-      nodeIntegration: false, // Disabled for security reasons
+      nodeIntegration: false,
     },
   });
   configWindow.loadFile(path.join(__dirname, 'config.html'));
