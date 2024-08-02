@@ -12,6 +12,7 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,11 @@ public class ProductServiceImpl implements IProductService {
 		// First find Category Object from DB with the help of cateId
 		Category cateObj = cateRepo.findById(cateId)
 				.orElseThrow(() -> new ResourceNotFoundException("Category Not found!!!"));
+		if(productRepo.findByProdName(prodName).isPresent())
+		{
+			throw new DuplicateKeyException("Product "+prodName+" already present ");
+		}
+		
 		// Create prod obj
 		Product prod = new Product();
 		// Set User i/p to prod object
@@ -67,10 +73,14 @@ public class ProductServiceImpl implements IProductService {
 		prod.setCategory(cateObj);
 
 		if (!imageFile.isEmpty()) {
+			
+			long currentTimeMills = System.currentTimeMillis();
 			// Image path process
-			String targetPath =folderName+File.separator+imageFile.getOriginalFilename();
+//			String targetPath =folderName+File.separator+imageFile.getOriginalFilename();
+			String targetPath =folderName+File.separator+currentTimeMills+".jpg";
 			Files.copy(imageFile.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
-			prod.addImageToProduct(imageFile.getOriginalFilename());
+//			prod.addImageToProduct(imageFile.getOriginalFilename());
+			prod.addImageToProduct(currentTimeMills+".jpg");
 			System.out.println("New Image Inserted !!!");
 		}
 		productRepo.save(prod);
@@ -107,9 +117,10 @@ public class ProductServiceImpl implements IProductService {
 			System.out.println("Product Image path Deleted !!!");
 		}
 		if (!updtProdImageFile.isEmpty()) {
-			String targetPath = folderName + File.separator + updtProdImageFile.getOriginalFilename();
+			long currentTimeMills = System.currentTimeMillis();
+			String targetPath = folderName + File.separator + currentTimeMills+".jpg";
 			Files.copy(updtProdImageFile.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
-			oldProd.addImageToProduct(updtProdImageFile.getOriginalFilename());
+			oldProd.addImageToProduct(currentTimeMills+".jpg");
 			System.out.println("New Image Inserted !!!");
 		}
 		productRepo.save(oldProd);

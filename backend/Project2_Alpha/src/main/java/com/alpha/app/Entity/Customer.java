@@ -9,10 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name="CustomerMaster")
@@ -28,8 +24,8 @@ public class Customer {
 	private String custFullName;
 	
 	@Size(max = 10, min = 10)
-	@Column(name="cust_mobile",nullable = false)
-	private int custMobile;
+	@Column(name="cust_mobile",nullable = false,unique = true)
+	private String custMobile;
 	
 	@Column(name="cust_created_date")
 	private LocalDate custCreatedOn;
@@ -38,7 +34,7 @@ public class Customer {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Customer(Long custId, String custFullName, @Size(max = 10, min = 10) int custMobile,
+	public Customer(Long custId, String custFullName, @Size(max = 10, min = 10) String custMobile,
 			LocalDate custCreatedOn) {
 		super();
 		this.custId = custId;
@@ -63,11 +59,11 @@ public class Customer {
 		this.custFullName = custFullName;
 	}
 
-	public int getCustMobile() {
+	public String getCustMobile() {
 		return custMobile;
 	}
 
-	public void setCustMobile(int custMobile) {
+	public void setCustMobile(String custMobile) {
 		this.custMobile = custMobile;
 	}
 

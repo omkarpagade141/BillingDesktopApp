@@ -1,35 +1,34 @@
 package com.alpha.app.DTO;
 
-import java.util.Date;
-
-import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 public class UserSignUpDTO {
 
-	private String userName;
+	@Email(message = "Please enter valid email")
+	@NotNull
+	private String userEmail;
+	
+	@NotEmpty
 	private String userPassword;
 	
 	public UserSignUpDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserSignUpDTO(String userName, String userPassword) {
+	public UserSignUpDTO(String userEmail, String userPassword) {
 		super();
-		this.userName = userName;
+		this.userEmail = userEmail;
 		this.userPassword = userPassword;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUserEmail() {
+		return userEmail;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 
 	public String getUserPassword() {
@@ -42,7 +41,7 @@ public class UserSignUpDTO {
 
 	@Override
 	public String toString() {
-		return "UserSignUpDTO [userName=" + userName + ", userPassword=" + userPassword + "]";
+		return "UserSignUpDTO [userEmail=" + userEmail + ", userPassword=" + userPassword + "]";
 	}
 	
 }

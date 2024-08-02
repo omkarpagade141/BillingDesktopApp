@@ -7,14 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "CategoryMaster")
@@ -35,12 +28,7 @@ public class Category {
 	@Column(name = "cate_last_update_date")
 	private LocalDate cateLastUpdatedOn;
 
-//	@Column(name="cate_Img_Name")
-//	private String imageName;
-//	@Column(name="cate_Img_Type")
-//	private String imageType;
-//	@Column(name="Img_File_Path")
-//	private String imageFilePath;
+
 
 	// If we want to know who(User) created category
 //		@ManyToOne

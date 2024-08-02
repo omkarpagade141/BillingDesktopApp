@@ -1,14 +1,5 @@
 package com.alpha.app.DTO;
 
-import java.time.LocalDate;
-
-import com.alpha.app.Entity.Category;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 public class ProductDTO {
 
 	private Long prodId;
