@@ -129,70 +129,86 @@ function Products({ triggerMessage }) {
                             <Card.Body>
                                 <Card.Title className='text-center'>All Product List</Card.Title>
                                 <div className='table-container'>
-                                    <Table striped bordered hover>
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>CATEGORY</th>
-                                                <th>Name</th>
-                                                <th>Price</th>
-                                                <th>Image</th>
-                                                <th>Action</th>
+                                    {
+                                        products.length > 0 ?
+                                            <>
+                                                <Table striped bordered hover>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>CATEGORY</th>
+                                                            <th>Name</th>
+                                                            <th>Price</th>
+                                                            <th>Image</th>
+                                                            <th>Action</th>
 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {products.map(item => (
-                                                <tr key={item.prodId} className='TableRowInCategory'>
-                                                    <td>{item.prodId}</td>
-                                                    <td>{item.category.cateName}</td>
-                                                    {editMode == item.prodId ?
-                                                        <td> <input type="text" name="" id="" defaultValue={item.prodName}
-                                                            onChange={(e) => setUpdProdName(e.target.value)} /></td>
-                                                        :
-                                                        <td>{item.prodName}</td>
-                                                    }
-
-
-                                                    {editMode == item.prodId ?
-                                                        <td>  <input type="text" name="" id="" defaultValue={item.prodPrice}
-                                                            onChange={(e) => setUpdProdPrice(e.target.value)} /></td>
-                                                        :
-                                                        <td>{item.prodPrice}</td>
-                                                    }
-
-                                                    {editMode == item.prodId ?
-                                                        <td> <input type="file" name="" id=""
-                                                            onChange={(e) => setUpdProdImage(e.target.files[0])} /></td>
-
-                                                        :
-                                                        <td>
-                                                            {/* /myapi/api/images?imageName=${item.prodImageUrl} */}
-
-                                                            <img src={`/myapi/api/images?imageName=${item.prodImageUrl}`} alt="image" style={{ width: '30px', height: '30px' }}
-                                                            />
-                                                        </td>
-                                                    }
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {products.map(item => (
+                                                            <tr key={item.prodId} className='TableRowInCategory'>
+                                                                <td>{item.prodId}</td>
+                                                                <td>{item.category.cateName}</td>
+                                                                {editMode == item.prodId ?
+                                                                    <td> <input type="text" name="" id="" defaultValue={item.prodName}
+                                                                        onChange={(e) => setUpdProdName(e.target.value)} /></td>
+                                                                    :
+                                                                    <td>{item.prodName}</td>
+                                                                }
 
 
-                                                    <td >
-                                                        {editMode === item.prodId ? (
-                                                            <IconButton className='IconButton' onClick={() => handleSave(item.prodId)}>
-                                                                <SaveIcon className="saveIcon" />
-                                                            </IconButton>
-                                                        ) : (
-                                                            <IconButton className='IconButton' onClick={() => handleEdit(item.prodId)}>
-                                                                <EditIcon className="editIcon" />
-                                                            </IconButton>
-                                                        )}
-                                                        <IconButton className='IconButton' onClick={() => handleDelete(item.prodId)}>
-                                                            <DeleteIcon className="deleteIcon" />
-                                                        </IconButton>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </Table>
+                                                                {editMode == item.prodId ?
+                                                                    <td>  <input type="text" name="" id="" defaultValue={item.prodPrice}
+                                                                        onChange={(e) => {
+                                                                            if (/^\d*(\.\d*)?$/.test(e.target.value)) {
+                                                                                setUpdProdPrice(e.target.value)
+                                                                            } else {
+                                                                                triggerMessage('Price should contain only numbers..', 'error');
+                                                                            }
+                                                                        }
+                                                                        } /></td>
+                                                                    :
+                                                                    <td>{item.prodPrice}</td>
+                                                                }
+
+                                                                {editMode == item.prodId ?
+                                                                    <td> <input type="file" name="" id=""
+                                                                        onChange={(e) => setUpdProdImage(e.target.files[0])} /></td>
+
+                                                                    :
+                                                                    <td>
+                                                                        {/* /myapi/api/images?imageName=${item.prodImageUrl} */}
+
+                                                                        <img src={`/myapi/api/images?imageName=${item.prodImageUrl}`} alt="image" style={{ width: '30px', height: '30px' }}
+                                                                        />
+                                                                    </td>
+                                                                }
+
+
+                                                                <td >
+                                                                    {editMode === item.prodId ? (
+                                                                        <IconButton className='IconButton' onClick={() => handleSave(item.prodId)}>
+                                                                            <SaveIcon className="saveIcon" />
+                                                                        </IconButton>
+                                                                    ) : (
+                                                                        <IconButton className='IconButton' onClick={() => handleEdit(item.prodId)}>
+                                                                            <EditIcon className="editIcon" />
+                                                                        </IconButton>
+                                                                    )}
+                                                                    <IconButton className='IconButton' onClick={() => handleDelete(item.prodId)}>
+                                                                        <DeleteIcon className="deleteIcon" />
+                                                                    </IconButton>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </Table>
+                                            </> :
+                                            <>
+                                                <h3>No products found</h3>
+                                            </>
+                                    }
+
                                 </div>
                             </Card.Body>
                         </Card>

@@ -56,8 +56,8 @@ function Category({ triggerMessage }) {
 
         if (!imageToSend) {
             const imageResponse = await axios.get(`/myapi/api/images?imageName=${category.cateImageUrl}`, { responseType: 'blob' });
-                imageToSend = new File([imageResponse.data], category.cateImageUrl, { type: imageResponse.headers['content-type'] });
-                const formData = new FormData();
+            imageToSend = new File([imageResponse.data], category.cateImageUrl, { type: imageResponse.headers['content-type'] });
+            const formData = new FormData();
             formData.append('cateName', updatedCatName || category.cateName);
             formData.append('imageName', imageToSend);
             const reponse = await axios.put(`/myapi/api/category/update/${id}`, formData)
@@ -121,61 +121,70 @@ function Category({ triggerMessage }) {
                             <Card.Body>
                                 <Card.Title className='text-center'>All Category List</Card.Title>
                                 <div className='table-container'>
-                                    <Table striped bordered hover>
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
+                                    {
+                                        categories.length > 0 ?
+                                            <>
+                                                <Table striped bordered hover>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Name</th>
 
-                                                <th>Image</th>
-                                                <th>Action</th>
+                                                            <th>Image</th>
+                                                            <th>Action</th>
 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {categories.map(item => (
-                                                <tr key={item.cateId} className='TableRowInCategory'>
-                                                    <td>{item.cateId}</td>
-                                                    {editMode == item.cateId ?
-                                                        <td><input type="text" name="" id="" onChange={(e) => {
-                                                            setUpdatedCatName(e.target.value)
-                                                        }} defaultValue={item.cateName} /></td>
-                                                        : <td>{item.cateName}</td>
-                                                    }
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {categories.map(item => (
+                                                            <tr key={item.cateId} className='TableRowInCategory'>
+                                                                <td>{item.cateId}</td>
+                                                                {editMode == item.cateId ?
+                                                                    <td><input type="text" name="" id="" onChange={(e) => {
+                                                                        setUpdatedCatName(e.target.value)
+                                                                    }} defaultValue={item.cateName} /></td>
+                                                                    : <td>{item.cateName}</td>
+                                                                }
 
 
-                                                    {
-                                                        editMode == item.cateId ?
-                                                            <td><input type="file" name="" id="" onChange={(e) => {
-                                                                setUpdatedCatImage(e.target.files[0])
-                                                            }} /></td>
-                                                            :
-                                                            <td>
-                                                                {/* /myapi/api/images?imageName=${item.cateImageUrl} */}
-                                                                <img src={`/myapi/api/images?imageName=${item.cateImageUrl}`} alt={item.cateName} style={{ width: '30px', height: '30px' }}
-                                                                />
-                                                            </td>
+                                                                {
+                                                                    editMode == item.cateId ?
+                                                                        <td><input type="file" name="" id="" onChange={(e) => {
+                                                                            setUpdatedCatImage(e.target.files[0])
+                                                                        }} /></td>
+                                                                        :
+                                                                        <td>
+                                                                            {/* /myapi/api/images?imageName=${item.cateImageUrl} */}
+                                                                            <img src={`/myapi/api/images?imageName=${item.cateImageUrl}`} alt={item.cateName} style={{ width: '30px', height: '30px' }}
+                                                                            />
+                                                                        </td>
 
-                                                    }
+                                                                }
 
-                                                    <td >
-                                                        {editMode === item.cateId ? (
-                                                            <IconButton className='IconButton' onClick={() => handleSave(item.cateId)}>
-                                                                <SaveIcon className="saveIcon" />
-                                                            </IconButton>
-                                                        ) : (
-                                                            <IconButton className='IconButton' onClick={() => handleEdit(item.cateId)}>
-                                                                <EditIcon className="editIcon" />
-                                                            </IconButton>
-                                                        )}
-                                                        <IconButton className='IconButton' onClick={() => handleDelete(item.cateId)}>
-                                                            <DeleteIcon className="deleteIcon" />
-                                                        </IconButton>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </Table>
+                                                                <td >
+                                                                    {editMode === item.cateId ? (
+                                                                        <IconButton className='IconButton' onClick={() => handleSave(item.cateId)}>
+                                                                            <SaveIcon className="saveIcon" />
+                                                                        </IconButton>
+                                                                    ) : (
+                                                                        <IconButton className='IconButton' onClick={() => handleEdit(item.cateId)}>
+                                                                            <EditIcon className="editIcon" />
+                                                                        </IconButton>
+                                                                    )}
+                                                                    <IconButton className='IconButton' onClick={() => handleDelete(item.cateId)}>
+                                                                        <DeleteIcon className="deleteIcon" />
+                                                                    </IconButton>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </Table>
+                                            </> :
+                                            <>
+                                                <h2>No Category Found</h2>
+                                            </>
+                                    }
+
                                 </div>
                             </Card.Body>
                         </Card>
