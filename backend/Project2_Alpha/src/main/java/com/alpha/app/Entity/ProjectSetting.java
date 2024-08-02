@@ -1,7 +1,5 @@
 package com.alpha.app.Entity;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,10 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name="SettingMaster")
@@ -37,7 +31,7 @@ public class ProjectSetting {
 	
 	@Size(max = 10, min = 10)
 	@Column(name="business_mobile",nullable = false)
-	private int businessMobile;
+	private String businessMobile;
 	
 	@Email
 	@Column(name="business_email",nullable = false)
@@ -56,7 +50,7 @@ public class ProjectSetting {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ProjectSetting(int settingId, String businessName, @Size(max = 10, min = 10) int businessMobile,
+	public ProjectSetting(int settingId, String businessName, @Size(max = 10, min = 10) String businessMobile,
 			@Email String businessEmail, String businessAddress, String businessGSTNumber,
 			String businessLogoImagePath) {
 		super();
@@ -85,11 +79,11 @@ public class ProjectSetting {
 		this.businessName = businessName;
 	}
 
-	public int getBusinessMobile() {
+	public String getBusinessMobile() {
 		return businessMobile;
 	}
 
-	public void setBusinessMobile(int businessMobile) {
+	public void setBusinessMobile(String businessMobile) {
 		this.businessMobile = businessMobile;
 	}
 

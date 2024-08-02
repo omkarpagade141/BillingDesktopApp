@@ -11,10 +11,12 @@ public interface IUserService {
 
 	ResponseEntity<?> addNewUser(UserSignUpDTO addUser);
 
-	Integer userLogIn(UserSignUpDTO userLogIn);
+	ResponseEntity<?> userLogIn(UserSignUpDTO userLogIn);
 
 	List<User> allUserList();
 
-	UserSignUpDTO getUserDetailsByName(String name);
+	UserSignUpDTO getUserDetailsByEmail(String email);
+
+
 
 }

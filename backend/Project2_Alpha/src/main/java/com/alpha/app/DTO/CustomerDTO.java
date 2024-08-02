@@ -1,24 +1,23 @@
 package com.alpha.app.DTO;
 
-import java.time.LocalDate;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 public class CustomerDTO {
 
 	private Long custId;
+	@NotBlank(message = "Please enter name")
 	private String custFullName;
-	private int custMobile;
+	@NotNull
+	@Pattern(regexp = "^\\d{10}$",message = "Invalid mobile number entered")
+	private String custMobile;
 	
 	public CustomerDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CustomerDTO(Long custId, String custFullName, int custMobile) {
+	public CustomerDTO(Long custId, String custFullName, String custMobile) {
 		super();
 		this.custId = custId;
 		this.custFullName = custFullName;
@@ -41,11 +40,11 @@ public class CustomerDTO {
 		this.custFullName = custFullName;
 	}
 
-	public int getCustMobile() {
+	public String getCustMobile() {
 		return custMobile;
 	}
 
-	public void setCustMobile(int custMobile) {
+	public void setCustMobile(String custMobile) {
 		this.custMobile = custMobile;
 	}
 	

@@ -31,31 +31,43 @@ public class UserServiceImpl implements IUserService{
 	@Override
 	public ResponseEntity<?> addNewUser(UserSignUpDTO addUser) {
 		
-		try {
+		if(userRepo.findByUserEmail(addUser.getUserEmail()).isPresent())
+		{
+			return new ResponseEntity<>("User with "+addUser.getUserEmail()+" already present.", HttpStatus.CONFLICT);
+		}
+		
 		User userObj = mapper.map(addUser, User.class);
 		LocalDate currentDt = LocalDate.now();
 		userObj.setCreatedOn(currentDt);
 //		userObj.setUserPassword(passwordEncoder.encode(userObj.getUserPassword()));
-		userRepo.save(userObj);
-		return new ResponseEntity<>("User Sign up successfully", HttpStatus.CREATED);
-		}catch (Exception e) {
-			return new ResponseEntity<>("Error!!!User Sign up Failed", HttpStatus.BAD_REQUEST);
+		User newUser = userRepo.save(userObj);
+		if(newUser ==null)
+		{
+			return new ResponseEntity<>("User Sign up Failed. Try again", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
+		return new ResponseEntity<>("User Sign up successfully", HttpStatus.CREATED);
+		
 		
 	}
 
 	@Override
-	public Integer userLogIn(UserSignUpDTO userLogIn) {
+	public ResponseEntity<?> userLogIn(UserSignUpDTO userLogIn) {
 		
-		User userObj = userRepo.findByUserNameAndUserPassword(userLogIn.getUserName(), userLogIn.getUserPassword());
+		User userObj = userRepo.findByUserEmail(userLogIn.getUserEmail()).orElse(null);
 		
 		if(userObj !=null)
 		{
-			return userObj.getUserId();
-		}else
-		{
-			return 0;
+			if(userLogIn.getUserPassword().equals(userObj.getUserPassword()))
+			{
+				return new ResponseEntity<>(userObj.getUserId(),HttpStatus.OK);
+			}
+			else
+			{
+				return new ResponseEntity<>("Password is incorrect",HttpStatus.BAD_REQUEST);
+			}
 		}
+		return new ResponseEntity<>("User Not Exist! Please Sign in first",HttpStatus.BAD_REQUEST);
 		
 	}
 
@@ -66,9 +78,9 @@ public class UserServiceImpl implements IUserService{
 	}
 
 	@Override
-	public UserSignUpDTO getUserDetailsByName(String name) {
+	public UserSignUpDTO getUserDetailsByEmail(String email) {
 		// TODO Auto-generated method stub
-		User user = userRepo.findByUserName(name).orElseThrow(()-> new RuntimeException("User not found"));
+		User user = userRepo.findByUserEmail(email).orElseThrow(()-> new RuntimeException("User not found"));
 		return mapper.map(user, UserSignUpDTO.class);
 	}
 	

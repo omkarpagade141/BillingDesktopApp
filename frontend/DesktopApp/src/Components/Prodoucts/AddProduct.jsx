@@ -112,7 +112,13 @@ const AddProduct = ({ open, handleClose , triggerMessage , fetchProducts }) => {
                           required
                           placeholder="Enter product price"
                           value={productPrice}
-                          onChange={(e) => setproductPrice(e.target.value)}
+                          onChange={(e) => {
+                            if (/^\d*(\.\d*)?$/.test(e.target.value)) {
+                              setproductPrice(e.target.value); 
+                            } else {
+                              triggerMessage('Price should contain only numbers..', 'error');
+                            }
+                          }}
                         />
                       </Form.Group>
                       <Form.Group controlId="formtProductName">

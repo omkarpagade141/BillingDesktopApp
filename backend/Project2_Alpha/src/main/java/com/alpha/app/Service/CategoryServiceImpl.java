@@ -12,6 +12,7 @@ import java.util.List;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -88,9 +89,11 @@ public class CategoryServiceImpl implements ICategoryService {
 				System.out.println("Old Image Deleted !!!");
 			}
 			if (!updtImageFile.isEmpty()) {
-				String targetPath = folderName + File.separator + updtImageFile.getOriginalFilename();
+				long currentTimeMillis = System.currentTimeMillis();
+				String targetPath = folderName + File.separator + currentTimeMillis+".jpg";
 				Files.copy(updtImageFile.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
-				oldCate.addImageToCategory(updtImageFile.getOriginalFilename());
+				
+				oldCate.addImageToCategory(currentTimeMillis+".jpg");
 				System.out.println("New Image Inserted !!!");
 			}
 		
@@ -102,18 +105,24 @@ public class CategoryServiceImpl implements ICategoryService {
 	@Override
 	public ResponseEntity<String> addCateWithImage(String name, MultipartFile imageFile) throws IOException {
 		// TODO Auto-generated method stub
-//		System.out.println("In Service");
+
+		if(cateRepo.findByCateName(name).isPresent())
+		{
+			throw new DuplicateKeyException("Category "+name+" already present ");
+		}
+		
 		Category addCat = new Category();
 		addCat.setCateCreatedOn(LocalDate.now());
 		addCat.setCateName(name);
 
 		if (!imageFile.isEmpty()) {
-			String targetPath = folderName + File.separator + imageFile.getOriginalFilename();
+			long currentTimeMillis = System.currentTimeMillis();
+			String targetPath = folderName + File.separator + currentTimeMillis+".jpg";
 //		System.out.println("Target path is: "+targetPath);
 			// copy image file contents to the specified path
 			Files.copy(imageFile.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
 //		addCat.addImageToCategory(targetPath);
-			addCat.addImageToCategory(imageFile.getOriginalFilename());
+			addCat.addImageToCategory(currentTimeMillis+".jpg");
 		}
 
 		cateRepo.save(addCat);
@@ -125,6 +134,7 @@ public class CategoryServiceImpl implements ICategoryService {
 		Category cateObj = cateRepo.findById(cateId)
 				.orElseThrow(() -> new ResourceNotFoundException("Category Not found"));
 		if (cateObj.getCateImageUrl() != null) {
+			
 			Path path = Paths.get(folderName + File.separator + cateObj.getCateImageUrl());
 			Files.delete(path);
 			System.out.println("Category Image Deleted !!!");

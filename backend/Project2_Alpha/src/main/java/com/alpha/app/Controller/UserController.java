@@ -3,7 +3,6 @@ package com.alpha.app.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +15,8 @@ import com.alpha.app.DTO.UserSignUpDTO;
 import com.alpha.app.Entity.User;
 import com.alpha.app.Service.IUserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/user")
@@ -26,20 +27,16 @@ public class UserController {
 	
 	
 	@PostMapping("/signup")
-	ResponseEntity<?> userSignUp (@RequestBody UserSignUpDTO addUser)
+	ResponseEntity<?> userSignUp (@RequestBody @Valid UserSignUpDTO addUser)
 	{
 		return userService.addNewUser(addUser);
 	}
 	
 	@PostMapping("/login")
-	ResponseEntity<?> userLogIn (@RequestBody UserSignUpDTO userLogIn)
+	ResponseEntity<?> userLogIn (@RequestBody @Valid UserSignUpDTO userLogIn)
 	{
-		Integer userId= userService.userLogIn(userLogIn);
-		if(userId >0)
-		{
-			return new ResponseEntity<Integer>(userId, HttpStatus.OK);
-		}
-		return new ResponseEntity<String> ("Wrong username and password",HttpStatus.BAD_REQUEST);
+		return userService.userLogIn(userLogIn);
+		
 	}
 	
 	@GetMapping("/allUser")
