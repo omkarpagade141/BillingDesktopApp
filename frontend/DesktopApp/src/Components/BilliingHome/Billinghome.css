@@ -40,12 +40,13 @@
     overflow-x: hidden; /* Hide horizontal scrollbar */
     display: flex;
     flex-wrap: wrap; /* Wrap product cards if needed */
+    /* border: 1px solid black; */
   }
   
   /* Card Styles */
   .card {
     cursor: pointer;
-    margin-bottom: 16px; /* Spacing between cards */
+    margin-bottom: 5px; /* Spacing between cards */
     max-width: 100%; /* Ensure cards do not exceed container width */
   }
   
@@ -109,5 +110,40 @@
   .product-list-container::-webkit-scrollbar {
     width: 6px;
   }
+  .product-list-item{
+    /* border: 1px solid red; */
+  }
   
+  .product-list-container .card {
+    height: 200px; /* Fixed height for cards */
+    width: calc(100% / 6 - 10px); /* Adjust width to fit 6 cards per row with padding/margin */
+    margin: 5px; /* Space between cards */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Aligns content in the card */
+    /* border: 1px solid red; */
+  }
   
+  .card-img {
+    margin: 0;
+    padding: 0;
+    height: 140px; /* Fixed height for images */
+    object-fit: cover; /* Ensures image covers the fixed area without distortion */
+    width: 100%; /* Ensures image uses full width of the card */
+  }
+  
+  .card-body {
+    flex: 1; /* Allows the body to take up remaining space in the card */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensures content is spaced correctly */
+  }
+  .cardBodyInTheProduct{
+    padding: 0;
+    margin: 0;
+  }
+.textInTheCard{
+  padding: 0;
+  margin: 0;
+  font-size: smaller;
+}

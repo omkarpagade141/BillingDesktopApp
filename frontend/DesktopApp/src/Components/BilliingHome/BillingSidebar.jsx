@@ -23,37 +23,37 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
             <div className="col-2">Action</div>
           </div>
           {cartItems.map(item => (
-            <div className="row mb-2" key={item.id}>
+            <div className="row mb-2" key={item.prodId}>
               <div className="col-2 d-flex align-items-center">
-                <img src={item.image} alt={item.title} className="img-thumbnail" style={{ width: '30px', height: '30px' }} />
+                <img src={`/myapi/api/images?imageName=${item.prodImageUrl}`} alt={item.title} className="img-thumbnail" style={{ width: '40px', height: '40px' }} />
               </div>
               <div className="col-3 d-flex align-items-center">
-                {item.title}
+                {item.prodName}
               </div>
               <div className="col-3 d-flex align-items-center">
                 <div className="d-flex align-items-center">
                   <button
                     className="btn btn-sm btn-outline-secondary"
-                    onClick={() => handleQuantityChange(item.id, Math.max(item.quantity - 1, 0))}
-                    style={{ width: '30px' }}
+                    onClick={() => handleQuantityChange(item.prodId, Math.max(item.quantity - 1, 0))}
+                    style={{ width: '25px' }}
                   >
                     -
                   </button>
                   <span className="mx-2">{item.quantity}</span>
                   <button
                     className="btn btn-sm btn-outline-secondary"
-                    onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                    style={{ width: '28px' }}
+                    onClick={() => handleQuantityChange(item.prodId, item.quantity + 1)}
+                    style={{ width: '25px' }}
                   >
                     +
                   </button>
                 </div>
               </div>
               <div className="col-2 d-flex align-items-center">
-                {item.price}
+                {item.prodPrice}
               </div>
               <div className="col-2 d-flex align-items-center">
-                <button className="btn btn-sm btn-outline-danger" onClick={() => onRemoveFromCart(item.id)}>🗑</button>
+                <button className="btn btn-sm btn-outline-danger" onClick={() => onRemoveFromCart(item.prodId)}>🗑</button>
               </div>
             </div>
           ))}
