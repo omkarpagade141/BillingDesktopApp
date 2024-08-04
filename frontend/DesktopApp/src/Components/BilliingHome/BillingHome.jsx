@@ -12,9 +12,13 @@ function BillingHome() {
   const [searchQuery, setSearchQuery] = useState("");
   const [cartItems, setCartItems] = useState([]);
   const [paymentMethod, setPaymentMethod] = useState("Cash");
-  const [discount, setDiscount] = useState("No Discount");
-  const [tax, setTax] = useState(0);
+  const [discountPercent, setDiscountPercent] = useState(0);
+  const [discountAmount,setDiscountAmount]=useState(0)
+  const [taxPercent, setTaxPercent] = useState(0);
+  const [taxAmount,setTaxAmount]=useState(0)
   const [serviceCharge, setServiceCharge] = useState(0);
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [grandTotal, setGrandTotal] = useState(0);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -87,18 +91,22 @@ function BillingHome() {
     setCartItems([]);
   };
 
+  useEffect(()=>{
+    calculateTotal()
+  },[ totalAmount,cartItems,taxPercent,discountPercent,serviceCharge,setTaxPercent,taxAmount,discountAmount])
+
   const calculateTotal = () => {
+    
     let subtotal = cartItems.reduce(
       (total, item) =>
         total + parseFloat(item.prodPrice) * item.quantity,
       0
     );
-    let discountAmount = 0;
-    if (discount === "10% Off") discountAmount = subtotal * 0.1;
-    if (discount === "20% Off") discountAmount = subtotal * 0.2;
-    if (discount === "30% Off") discountAmount = subtotal * 0.3;
-    const total = subtotal - discountAmount + tax + serviceCharge;
-    return total.toFixed(2);
+    setTotalAmount(subtotal)
+    setDiscountAmount((subtotal*discountPercent)/100);
+    setTaxAmount((subtotal*taxPercent)/100);
+     
+    setGrandTotal(subtotal - discountAmount + taxAmount + serviceCharge);
   };
 
   return (
@@ -178,13 +186,13 @@ function BillingHome() {
             <select
               className="form-control form-control-sm"
               id="discount"
-              value={discount}
-              onChange={(e) => setDiscount(e.target.value)}
+              value={discountPercent}
+              onChange={(e) => setDiscountPercent(e.target.value)}
             >
-              <option>No Discount</option>
-              <option>10% Off</option>
-              <option>20% Off</option>
-              <option>30% Off</option>
+              <option value={0 }>No Discount</option>
+              <option value={10}>10% Off</option>
+              <option value={20}>20% Off</option>
+              <option value={30}>30% Off</option>
             </select>
           </div>
           <div className="form-group mb-0 mr-2">
@@ -193,8 +201,8 @@ function BillingHome() {
               type="number"
               className="form-control form-control-sm"
               id="tax"
-              value={tax}
-              onChange={(e) => setTax(parseFloat(e.target.value) || 0)}
+              value={taxPercent}
+              onChange={(e) => setTaxPercent(parseFloat(e.target.value) || 0)}
               placeholder="Tax (0%)"
             />
           </div>
@@ -228,7 +236,7 @@ function BillingHome() {
           </div>
         </div>
         <div className="summary">
-          <strong>Total:</strong> ${calculateTotal()}
+          <strong>Total:</strong> {grandTotal.toFixed(2)}
         </div>
         <div className="buttons d-flex gap-2">
           <button className="btn btn-danger btn-sm" onClick={handleClearCart}>

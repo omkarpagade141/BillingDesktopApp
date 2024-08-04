@@ -6,6 +6,7 @@ import theme from '../Themes.js'; // Adjust the path to your theme.js
 function Login({settings}) {
   const [email,setEmail]=useState('')
   const [password,setPassword]=useState('')
+  const [errorMsg,setErrorMsg]=useState('')
   useEffect(() => {
     // Set CSS custom properties
     document.documentElement.style.setProperty('--primary-color', theme.palette.primary.main);
@@ -32,12 +33,14 @@ function Login({settings}) {
         
       }
       else{
-      console.log('@@@@@@@@@@@@@@@@@@@');
+        setErrorMsg(response.data)
+       
       }
       
       
     } catch (error) {
-      console.log(error);
+      setErrorMsg(error.response.data)
+      console.log(error,'######################');
       
     }
 
@@ -58,7 +61,8 @@ function Login({settings}) {
             <input type="password" id="password" name="password" placeholder="Enter your password" required 
             onChange={(e)=>setPassword(e.target.value)}/>
           </div>
-          <button type="submit" className="submit-button">Login</button>
+          {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
+          <button type="submit" className="submit-button mt-2">Login</button>
         </form>
       </div>
     </div>
