@@ -22,7 +22,7 @@ import com.alpha.app.Entity.Product;
 import com.alpha.app.Service.IProductService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/product")
 public class ProductController {
 

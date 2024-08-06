@@ -1,7 +1,10 @@
 import React from 'react';
+import { Row, Col, Card, Form,   } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './billingSidebar.css'
 
 function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClearCart }) {
+
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => total + parseFloat(item.price.replace('$', '')) * item.quantity, 0);
   };
@@ -11,9 +14,22 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
   };
 
   return (
-    <div className="billing-sidebar p-2">
+    <div className="billing-sidebar p-1">
       <div className="mb-4">
-        <h4>Current Orders</h4>
+        {/* <h4>Current Orders</h4> */}
+        <Row>
+          <Col md={8}>
+          <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Search Customer"
+                  aria-label="Search"
+                />
+          </Col>
+          <Col md={4}>
+          <button>+ Add Customer</button>
+          </Col>
+        </Row>
         <div className="container">
           <div className="row border-bottom mb-2 font-weight-bold">
             <div className="col-2">Image</div>

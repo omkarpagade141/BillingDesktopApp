@@ -16,7 +16,7 @@ import com.alpha.app.Entity.Customer;
 import com.alpha.app.Service.ICustomerService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/customer")
 public class CustomerController {
 

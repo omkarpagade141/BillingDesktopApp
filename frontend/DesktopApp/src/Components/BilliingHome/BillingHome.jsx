@@ -146,7 +146,7 @@ function BillingHome() {
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Search"
+                  placeholder="Search Product"
                   aria-label="Search"
                   onChange={handleSearchChange}
                 />
