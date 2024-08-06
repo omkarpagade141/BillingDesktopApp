@@ -6,6 +6,8 @@ import Category from '../Category/Category';
 import Products from '../Prodoucts/Products';
 import ReportPage from '../Reports/ReportPage';
 import MessageBox from '../MessageBox/Messagebox';
+import Setting from '../SettingMaster/Setting';
+
 
 
 function Dashboard({settings}) {
@@ -25,6 +27,7 @@ function Dashboard({settings}) {
         <Route path="/category" element={<Category settings={settings} triggerMessage={triggerMessage}/>} />
         <Route path="/products" element={<Products settings={settings} triggerMessage={triggerMessage}/>} />
         <Route path="/reports" element={<ReportPage settings={settings} triggerMessage={triggerMessage}/>} />
+        <Route path="/setting" element={<Setting settings={settings} triggerMessage={triggerMessage}/>} />
       </Routes>
       <Outlet />  
     </div>
