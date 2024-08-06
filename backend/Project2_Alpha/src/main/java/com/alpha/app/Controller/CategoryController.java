@@ -29,7 +29,7 @@ import com.alpha.app.Entity.Category;
 import com.alpha.app.Service.ICategoryService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/category")
 public class CategoryController {
 
