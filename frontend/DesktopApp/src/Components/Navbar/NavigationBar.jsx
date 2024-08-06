@@ -55,6 +55,9 @@ const NavigationBar = ({settings}) => {
                          borderRadius:'999px'
                     }}/>
                  </div>
+                <StyledNavLink component={NavLink} to="/dashboard/setting">
+                    Setting
+                </StyledNavLink>
             </StyledToolbar>
         </StyledAppBar>
     );

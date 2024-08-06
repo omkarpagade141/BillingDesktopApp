@@ -78,7 +78,7 @@
   }
   
   /* Form Group Styles */
-  .form-group {
+  .form-container .form-group {
     margin-bottom: 0;
     margin-right: 16px;
   }
