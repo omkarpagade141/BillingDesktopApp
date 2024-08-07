@@ -1,7 +1,7 @@
 {
-  "host": "localhost",
+  "host": "abc",
   "port": "3306",
-  "username": "root",
-  "password": "Omkar@123",
-  "dbname": "proj2_alpha"
+  "username": "qwer",
+  "password": "14144",
+  "dbname": "mjmj"
 }
