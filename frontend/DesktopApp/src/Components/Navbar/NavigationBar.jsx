@@ -1,4 +1,5 @@
 import React from 'react';
+import npprofile from '../../assets/assetsLocal/noprofile1.jpg'
 import { AppBar, Toolbar, Typography, Button, Container } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { styled } from '@mui/system';
@@ -48,7 +49,15 @@ const NavigationBar = ({settings}) => {
                 <StyledNavLink component={NavLink} to="/dashboard/reports">
                     Reports
                 </StyledNavLink>
-                {/* Add more NavLink buttons as needed */}
+                 <div>
+                    <img src={npprofile} alt="sdfgh" style={{
+                        height:'40px',
+                         borderRadius:'999px'
+                    }}/>
+                 </div>
+                <StyledNavLink component={NavLink} to="/dashboard/setting">
+                    Setting
+                </StyledNavLink>
             </StyledToolbar>
         </StyledAppBar>
     );

@@ -12,7 +12,7 @@ import com.alpha.app.Entity.ProjectSetting;
 import com.alpha.app.Service.ISettingService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/settings")
 public class ProjectSettingController {
 

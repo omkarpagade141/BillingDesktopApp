@@ -1,7 +1,7 @@
 {
-  "host": "trfyv",
+  "host": "localhost",
   "port": "3306",
-  "username": "reg",
-  "password": "",
-  "dbname": ""
+  "username": "root",
+  "password": "Omkar@123",
+  "dbname": "proj2_alpha"
 }
