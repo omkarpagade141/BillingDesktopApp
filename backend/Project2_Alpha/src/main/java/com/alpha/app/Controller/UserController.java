@@ -18,7 +18,7 @@ import com.alpha.app.Service.IUserService;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/user")
 public class UserController {
 

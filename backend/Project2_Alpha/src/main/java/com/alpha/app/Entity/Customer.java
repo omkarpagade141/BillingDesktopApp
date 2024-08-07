@@ -7,29 +7,33 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name="CustomerMaster")
+@Table(name = "CustomerMaster")
 public class Customer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "customer_Id")
 	private Long custId;
-	
-	
-	@Column(name="full_name",nullable = false)
+
+	@Column(name = "full_name", nullable = false)
 	private String custFullName;
-	
+
 	@Size(max = 10, min = 10)
-	@Column(name="cust_mobile",nullable = false,unique = true)
+	@Column(name = "cust_mobile", nullable = false, unique = true)
 	private String custMobile;
-	
-	@Column(name="cust_created_date")
+
+	@Column(name = "cust_created_date")
 	private LocalDate custCreatedOn;
-	
+
+	//New Change for Cart 
+//	@OneToOne()
+//	private ShoppingCart shoopingCartId;
+
 	public Customer() {
 		// TODO Auto-generated constructor stub
 	}
@@ -80,6 +84,5 @@ public class Customer {
 		return "Customer [custId=" + custId + ", custFullName=" + custFullName + ", custMobile=" + custMobile
 				+ ", custCreatedOn=" + custCreatedOn + "]";
 	}
-	
-	
+
 }

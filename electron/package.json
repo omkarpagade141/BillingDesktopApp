@@ -4,7 +4,6 @@
   "description": "Desktop application using react(vite), electron and spring+mysql",
   "type": "module",
   "main": "main.mjs",
-  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electromon .",
@@ -13,13 +12,20 @@
   },
   "build": {
     "appId": "DesktpAppbySQUAD_TEAM",
-    "productName": "DesktopApp",
+    "productName": "EasyBilling",
     "directories": {
       "output": "./build"
     },
     "files": [
       "main.mjs",
-      "frontend/build/**/*"
+      "dist/**/*",
+      "node_modules/**/*",
+      "preload.js",
+      "config.html",
+      "config.js",
+      "config.json",
+      "sendConfig.js",
+      "resources/app-0.0.1-SNAPSHOT.jar"
     ],
     "mac": {
       "category": "your.app.category.type"
@@ -43,11 +49,16 @@
   "author": "Team Squad",
   "license": "ISC",
   "devDependencies": {
+    "axios": "^1.7.3",
     "concurrently": "^8.2.2",
     "electron": "^31.2.1",
-    "electron-builder": "^24.13.3"
+    "electron-builder": "^24.13.3",
+    "http-server": "^14.1.1"
   },
   "dependencies": {
-    "electronmon": "^2.0.3"
+    "axios": "^1.7.3",
+    "concurrently": "^8.2.2",
+    "electronmon": "^2.0.3",
+    "mime": "^4.0.4"
   }
 }

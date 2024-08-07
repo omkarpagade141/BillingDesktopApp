@@ -1,7 +1,10 @@
 package com.alpha.app.Entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -38,7 +42,14 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(name = "cate_Id")
 	private Category category;
+	
+//	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "products")
+//	private List<ShoppingCart> shoppingCartList = new ArrayList<ShoppingCart>();
+	
+	@OneToMany(mappedBy = "products",cascade = CascadeType.ALL,orphanRemoval = true)
+	private List<CartProducts> cartProductList = new ArrayList<CartProducts>();
 
+	
 	public Product() {
 		// TODO Auto-generated constructor stub
 	}
@@ -110,6 +121,7 @@ public class Product {
 		this.category = category;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "Product [prodId=" + prodId + ", prodName=" + prodName + ", prodPrice=" + prodPrice + ", prodImageUrl="
@@ -121,4 +133,12 @@ public class Product {
 		this.setProdImageUrl(imagePath);
 		return "Image set successfully";
 	}
+	
+	// Helper method to add product in shooping cart
+//	public String addProductToShoopingCart(ShoppingCart cart)
+//	{
+//		this.shoppingCartList.add(cart);
+//		return "Product added to cart done";
+//	}
+	
 }
