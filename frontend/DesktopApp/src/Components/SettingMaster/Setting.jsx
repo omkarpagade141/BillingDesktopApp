@@ -1,230 +1,145 @@
 import React, { useEffect, useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { styled } from '@mui/system';
+import { Row, Col, Card, Form, Button } from 'react-bootstrap';
+import './setting.css'
+
 
 const Setting = () => {
-  const [data, setData] = useState([]);
-  const [countries, setCountries] = useState([]);
-  const [states, setStates] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState('');
-  const [selectedState, setSelectedState] = useState('');
-  const [selectedCity, setSelectedCity] = useState('');
-  const [formErrors, setFormErrors] = useState({});
+  const [businessName, setBusinessName] = useState('')
+  const [businessMobile, setBusinessMobile] = useState('')
+  const [businessEmail, setBusinessEmail] = useState('')
+  const [businessAddress, setBusinessAddress] = useState('')
+  const [businessLogo, setBusinessLogo] = useState('')
 
-  useEffect(() => {
-    fetch('https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/countries%2Bstates%2Bcities.json')
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-        setCountries(data.map((item) => item.name)); // Extract country names
-      })
-      .catch((error) => console.error('Error fetching data', error));
-  }, []);
 
-  const handleCountryChange = (event) => {
-    const name = event.target.value;
-    setSelectedCountry(name);
-    setSelectedState('');
-    setSelectedCity('');
-    const selectedCountryData = data.find((item) => item.name === name);
-    setStates(selectedCountryData ? selectedCountryData.states.map((state) => state.name) : []);
-    setCities([]);
-  };
-
-  const handleStateChange = (event) => {
-    const state = event.target.value;
-    setSelectedState(state);
-    setSelectedCity('');
-    const selectedCountryData = data.find((item) => item.name === selectedCountry);
-    const selectedStateData = selectedCountryData.states.find((item) => item.name === state);
-    setCities(selectedStateData ? selectedStateData.cities.map((city) => city.name) : []);
-  };
-
-  const handleCityChange = (event) => {
-    setSelectedCity(event.target.value);
-  };
-
-  const validateForm = () => {
-    const errors = {};
-    if (!selectedCountry) errors.name = 'Country is required';
-    if (!selectedState) errors.state = 'State is required';
-    if (!selectedCity) errors.city = 'City/District is required';
-    return errors;
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const errors = validateForm();
-    setFormErrors(errors);
-
-    if (Object.keys(errors).length === 0) {
-      console.log('Form Submitted:', {
-        selectedCountry,
-        selectedState,
-        selectedCity,
-      });
-      // Handle form submission logic here
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+     
+    
+    const dataToSend={
+      businessName,
+      businessMobile,
+      businessEmail,
+      businessAddress,
+      businessLogo
     }
-  };
+    console.log(dataToSend);
+    
+
+  }
+
+
+
+  const StyledButton = styled(Button)(({ theme }) => ({
+    backgroundColor: theme.palette.primary.main,
+    border: 'none',
+    justifyContent: 'center',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.darker,
+      cursor: 'pointer',
+    },
+    '&:focus': {
+      boxShadow: 'none',
+    },
+  }));
 
   return (
-    <div className="container mt-3">
-      <form onSubmit={handleSubmit}>
-        <h4>Setting Form</h4>
-        {/* First row: Setting ID, Business Name, Business Mobile */}
-        <div className="form-row mb-4">
-          <div className="form-group col-md-4">
-            <label htmlFor="settingId">Setting ID</label>
-            <input
-              type="text"
-              className="form-control"
-              id="settingId"
-              placeholder="Setting ID"
-            />
-          </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="businessName">Business Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="businessName"
-              placeholder="Business Name"
-            />
-          </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="businessMobile">Business Mobile</label>
-            <input
-              type="tel"
-              className="form-control"
-              id="businessMobile"
-              placeholder="Business Mobile"
-            />
-          </div>
-        </div>
+    <div className="container mt-3 settingMasterFormDiv">
 
-        {/* Second row: Business Email, Business GST Number, Business Logo */}
-        <div className="form-row mb-4">
-          <div className="form-group col-md-4">
-            <label htmlFor="businessEmail">Business Email</label>
-            <input
-              type="email"
-              className="form-control"
-              id="businessEmail"
-              placeholder="Business Email"
-            />
-          </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="businessGstNumber">Business GST Number</label>
-            <input
-              type="text"
-              className="form-control"
-              id="businessGstNumber"
-              placeholder="GST Number"
-            />
-          </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="businessLogo">Business Logo</label>
-            <input
-              type="file"
-              className="form-control-file"
-              id="businessLogo"
-            />
-          </div>
-        </div>
+      <Row className='justify-content-md-center'>
 
-        {/* Separation line */}
-        <hr className="mb-3" />
+        <Col md={8} >
+          <Card className='p-3 mt-4'>
+            <Form onSubmit={(e) => { handleSubmit(e) }}>
+              <Row >
 
-        {/* Firm Address Details */}
-        <h5>Address</h5>
+                <Col md={6} className='mt-1'>
+                  <Form.Group controlId="formCategoryName">
+                    <Form.Label>Business Name:</Form.Label>
+                    <Form.Control
+                      type="text"
+                      required
+                      placeholder="Enter category name"
+                      value={businessName}
+                      onChange={(e) => setBusinessName(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6} className='mt-1'>
+                  <Form.Group controlId="formCategoryName">
+                    <Form.Label>Business Mobile:</Form.Label>
+                    <Form.Control
+                      type="text"
+                      required
+                      placeholder="Enter category name"
+                      value={businessMobile}
+                      onChange={(e) => setBusinessMobile(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
 
-        {/* Country, State, City/District Dropdowns */}
-        <div className="form-row mb-4">
-          <div className="form-group col-md-4">
-            <label htmlFor="country">Country</label>
-            <select
-              id="country"
-              className="form-control"
-              value={selectedCountry}
-              onChange={handleCountryChange}
-            >
-              <option value="">Select Country</option>
-              {countries.map((country) => (
-                <option key={country} value={country}>
-                  {country}
-                </option>
-              ))}
-            </select>
-            {formErrors.name && <div className="text-danger">{formErrors.name}</div>}
-          </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="state">State</label>
-            <select
-              id="state"
-              className="form-control"
-              value={selectedState}
-              onChange={handleStateChange}
-              disabled={!selectedCountry}
-            >
-              <option value="">Select State</option>
-              {states.map((state) => (
-                <option key={state} value={state}>
-                  {state}
-                </option>
-              ))}
-            </select>
-            {formErrors.state && <div className="text-danger">{formErrors.state}</div>}
-          </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="city">City/District</label>
-            <select
-              id="city"
-              className="form-control"
-              value={selectedCity}
-              onChange={handleCityChange}
-              disabled={!selectedState}
-            >
-              <option value="">Select City/District</option>
-              {cities.map((city) => (
-                <option key={city} value={city}>
-                  {city}
-                </option>
-              ))}
-            </select>
-            {formErrors.city && <div className="text-danger">{formErrors.city}</div>}
-          </div>
-        </div>
+                <Col md={6} className='mt-4'>
+                  <Form.Group controlId="formCategoryName">
+                    <Form.Label>Business Email:</Form.Label>
+                    <Form.Control
+                      type="Email"
+                      required
+                      placeholder="Enter category name"
+                      value={businessEmail}
+                      onChange={(e) => setBusinessEmail(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6} className='mt-4'>
+                  <Form.Group controlId="formCategoryName">
+                    <Form.Label>Business GST Number:</Form.Label>
+                    <Form.Control
+                      type="text"
+                      required
+                      placeholder="Enter category name"
+                    // value={categoryName}
+                    // onChange={(e) => setCategoryName(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
 
-        {/* Additional Form Fields */}
-        <div className="form-row mb-4">
-          <div className="form-group col-md-4">
-            <label htmlFor="zipCode">Zip Code</label>
-            <input type="text" className="form-control" id="zipCode" required />
-          </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="storeEmail">Store Email</label>
-            <input type="email" className="form-control" id="storeEmail" required />
-          </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="countryCode">Country Code</label>
-            <input type="text" className="form-control" id="countryCode" required />
-          </div>
-        </div>
+                <Col md={6} className='mt-4'>
+                  <Form.Group controlId="formtProductName">
+                    <Form.Label>Business Logo:</Form.Label>
+                    <Form.Control
+                      type="file"
+                      required
+                      placeholder="Enter product name"
+                      onChange={(e) => setBusinessLogo(e.target.files[0])}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={6} className='mt-4'>
+                  <Form.Group controlId="formCategoryName">
+                    <Form.Label>Business Address:</Form.Label>
+                    <Form.Control
+                      type="text"
+                      required
+                      placeholder="Enter category name"
+                      value={businessAddress}
+                      onChange={(e) => setBusinessAddress(e.target.value)}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-        <div className="form-group">
-          <label htmlFor="address">Address</label>
-          <textarea
-            className="form-control"
-            id="address"
-            rows="3"
-            required
-          ></textarea>
-        </div>
+              <Row className='justify-content-md-center mt-4 p-2'>
+                <StyledButton type='submit'>Update</StyledButton>
+              </Row>
 
-        <button type="submit" className="btn btn-primary">
-          Submit
-        </button>
-      </form>
+            </Form>
+          </Card>
+        </Col>
+
+      </Row>
+
+
+
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
-import { Row, Col, Card, Form,   } from 'react-bootstrap';
+import { Row, Col, Card, Form, Button  } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { styled } from '@mui/system';
 import './billingSidebar.css'
 
 function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClearCart }) {
@@ -13,12 +14,25 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
     onQuantityChange(productId, quantity);
   };
 
+  const StyledButton = styled(Button)(({ theme }) => ({
+    backgroundColor: theme.palette.primary.main,
+    border: 'none',
+    justifyContent: 'center',
+    '&:hover': {
+      backgroundColor: theme.palette.primary.darker,
+      cursor: 'pointer',
+    },
+    '&:focus': {
+      boxShadow: 'none',
+    },
+  }));
+
   return (
     <div className="billing-sidebar p-1">
       <div className="mb-4">
         {/* <h4>Current Orders</h4> */}
         <Row>
-          <Col md={8}>
+          <Col md={9}>
           <input
                   type="text"
                   className="form-control"
@@ -26,8 +40,8 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
                   aria-label="Search"
                 />
           </Col>
-          <Col md={4}>
-          <button>+ Add Customer</button>
+          <Col md={3}>
+          <StyledButton>+ Add</StyledButton>
           </Col>
         </Row>
         <div className="container">
