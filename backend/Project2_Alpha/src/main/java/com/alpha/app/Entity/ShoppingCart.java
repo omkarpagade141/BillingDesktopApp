@@ -1,5 +1,6 @@
 package com.alpha.app.Entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -20,7 +21,7 @@ public class ShoppingCart {
 	private Long shoppingCartId;
 	
 	
-	@OneToMany
-	private List<CartProducts> cartProductsList = new 
+	//@OneToMany
+	//private List<CartProducts> cartProductsList = new ArrayList<>();
 	
 }

@@ -95,7 +95,7 @@ function createWindow() {
 
   mainWindow.on('closed', () => {
     mainWindow = null;
-    stopSpringBoot();
+    // stopSpringBoot();
   });
 }
 
@@ -126,7 +126,7 @@ app.on('ready', () => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     if (springBootProcess) {
-      stopSpringBoot();
+      // stopSpringBoot();
     }
     app.quit();
   }

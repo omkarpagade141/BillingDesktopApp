@@ -41,14 +41,14 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
 			ShoppingCart cart = new ShoppingCart();
 			if(cart !=null)
 			{
-				updateQty = cart.getQuantity() + quantity;
+//				updateQty = cart.getQuantity() + quantity;
 				if(updateQty < 0)
 				{
 					throw new UserHandlingException("Invalid Quantity");
 				}else
 				{
-					cart.setCartCreatedOn(LocalDate.now());
-					cart.setCustomerId(cust);
+//					cart.setCartCreatedOn(LocalDate.now());
+//					cart.setCustomerId(cust);
 //					cart.setProducts(prodDetails);
 					shopCartRepo.save(cart);
 				}
