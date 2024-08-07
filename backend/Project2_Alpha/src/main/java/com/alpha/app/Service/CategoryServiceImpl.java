@@ -20,8 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alpha.app.DTO.CategoryDTO;
 import com.alpha.app.Entity.Category;
+import com.alpha.app.Entity.Product;
 import com.alpha.app.Exception.ResourceNotFoundException;
 import com.alpha.app.Repositiory.CategoryRepositiory;
+import com.alpha.app.Repositiory.ProductRepositiory;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
@@ -33,6 +35,9 @@ public class CategoryServiceImpl implements ICategoryService {
 	@Autowired
 	private CategoryRepositiory cateRepo;
 
+	@Autowired
+	private ProductRepositiory prodRepo;
+	
 	@Autowired
 	private ModelMapper mapper;
 
@@ -133,6 +138,15 @@ public class CategoryServiceImpl implements ICategoryService {
 	public ResponseEntity<String> deleteCategoryById(Long cateId) throws IOException {
 		Category cateObj = cateRepo.findById(cateId)
 				.orElseThrow(() -> new ResourceNotFoundException("Category Not found"));
+		System.out.println("Inside cate dele service");
+		//Find product which assoicated with deleted cateId
+		List<Product> prodList= prodRepo.findByCategory(cateObj.getCateName());
+		System.out.println("ProdList is "+prodList);
+		if(!prodList.isEmpty())
+		{
+			return new ResponseEntity<String>("Errro!!! "+cateObj.getCateName()+" not deleted due to products already present in this section. ", HttpStatus.BAD_REQUEST);
+		}
+		
 		if (cateObj.getCateImageUrl() != null) {
 			
 			Path path = Paths.get(folderName + File.separator + cateObj.getCateImageUrl());

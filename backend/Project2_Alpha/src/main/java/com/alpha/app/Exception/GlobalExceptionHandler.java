@@ -39,4 +39,10 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
     }
 	
+	@ExceptionHandler(UserHandlingException.class)
+    public ResponseEntity<String> handleUserRelatedExcep(ResourceNotFoundException error)
+    {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+    }
+	
 }
