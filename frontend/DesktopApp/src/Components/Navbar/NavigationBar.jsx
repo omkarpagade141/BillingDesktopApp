@@ -61,7 +61,7 @@ const NavigationBar = ({ settings }) => {
                         src={settings.business_logo}
                         className='mr-2'
                         alt="EasyBilling Logo"
-                        style={{ height: '15px' }}
+                        style={{ height: '40px' }}
                     />
                     <StyledTypography className='mr-4' variant="h6" component="div">
                         {settings.business_name}
