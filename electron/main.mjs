@@ -1,21 +1,41 @@
-import { app, BrowserWindow, ipcMain, protocol } from 'electron';
-import { fileURLToPath } from 'url';
+// main.mjs
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
-import fs from 'fs';
-import { exec } from 'child_process';
+import { exec } from 'child_process'; 
 import os from 'os';
-import sendConfig from './sendConfig.js';
-const __filename = fileURLToPath(import.meta.url);
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import express from 'express';
+import { createProxyMiddleware } from 'http-proxy-middleware';
+
+const __filename = fileURLToPath(import.meta.url); 
 const __dirname = path.dirname(__filename);
-
-
 
 let mainWindow;
 let configWindow;
 let springBootProcess;
+const expressApp = express();
+const port = 3000;
 
+// Serve static files from the 'dist' directory
+expressApp.use(express.static(path.join(__dirname, 'dist')));
 
+// Proxy API requests to the backend server
+expressApp.use('/myapi', createProxyMiddleware({
+  target: 'http://localhost:8080', // The backend server URL
+  changeOrigin: true,
+  pathRewrite: { '^/myapi': '' }, // Rewrite the path to match the target
+}));
 
+// Handle all other routes by serving the React app
+expressApp.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+// Start the Express server
+expressApp.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
 
 function startSpringBoot() {
   const jarPath = path.join(__dirname, 'resources', 'app-0.0.1-SNAPSHOT.jar');
@@ -42,18 +62,12 @@ function startSpringBoot() {
   });
 }
 
-
-
-
 function stopSpringBoot() {
   if (springBootProcess) {
     springBootProcess.kill('SIGTERM');
     springBootProcess = null;
   }
 }
-
-
-
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -63,23 +77,15 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       worldSafeExecuteJavaScript: true,
-      webSecurity: true, // Allows file:// protocol access
+      nodeIntegration: false,
     },
     autoHideMenuBar: true,
     maximizable: true,
     resizable: true,
   });
 
-  const indexHtmlPath = path.join(__dirname, '..', 'frontend', 'DesktopApp', 'dist', 'index.html');
-  mainWindow.loadURL('http://localhost:5173')
-  if (fs.existsSync(indexHtmlPath)) {
-    // mainWindow.loadFile(indexHtmlPath)
-  } else {
-    console.log('file not found');
-
-
-    console.error(`Index file not found at ${indexHtmlPath}`);
-  }
+  // Load the URL served by the local server
+  mainWindow.loadURL(`http://localhost:${port}`);
 
   const configPath = path.join(__dirname, 'config.json');
   if (!fs.existsSync(configPath)) {
@@ -88,6 +94,7 @@ function createWindow() {
 
   ipcMain.on('save-config', async (event, config) => {
     fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+    // Call your sendConfig function here
     await sendConfig();
     console.log('sendConfigCalled');
     event.sender.send('config-saved');
@@ -115,11 +122,10 @@ function createConfigWindow() {
   configWindow.loadFile(path.join(__dirname, 'config.html'));
 }
 
-
-
 app.on('ready', () => {
-
-  // startSpringBoot();
+  // Start Spring Boot
+  startSpringBoot();
+  // Start the Express server and create the Electron window
   createWindow();
 });
 
