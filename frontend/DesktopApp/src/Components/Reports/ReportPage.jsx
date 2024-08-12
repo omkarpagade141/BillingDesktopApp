@@ -4,6 +4,7 @@ import { Container, Typography } from '@mui/material';
 import PieChartComponent from './AllBillsPieChart';
 import TimeVsCustomerChart from './TimeVsCustomer';
 import axios from 'axios';
+import './ReportPage.css'
 
 function ReportPage() {
   const [noOfProd,setNoOfProd]=useState([])
@@ -19,7 +20,7 @@ useEffect(() => {
 }, [])
 
   return (
-    <div>
+    <div className='scrollToReportDiv p-1'>
       <Row className='mt-4'>
         <Col md={8}>
           <Row>
@@ -113,7 +114,7 @@ useEffect(() => {
       </Row>
       <Row>
         <Col md={7}>
-          <div style={{ padding: '20px' }}>
+          <div >
             <TimeVsCustomerChart />
           </div>
         </Col>
