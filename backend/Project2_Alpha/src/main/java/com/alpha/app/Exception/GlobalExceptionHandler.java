@@ -11,13 +11,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import jakarta.validation.ConstraintViolationException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
 	
 	
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(MethodArgumentNotValidException.class)
+	@ExceptionHandler(MethodArgumentNotValidException.class)	
 	public Map<String, String> handleInvalidArgument(MethodArgumentNotValidException ex)
 	{
 		Map<String, String> errorMap = new TreeMap<String, String>();
@@ -45,4 +47,14 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
     }
 	
+//	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+//	@ExceptionHandler(ConstraintViolationException.class)
+//	public Map<String, String> handleValidationArgument(ConstraintViolationException ex)
+//	{
+//		Map<String, String> errorMap = new TreeMap<String, String>();
+//		ex.getBindingResult().getFieldErrors().forEach(error -> {
+//			errorMap.put(error.getField(), error.getDefaultMessage());
+//		});
+//		return errorMap;
+//	}
 }
