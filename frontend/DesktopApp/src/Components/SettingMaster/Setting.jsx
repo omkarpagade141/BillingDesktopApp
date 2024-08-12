@@ -44,7 +44,7 @@ const Setting = () => {
   }));
 
   return (
-    <div className="container mt-3 settingMasterFormDiv">
+    <div className="container mt-5 settingMasterFormDiv">
 
       <Row className='justify-content-md-center'>
 

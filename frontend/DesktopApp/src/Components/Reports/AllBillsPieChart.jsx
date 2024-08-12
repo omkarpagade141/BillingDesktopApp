@@ -17,7 +17,7 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 const PieChartComponent = () => {
   return (
     <Paper style={{ padding: 20 } } >
-      <PieChart width={370} height={370} >
+      <PieChart width={350} height={350} >
         <Pie
           data={data}
           cx="50%"
