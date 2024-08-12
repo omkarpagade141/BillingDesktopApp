@@ -1,11 +1,32 @@
-import React from 'react';
-import { Row, Col, Card, Form, Button  } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { Row, Col, Card, Form, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { styled } from '@mui/system';
 import './billingSidebar.css'
+import axios from 'axios';
+import AddCustomer from './AddCustomer';
 
-function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClearCart }) {
+function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClearCart,triggerMessage }) {
+  const [customers, setCustomers] = useState([])
+  const [open, setOpen] = useState(false)
 
+  const handleOpenCustomerForm = () => {
+    setOpen(!open)
+  }
+  const handleClose = () => {
+    setOpen(false)
+}
+
+  const fetchCustomer = async () => {
+    const response = await axios.get("/myapi/api/customer/allcustomers")
+    setCustomers(response.data)
+    console.log(response.data);
+    
+    // customer fetch success @@@@@@@@@@@@@@@@@@@@@@
+  }
+  useEffect(() => {
+    fetchCustomer()
+  }, [])
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => total + parseFloat(item.price.replace('$', '')) * item.quantity, 0);
   };
@@ -33,15 +54,15 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
         {/* <h4>Current Orders</h4> */}
         <Row>
           <Col md={9}>
-          <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search Customer"
-                  aria-label="Search"
-                />
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search Customer"
+              aria-label="Search"
+            />
           </Col>
           <Col md={3}>
-          <StyledButton>+ Add</StyledButton>
+            <StyledButton onClick={handleOpenCustomerForm}>+ Add</StyledButton>
           </Col>
         </Row>
         <div className="container">
@@ -88,6 +109,7 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
             </div>
           ))}
         </div>
+        {open && <AddCustomer open={open} handleClose={handleClose} triggerMessage={triggerMessage}/>}
       </div>
     </div>
   );

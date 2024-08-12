@@ -4,7 +4,7 @@ import BillingSidebar from "./BillingSidebar";
 import "./Billinghome.css";
 import axios from "axios";
 
-function BillingHome() {
+function BillingHome({ triggerMessage }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [products, setProducts] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
@@ -175,6 +175,7 @@ function BillingHome() {
             onQuantityChange={handleQuantityChange}
             onRemoveFromCart={handleRemoveFromCart}
             onClearCart={handleClearCart}
+            triggerMessage={triggerMessage}
           />
         </div>
       </div>

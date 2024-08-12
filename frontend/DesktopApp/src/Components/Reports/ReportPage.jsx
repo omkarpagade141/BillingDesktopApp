@@ -8,6 +8,14 @@ import './ReportPage.css'
 
 function ReportPage() {
   const [noOfProd,setNoOfProd]=useState([])
+  const [customers, setCustomers] = useState([])
+
+  const fetchCustomer = async () => {
+    const response = await axios.get("/myapi/api/customer/allcustomers")
+    setCustomers(response.data)
+
+     
+  }
 
 
   const fetchProducts = async () => {
@@ -17,6 +25,7 @@ function ReportPage() {
 }
 useEffect(() => {
     fetchProducts()
+    fetchCustomer()
 }, [])
 
   return (
@@ -99,7 +108,7 @@ useEffect(() => {
                   <Card.Title className='text-center'>All Customers</Card.Title>
                   <Row > 
                     <Col md={12} className='text-center'>
-                    <h3>0</h3>
+                    <h3>{customers.length}</h3>
                     </Col>
                   </Row>
                 </Card.Body>
