@@ -22,9 +22,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "CustomerMaster")
-@Getter
-@Setter
-@AllArgsConstructor
+
 
 public class Customer {
 
@@ -56,51 +54,46 @@ public class Customer {
 		// TODO Auto-generated constructor stub
 	}
 
-//	public Customer(Long custId, String custFullName, @Size(max = 10, min = 10) String custMobile,
-//			LocalDate custCreatedOn) {
-//		super();
-//		this.custId = custId;
-//		this.custFullName = custFullName;
-//		this.custMobile = custMobile;
-//		this.custCreatedOn = custCreatedOn;
-//	}
-//
-//	public Long getCustId() {
-//		return custId;
-//	}
-//
-//	public void setCustId(Long custId) {
-//		this.custId = custId;
-//	}
-//
-//	public String getCustFullName() {
-//		return custFullName;
-//	}
-//
-//	public void setCustFullName(String custFullName) {
-//		this.custFullName = custFullName;
-//	}
-//
-//	public String getCustMobile() {
-//		return custMobile;
-//	}
-//
-//	public void setCustMobile(String custMobile) {
-//		this.custMobile = custMobile;
-//	}
-//
-//	public LocalDate getCustCreatedOn() {
-//		return custCreatedOn;
-//	}
-//
-//	public void setCustCreatedOn(LocalDate custCreatedOn) {
-//		this.custCreatedOn = custCreatedOn;
-//	}
-//
-//	@Override
-//	public String toString() {
-//		return "Customer [custId=" + custId + ", custFullName=" + custFullName + ", custMobile=" + custMobile
-//				+ ", custCreatedOn=" + custCreatedOn + "]";
-//	}
+	public Customer(Long custId, String custFullName, @Size(max = 10, min = 10) String custMobile,
+			LocalDate custCreatedOn) {
+		super();
+		this.custId = custId;
+		this.custFullName = custFullName;
+		this.custMobile = custMobile;
+		this.custCreatedOn = custCreatedOn;
+	}
 
+	public Long getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Long custId) {
+		this.custId = custId;
+	}
+
+	public String getCustFullName() {
+		return custFullName;
+	}
+
+	public void setCustFullName(String custFullName) {
+		this.custFullName = custFullName;
+	}
+
+	public String getCustMobile() {
+		return custMobile;
+	}
+
+	public void setCustMobile(String custMobile) {
+		this.custMobile = custMobile;
+	}
+
+	public LocalDate getCustCreatedOn() {
+		return custCreatedOn;
+	}
+
+	public void setCustCreatedOn(LocalDate custCreatedOn) {
+		this.custCreatedOn = custCreatedOn;
+	}
+
+	
 }
