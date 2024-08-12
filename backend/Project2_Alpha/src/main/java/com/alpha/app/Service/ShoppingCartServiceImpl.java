@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.alpha.app.DTO.RemoveProductFromCartDTO;
@@ -16,7 +15,6 @@ import com.alpha.app.Exception.UserHandlingException;
 import com.alpha.app.Repositiory.CartProductsRepositiory;
 import com.alpha.app.Repositiory.CustomerRepositiory;
 import com.alpha.app.Repositiory.ProductRepositiory;
-import com.alpha.app.Repositiory.ShoppingCartRepositiory;
 
 import jakarta.transaction.Transactional;
 
@@ -24,8 +22,6 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class ShoppingCartServiceImpl implements IShoppingCartService {
 
-//	@Autowired
-//	private ShoppingCartRepositiory shopCartRepo;
 	
 	@Autowired
 	private CartProductsRepositiory cartProdRepo;
@@ -45,14 +41,15 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
 		try {
 			
 			Product prodDetails = prodRepo.findById(prodId).orElseThrow(()-> new ResourceNotFoundException("Product not found"));
+
 			
 			CartProducts cart = new CartProducts();
-//			CartProducts cart =
+
 			cart.setCurrentCustomer(cust);
 			cart.setProducts(prodDetails);
 			cart.setQuantity(quantity);
-//			cart.setCartCreatedOn(LocalDate.now());
 			cartProdRepo.save(cart);
+	
 			
 		} catch (Exception e) {
 			throw new UserHandlingException("Error to add prod in cart"+e.getMessage());

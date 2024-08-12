@@ -46,8 +46,8 @@ public class Product {
 //	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,mappedBy = "products")
 //	private List<ShoppingCart> shoppingCartList = new ArrayList<ShoppingCart>();
 	
-	@OneToMany(mappedBy = "products",cascade = CascadeType.ALL,orphanRemoval = true)
-	private List<CartProducts> cartProductList = new ArrayList<CartProducts>();
+//	@OneToMany(mappedBy = "products",cascade = CascadeType.ALL,orphanRemoval = true)
+//	private List<CartProducts> cartProductList = new ArrayList<CartProducts>();
 
 	
 	public Product() {

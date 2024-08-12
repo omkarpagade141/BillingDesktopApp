@@ -29,7 +29,7 @@ public class ShoppingCartController {
 	@PostMapping("/addtocart")
 	public ResponseEntity<?> addProductToCart(@RequestBody AddProductDTO addProd) throws UserHandlingException
 	{
-		shopCartService.addProductToCart(addProd.getCustId(), addProd.getProdId(), addProd.getQuantity());
+		//shopCartService.addProductToCart(addProd.getCustId(), addProd.getProdId(), addProd.getQuantity());
 		
 		return new ResponseEntity<String>("product Added to cart Successfully",HttpStatus.CREATED);
 	}
