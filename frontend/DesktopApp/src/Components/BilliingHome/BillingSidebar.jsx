@@ -1,32 +1,59 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Card, Form, Button } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { styled } from '@mui/system';
 import './billingSidebar.css'
 import axios from 'axios';
 import AddCustomer from './AddCustomer';
 
-function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClearCart,triggerMessage }) {
-  const [customers, setCustomers] = useState([])
-  const [open, setOpen] = useState(false)
+function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClearCart, triggerMessage, setCustomerSelected }) {
+  const [customers, setCustomers] = useState([]);
+  const [filteredCustomers, setFilteredCustomers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [open, setOpen] = useState(false);
 
   const handleOpenCustomerForm = () => {
-    setOpen(!open)
-  }
+    setOpen(!open);
+  };
+
   const handleClose = () => {
-    setOpen(false)
-}
+    setOpen(false);
+  };
 
   const fetchCustomer = async () => {
-    const response = await axios.get("/myapi/api/customer/allcustomers")
-    setCustomers(response.data)
-    console.log(response.data);
-    
-    // customer fetch success @@@@@@@@@@@@@@@@@@@@@@
-  }
+    try {
+      const response = await axios.get("/myapi/api/customer/allcustomers");
+      setCustomers(response.data);
+    } catch (error) {
+      console.error('Error fetching customers', error);
+    }
+  };
+
   useEffect(() => {
-    fetchCustomer()
-  }, [])
+    fetchCustomer(); 
+  }, []);
+
+  const handleSearchChange = (event) => {
+    const searchTerm = event.target.value;
+    setSearchTerm(searchTerm);
+
+    if (searchTerm === '') {
+      setFilteredCustomers([]);
+    } else {
+      const filtered = customers.filter(customer =>
+        customer.custFullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        customer.custMobile.includes(searchTerm)
+      );
+      setFilteredCustomers(filtered);
+    }
+  };
+
+  const handleCustomerSelect = (customer) => {
+    setCustomerSelected(customer);
+    setSearchTerm('');
+    setFilteredCustomers([]);
+  };
+
   const calculateTotal = () => {
     return cartItems.reduce((total, item) => total + parseFloat(item.price.replace('$', '')) * item.quantity, 0);
   };
@@ -51,15 +78,28 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
   return (
     <div className="billing-sidebar p-1">
       <div className="mb-4">
-        {/* <h4>Current Orders</h4> */}
         <Row>
-          <Col md={9}>
+          <Col md={9} style={{ position: 'relative' }}>
             <input
               type="text"
               className="form-control"
               placeholder="Search Customer"
               aria-label="Search"
+              value={searchTerm}
+              onChange={handleSearchChange}
             />
+            {searchTerm && filteredCustomers.length > 0 && (
+              <ul className="dropdown-menu show ml-3 p-0" style={{ position: 'absolute', width: '90%', zIndex: 1000 }}>
+                {filteredCustomers.map(customer => (
+                  <li key={customer.custId} className="dropdown-item " onClick={() => handleCustomerSelect(customer)}
+                  style={{ cursor: 'pointer' }}
+                  >
+                    {customer.custFullName} ({customer.custMobile})
+              
+                  </li>
+                ))}
+              </ul>
+            )}
           </Col>
           <Col md={3}>
             <StyledButton onClick={handleOpenCustomerForm}>+ Add</StyledButton>
@@ -109,7 +149,7 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
             </div>
           ))}
         </div>
-        {open && <AddCustomer open={open} handleClose={handleClose} triggerMessage={triggerMessage}/>}
+        {open && <AddCustomer open={open} handleClose={handleClose} triggerMessage={triggerMessage} fetchCustomer={fetchCustomer} customers={customers}/>}
       </div>
     </div>
   );

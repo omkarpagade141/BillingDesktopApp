@@ -3,6 +3,7 @@ import { Row, Col, Card, Button } from 'react-bootstrap';
 import BillingSidebar from "./BillingSidebar";
 import "./Billinghome.css";
 import axios from "axios";
+import { styled } from "@mui/material";
 
 function BillingHome({ triggerMessage }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -19,10 +20,24 @@ function BillingHome({ triggerMessage }) {
   const [serviceCharge, setServiceCharge] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
+  const [customerSelected,setCustomerSelected]=useState('')
+
+
+  const StyledCard = styled(Card)(({ theme }) => ({
+    backgroundColor: theme.palette.secondary.main,
+}));
+ 
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  const handlePrintBill=()=>{
+    console.log(cartItems);
+    console.log(customerSelected);
+    
+    
+  }
 
   const fetchProducts = async () => {
     const response = await axios.get('/myapi/api/product/allproducts');
@@ -155,7 +170,7 @@ function BillingHome({ triggerMessage }) {
           </div>
           <div className="product-list-container">
             {filteredProducts.map(product => (
-              <Card className="card" key={product.prodId} onClick={() => handleAddToCart(product)}>
+              <StyledCard className="card productCardInPOSHome" key={product.prodId} onClick={() => handleAddToCart(product)}>
                 <Card.Img
                   variant="top"
                   src={`/myapi/api/images?imageName=${product.prodImageUrl}`}
@@ -165,7 +180,7 @@ function BillingHome({ triggerMessage }) {
                   <Card.Title className="mb-2 textInTheCard text-center">{product.prodName}</Card.Title>
                   <Card.Text className="textInTheCard text-center">{product.prodPrice}</Card.Text>
                 </Card.Body>
-              </Card>
+              </StyledCard>
             ))}
           </div>
         </div>
@@ -176,11 +191,12 @@ function BillingHome({ triggerMessage }) {
             onRemoveFromCart={handleRemoveFromCart}
             onClearCart={handleClearCart}
             triggerMessage={triggerMessage}
+            setCustomerSelected={setCustomerSelected}
           />
         </div>
       </div>
 
-      <footer className="footer d-flex justify-content-between align-items-center p-2">
+      <footer className="footer d-flex justify-content-between align-items-center p-2 footerInPOSHome">
         <div className="form-container d-flex align-items-center">
           <div className="form-group mb-0 mr-2">
             <label htmlFor="discount" className="form-label">Discount</label>
@@ -243,7 +259,7 @@ function BillingHome({ triggerMessage }) {
           <button className="btn btn-danger btn-sm" onClick={handleClearCart}>
             Clear All
           </button>
-          <button className="btn btn-dark btn-sm">Place Order</button>
+          <button className="btn btn-dark btn-sm" onClick={handlePrintBill}>Place Order</button>
         </div>
       </footer>
     </div>

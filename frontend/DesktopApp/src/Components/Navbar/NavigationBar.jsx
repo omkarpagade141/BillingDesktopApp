@@ -67,7 +67,7 @@ const NavigationBar = ({ settings }) => {
                         {settings.business_name}
                     </StyledTypography>
                     <StyledNavLink component={NavLink} to="/dashboard">
-                        Home
+                    POS
                     </StyledNavLink>
                     <StyledNavLink component={NavLink} to="/dashboard/category">
                         Category
