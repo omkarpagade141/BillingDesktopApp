@@ -29,7 +29,7 @@ public class ShoppingCartController {
 	@PostMapping("/addtocart")
 	public ResponseEntity<?> addProductToCart(@RequestBody AddProductDTO addProd) throws UserHandlingException
 	{
-		//shopCartService.addProductToCart(addProd.getCustId(), addProd.getProdId(), addProd.getQuantity());
+		shopCartService.addProductToCart(addProd.getCustId(), addProd.getProdId(), addProd.getQuantity());
 		
 		return new ResponseEntity<String>("product Added to cart Successfully",HttpStatus.CREATED);
 	}
@@ -50,8 +50,14 @@ public class ShoppingCartController {
 		return new ResponseEntity<>("Product Deleted from Cart Successfully",HttpStatus.OK);
 	}
 	
-
 	
+	@PostMapping("/addallProduct")
+	public ResponseEntity<?> addAllProductsToCart(@RequestBody List<AddProductDTO> addProd) throws UserHandlingException
+	{
+		shopCartService.addAllProductsToCartTest(addProd);
+		
+		return new ResponseEntity<String>("product Added to cart Successfully",HttpStatus.CREATED);
+	}
 	
 	
 }

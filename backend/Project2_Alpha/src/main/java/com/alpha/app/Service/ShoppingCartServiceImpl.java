@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alpha.app.DTO.AddProductDTO;
 import com.alpha.app.DTO.RemoveProductFromCartDTO;
 import com.alpha.app.Entity.CartProducts;
 import com.alpha.app.Entity.Customer;
@@ -72,6 +73,15 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
 		Customer cust = custRepo.findById(removeProd.getCustId()).orElseThrow(()-> new ResourceNotFoundException("Invalid Customer details"));
 		
 		cartProdRepo.deleteByProductsAndCurrentCustomerAndCartCreatedOn(removeProd.getProdId(),removeProd.getCustId(),LocalDate.now());
+		
+	}
+
+
+	//Trial n Error Purpose
+	@Override
+	public void addAllProductsToCartTest(List<AddProductDTO> addProd) {
+		// TODO Auto-generated method stub
+		
 		
 	}
 
