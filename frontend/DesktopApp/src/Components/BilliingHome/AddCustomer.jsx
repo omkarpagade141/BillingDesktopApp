@@ -40,7 +40,7 @@ function AddCustomer({ handleClose, open, triggerMessage, fetchCustomer, custome
         e.preventDefault();
 
         // Validate contact number length and numeric value before submission
-        if (!validateContactNumber(contactNumber)) {
+        if (!validateContactNumber(contactNumber)) { 
             return;
         }
 

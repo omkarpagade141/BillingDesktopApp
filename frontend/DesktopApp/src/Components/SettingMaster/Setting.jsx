@@ -2,31 +2,53 @@ import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/system';
 import { Row, Col, Card, Form, Button } from 'react-bootstrap';
 import './setting.css'
+import axios from 'axios';
 
 
-const Setting = () => {
+const Setting = ({ triggerMessage,fetchSetting }) => {
   const [businessName, setBusinessName] = useState('')
   const [businessMobile, setBusinessMobile] = useState('')
   const [businessEmail, setBusinessEmail] = useState('')
   const [businessAddress, setBusinessAddress] = useState('')
-  const [businessLogo, setBusinessLogo] = useState('')
+  const [businessLogo, setBusinessLogo] = useState(null)
+  const [businessGSTNumber, setBusinessGSTNumber] = useState('')
+
+  // const sentData = {
+  //   "businessName": `${businessName}`,
+  //   "businessMobile": `${businessMobile}`,
+  //   "businessEmail": `${businessEmail}`,
+  //   "businessAddress": `${businessAddress}`,
+  //   "businessGSTNumber": `${businessGSTNo}`
+  // }
+
+
+  const formData = new FormData();
+  formData.append('projectSetting',new Blob([JSON.stringify({
+    businessName,
+    businessMobile,
+    businessEmail,
+    businessAddress,
+    businessGSTNumber
+  })],{type:'application/json'}) );
+  formData.append('businessLogoImagePath', businessLogo);
+
 
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-     
-    
-    const dataToSend={
-      businessName,
-      businessMobile,
-      businessEmail,
-      businessAddress,
-      businessLogo
+    e.preventDefault()
+    try {
+      const response = await axios.post('/myapi/api/settings/upsert', formData);
+      if (response.status === 201) {
+        fetchSetting()
+        triggerMessage('Setting updated successfully', 'success');
+      } else {
+        triggerMessage('Setting update failed', 'error');
+      }
+    } catch (error) {
+      console.error('Error updating settings:', error);
+      triggerMessage('Setting update failed', 'error');
     }
-    console.log(dataToSend);
-    
-
-  }
+  };
 
 
 
@@ -50,7 +72,7 @@ const Setting = () => {
 
         <Col md={8} >
           <Card className='p-3 mt-4'>
-            <Form onSubmit={(e) => { handleSubmit(e) }}>
+            <form onSubmit={(e) => handleSubmit(e)}>
               <Row >
 
                 <Col md={6} className='mt-1'>
@@ -59,7 +81,7 @@ const Setting = () => {
                     <Form.Control
                       type="text"
                       required
-                      placeholder="Enter category name"
+                      placeholder="Enter business name"
                       value={businessName}
                       onChange={(e) => setBusinessName(e.target.value)}
                     />
@@ -71,7 +93,7 @@ const Setting = () => {
                     <Form.Control
                       type="text"
                       required
-                      placeholder="Enter category name"
+                      placeholder="Enter mobile number"
                       value={businessMobile}
                       onChange={(e) => setBusinessMobile(e.target.value)}
                     />
@@ -84,7 +106,7 @@ const Setting = () => {
                     <Form.Control
                       type="Email"
                       required
-                      placeholder="Enter category name"
+                      placeholder="Enter email.."
                       value={businessEmail}
                       onChange={(e) => setBusinessEmail(e.target.value)}
                     />
@@ -96,9 +118,9 @@ const Setting = () => {
                     <Form.Control
                       type="text"
                       required
-                      placeholder="Enter category name"
-                    // value={categoryName}
-                    // onChange={(e) => setCategoryName(e.target.value)}
+                      placeholder="Enter GST Number"
+                      value={businessGSTNumber}
+                      onChange={(e) => setBusinessGSTNumber(e.target.value)}
                     />
                   </Form.Group>
                 </Col>
@@ -109,7 +131,7 @@ const Setting = () => {
                     <Form.Control
                       type="file"
                       required
-                      placeholder="Enter product name"
+                      placeholder="Select "
                       onChange={(e) => setBusinessLogo(e.target.files[0])}
                     />
                   </Form.Group>
@@ -120,7 +142,7 @@ const Setting = () => {
                     <Form.Control
                       type="text"
                       required
-                      placeholder="Enter category name"
+                      placeholder="Enter Address.."
                       value={businessAddress}
                       onChange={(e) => setBusinessAddress(e.target.value)}
                     />
@@ -132,7 +154,7 @@ const Setting = () => {
                 <StyledButton type='submit'>Update</StyledButton>
               </Row>
 
-            </Form>
+            </form>
           </Card>
         </Col>
 
