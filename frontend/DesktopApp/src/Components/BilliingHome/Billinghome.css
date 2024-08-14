@@ -110,9 +110,7 @@
   .product-list-container::-webkit-scrollbar {
     width: 6px;
   }
-  .product-list-item{
-    /* border: 1px solid red; */
-  }
+  
   
   .product-list-container .card {
     height: 200px; /* Fixed height for cards */
@@ -147,3 +145,11 @@
   margin: 0;
   font-size: smaller;
 }
+
+.footerInPOSHome{
+  background-color: #f5f5f5;
+}
+
+/* .footerInPOSHome{
+  background-color: #337691;
+} */

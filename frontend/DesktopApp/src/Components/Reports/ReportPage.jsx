@@ -4,9 +4,18 @@ import { Container, Typography } from '@mui/material';
 import PieChartComponent from './AllBillsPieChart';
 import TimeVsCustomerChart from './TimeVsCustomer';
 import axios from 'axios';
+import './ReportPage.css'
 
 function ReportPage() {
   const [noOfProd,setNoOfProd]=useState([])
+  const [customers, setCustomers] = useState([])
+
+  const fetchCustomer = async () => {
+    const response = await axios.get("/myapi/api/customer/allcustomers")
+    setCustomers(response.data)
+
+     
+  }
 
 
   const fetchProducts = async () => {
@@ -16,10 +25,11 @@ function ReportPage() {
 }
 useEffect(() => {
     fetchProducts()
+    fetchCustomer()
 }, [])
 
   return (
-    <div>
+    <div className='scrollToReportDiv p-1'>
       <Row className='mt-4'>
         <Col md={8}>
           <Row>
@@ -98,7 +108,7 @@ useEffect(() => {
                   <Card.Title className='text-center'>All Customers</Card.Title>
                   <Row > 
                     <Col md={12} className='text-center'>
-                    <h3>0</h3>
+                    <h3>{customers.length}</h3>
                     </Col>
                   </Row>
                 </Card.Body>
@@ -113,7 +123,7 @@ useEffect(() => {
       </Row>
       <Row>
         <Col md={7}>
-          <div style={{ padding: '20px' }}>
+          <div >
             <TimeVsCustomerChart />
           </div>
         </Col>

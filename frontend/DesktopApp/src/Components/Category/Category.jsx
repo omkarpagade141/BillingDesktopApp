@@ -41,6 +41,7 @@ function Category({ triggerMessage }) {
         backgroundColor: theme.palette.primary.main,
         border: 'none',
         justifyContent: 'center',
+        color: 'white',
         '&:hover': {
             backgroundColor: theme.palette.primary.darker,
             cursor: 'pointer',

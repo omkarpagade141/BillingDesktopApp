@@ -1,5 +1,4 @@
 package com.alpha.app.DTO;
-
 public class AddProductDTO {
 
 	private Long prodId;

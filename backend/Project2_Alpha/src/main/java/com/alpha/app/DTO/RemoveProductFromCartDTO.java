@@ -1,9 +1,6 @@
 package com.alpha.app.DTO;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+ 
 
 
 public class RemoveProductFromCartDTO {
@@ -11,11 +8,13 @@ public class RemoveProductFromCartDTO {
 	private Long prodId;
 	
 	private Long custId;
+ 
 	
 	public RemoveProductFromCartDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
+ 
 	public RemoveProductFromCartDTO(Long prodId, Long custId) {
 		super();
 		this.prodId = prodId;
