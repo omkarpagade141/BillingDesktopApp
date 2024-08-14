@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,7 +40,8 @@ public class Product {
 
 	@Column(name = "prod_last_update_date")
 	private LocalDate prodLastUpdatedOn;
-
+	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "cate_Id")
 	private Category category;

@@ -22,6 +22,10 @@ public class Category {
 	private String cateName;
 	@Column(name = "category_image_url")
 	private String cateImageUrl;
+	
+	@Column(name = "cate_status")
+	private boolean isActive;
+	
 	@Column(name = "cate_created_date")
 	private LocalDate cateCreatedOn;
 	
@@ -37,19 +41,33 @@ public class Category {
 
 	public Category() {
 		// TODO Auto-generated constructor stub
+		this.isActive = true;
 	}
 
 	
 
 	public Category(Long cateId, String cateName, String cateImageUrl, LocalDate cateCreatedOn,
-		LocalDate cateLastUpdatedOn) {
-	super();
-	this.cateId = cateId;
-	this.cateName = cateName;
-	this.cateImageUrl = cateImageUrl;
-	this.cateCreatedOn = cateCreatedOn;
-	this.cateLastUpdatedOn = cateLastUpdatedOn;
-}
+			LocalDate cateLastUpdatedOn) {
+		super();
+		this.cateId = cateId;
+		this.cateName = cateName;
+		this.cateImageUrl = cateImageUrl;
+		this.isActive = true;
+		this.cateCreatedOn = cateCreatedOn;
+		this.cateLastUpdatedOn = cateLastUpdatedOn;
+	}
+
+
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 
 
 
@@ -101,7 +119,8 @@ public class Category {
 	@Override
 	public String toString() {
 		return "Category [cateId=" + cateId + ", cateName=" + cateName + ", cateImageUrl=" + cateImageUrl
-				+ ", cateCreatedOn=" + cateCreatedOn + ", cateLastUpdatedOn=" + cateLastUpdatedOn + "]";
+				+ ", isActive=" + isActive + ", cateCreatedOn=" + cateCreatedOn + ", cateLastUpdatedOn="
+				+ cateLastUpdatedOn + "]";
 	}
 
 
