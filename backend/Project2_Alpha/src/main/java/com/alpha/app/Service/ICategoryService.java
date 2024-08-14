@@ -15,14 +15,16 @@ public interface ICategoryService {
 
 //	ResponseEntity<String> addNewCategoryRecord(CategoryDTO newCate);
 
-	ResponseEntity<String> updateCategoryDetails(Long cateId,String updtName, MultipartFile updtImageFile) throws IOException;
+	ResponseEntity<String> updateCategoryDetails(Long cateId,String updtName, MultipartFile updtImageFile,Boolean isActiveStatus) throws IOException;
 
 	ResponseEntity<String> deleteCategoryById(Long cateId) throws IOException;
 
 	// Cate wth Image
 	ResponseEntity<String> addCateWithImage(String name,MultipartFile imageFile) throws IllegalStateException, IOException;
 
-	ResponseEntity<String> updateCategoryNameOnly(Long cateId, String updtName);
+	ResponseEntity<String> updateCategoryNameOnly(Long cateId, String updtName,Boolean isActiveStatus);
+
+	ResponseEntity<List<Category>> allActiveCategories();
 
 	
 

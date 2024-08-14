@@ -60,12 +60,12 @@ public class CategoryController {
 	}
 	
 	@PutMapping(value="/update/{cateId}", consumes ={"multipart/form-data"})
-	ResponseEntity<String> updateCategory(@PathVariable Long cateId,@RequestParam("cateName") String updtName,@RequestParam("imageName") MultipartFile updtImageFile) throws IOException
+	ResponseEntity<String> updateCategory(@PathVariable Long cateId,@RequestParam("cateName") String updtName,@RequestParam("isActive") Boolean isActiveStatus,@RequestParam("imageName") MultipartFile updtImageFile) throws IOException
 	{
 		if (!updtImageFile.isEmpty()) {
-		return cateService.updateCategoryDetails(cateId,updtName,updtImageFile);
+		return cateService.updateCategoryDetails(cateId,updtName,updtImageFile,isActiveStatus);
 		}
-		return cateService.updateCategoryNameOnly(cateId,updtName);
+		return cateService.updateCategoryNameOnly(cateId,updtName,isActiveStatus);
 		
 	}
 	
@@ -74,4 +74,12 @@ public class CategoryController {
 	{
 		return cateService.deleteCategoryById(cateId);
 	}
+	
+	@GetMapping("/active-categories")
+	ResponseEntity<List<Category>> displayActiveCategories()
+	{
+		return cateService.allActiveCategories();
+	}
+	
+	
 }
