@@ -1,12 +1,4 @@
 package com.alpha.app.DTO;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
- 
- 
 public class AddProductDTO {
 
 	private Long prodId;

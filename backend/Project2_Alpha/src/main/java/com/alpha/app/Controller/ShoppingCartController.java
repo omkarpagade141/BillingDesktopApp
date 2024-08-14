@@ -34,21 +34,21 @@ public class ShoppingCartController {
 		return new ResponseEntity<String>("product Added to cart Successfully",HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/customercart/{custId}")
-	public ResponseEntity<?> getCartItemList(@PathVariable long custId)
-	{
-		System.out.println("in getCartitemList contr");
-		List<CartProducts> cartItems = shopCartService.getCartProductList(custId);
-		return new ResponseEntity<>(cartItems,HttpStatus.OK);
-	}
-	
-	
-	@DeleteMapping("/remove")
-	public ResponseEntity<?> removeProductFromCart(@RequestBody RemoveProductFromCartDTO removeProd)
-	{
-		shopCartService.removeSingleProduct(removeProd);
-		return new ResponseEntity<>("Product Deleted from Cart Successfully",HttpStatus.OK);
-	}
+//	@GetMapping("/customercart/{custId}")
+//	public ResponseEntity<?> getCartItemList(@PathVariable long custId)
+//	{
+//		System.out.println("in getCartitemList contr");
+//		List<CartProducts> cartItems = shopCartService.getCartProductList(custId);
+//		return new ResponseEntity<>(cartItems,HttpStatus.OK);
+//	}
+//	
+//	
+//	@DeleteMapping("/remove")
+//	public ResponseEntity<?> removeProductFromCart(@RequestBody RemoveProductFromCartDTO removeProd)
+//	{
+//		shopCartService.removeSingleProduct(removeProd);
+//		return new ResponseEntity<>("Product Deleted from Cart Successfully",HttpStatus.OK);
+//	}
 	
 	
 	@PostMapping("/addallProduct")
