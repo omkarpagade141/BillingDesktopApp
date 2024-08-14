@@ -7,10 +7,11 @@ import Products from '../Prodoucts/Products';
 import ReportPage from '../Reports/ReportPage';
 import MessageBox from '../MessageBox/Messagebox';
 import Setting from '../SettingMaster/Setting';
+import InvoicePOS from '../BilliingHome/BillPrint/InvoicePOS';
 
 
 
-function Dashboard({settings}) {
+function Dashboard({settings,fetchSetting}) {
   const [messageData, setMessageData] = useState({ message: '', severity: 'success', timestamp: Date.now() });
 
   const triggerMessage = (msg, sev) => {
@@ -24,10 +25,11 @@ function Dashboard({settings}) {
      
       <Routes>
         <Route path="/" element={<BillingHome settings={settings} triggerMessage={triggerMessage}/>} />
+        <Route path="/billprint" element={<InvoicePOS settings={settings} triggerMessage={triggerMessage}/>} />
         <Route path="/category" element={<Category settings={settings} triggerMessage={triggerMessage}/>} />
         <Route path="/products" element={<Products settings={settings} triggerMessage={triggerMessage}/>} />
         <Route path="/reports" element={<ReportPage settings={settings} triggerMessage={triggerMessage}/>} />
-        <Route path="/setting" element={<Setting settings={settings} triggerMessage={triggerMessage}/>} />
+        <Route path="/setting" element={<Setting settings={settings} triggerMessage={triggerMessage} fetchSetting={fetchSetting}/>} />
       </Routes>
       <Outlet />  
     </div>

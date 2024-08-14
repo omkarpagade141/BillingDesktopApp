@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { styled } from '@mui/system';
-import './billingSidebar.css'
+import './billingSidebar.css';
 import axios from 'axios';
 import AddCustomer from './AddCustomer';
 
-function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClearCart, triggerMessage, setCustomerSelected }) {
+function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClearCart, triggerMessage, setCustomerSelected, customerSelected }) {
   const [customers, setCustomers] = useState([]);
   const [filteredCustomers, setFilteredCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -30,13 +30,16 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
   };
 
   useEffect(() => {
-    fetchCustomer(); 
+    fetchCustomer();
   }, []);
 
-  const handleSearchChange = (event) => {
-    const searchTerm = event.target.value;
-    setSearchTerm(searchTerm);
+  useEffect(() => {
+    if (customerSelected) {
+      setSearchTerm(customerSelected.custFullName);
+    }
+  }, [customerSelected]);
 
+  useEffect(() => {
     if (searchTerm === '') {
       setFilteredCustomers([]);
     } else {
@@ -46,12 +49,18 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
       );
       setFilteredCustomers(filtered);
     }
+  }, [searchTerm, customers]);
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    if (event.target.value === '') {
+      setCustomerSelected(null); // Clear selected customer when search term is empty
+    }
   };
 
   const handleCustomerSelect = (customer) => {
     setCustomerSelected(customer);
-    setSearchTerm('');
-    setFilteredCustomers([]);
+    setSearchTerm(customer.custFullName); // Update search term when customer is selected
   };
 
   const calculateTotal = () => {
@@ -89,16 +98,16 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
               onChange={handleSearchChange}
             />
             {searchTerm && filteredCustomers.length > 0 && (
+              customerSelected===null ? 
               <ul className="dropdown-menu show ml-3 p-0" style={{ position: 'absolute', width: '90%', zIndex: 1000 }}>
                 {filteredCustomers.map(customer => (
-                  <li key={customer.custId} className="dropdown-item " onClick={() => handleCustomerSelect(customer)}
-                  style={{ cursor: 'pointer' }}
+                  <li key={customer.custId} className="dropdown-item" onClick={() => handleCustomerSelect(customer)}
+                    style={{ cursor: 'pointer' }}
                   >
                     {customer.custFullName} ({customer.custMobile})
-              
                   </li>
                 ))}
-              </ul>
+              </ul> : <></>
             )}
           </Col>
           <Col md={3}>
@@ -149,7 +158,7 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
             </div>
           ))}
         </div>
-        {open && <AddCustomer open={open} handleClose={handleClose} triggerMessage={triggerMessage} fetchCustomer={fetchCustomer} customers={customers}/>}
+        {open && <AddCustomer open={open} handleClose={handleClose} triggerMessage={triggerMessage} fetchCustomer={fetchCustomer} customers={customers} />}
       </div>
     </div>
   );
