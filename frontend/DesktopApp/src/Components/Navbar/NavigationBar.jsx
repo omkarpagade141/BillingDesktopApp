@@ -35,6 +35,9 @@ const ProfileImage = styled('img')(({ theme }) => ({
     cursor: 'pointer',
 }));
 
+const LogoutUser=()=>{
+    window.location.href = '/';
+}
 const NavigationBar = ({ settings }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -99,6 +102,7 @@ const NavigationBar = ({ settings }) => {
                 >
                     <MenuItem onClick={handleClose}>Profile Details</MenuItem>
                     <MenuItem onClick={handleSettingsClick}>Business Settings</MenuItem>
+                    <MenuItem onClick={LogoutUser}>Logout</MenuItem>
                 </Menu>
             </StyledToolbar>
         </StyledAppBar>
