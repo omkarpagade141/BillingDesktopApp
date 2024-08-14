@@ -93,63 +93,15 @@ public class CartProducts {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+
+	@Override
+	public String toString() {
+		return "CartProducts [cartProdId=" + cartProdId + ", products=" + products + ", shoppingCartObj="
+				+ shoppingCartObj + ", quantity=" + quantity + "]";
+	}
 	
 	
 	
-
-	public CartProducts() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public CartProducts(Long cartProdId, Product products, Customer currentCustomer, int quantity,
-			LocalDate cartCreatedOn) {
-		super();
-		this.cartProdId = cartProdId;
-		this.products = products;
-		this.currentCustomer = currentCustomer;
-		this.quantity = quantity;
-		this.cartCreatedOn = cartCreatedOn;
-	}
-
-	public Long getCartProdId() {
-		return cartProdId;
-	}
-
-	public void setCartProdId(Long cartProdId) {
-		this.cartProdId = cartProdId;
-	}
-
-	public Product getProducts() {
-		return products;
-	}
-
-	public void setProducts(Product products) {
-		this.products = products;
-	}
-
-	public Customer getCurrentCustomer() {
-		return currentCustomer;
-	}
-
-	public void setCurrentCustomer(Customer currentCustomer) {
-		this.currentCustomer = currentCustomer;
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
-
-	public LocalDate getCartCreatedOn() {
-		return cartCreatedOn;
-	}
-
-	public void setCartCreatedOn(LocalDate cartCreatedOn) {
-		this.cartCreatedOn = cartCreatedOn;
-	}
 	
 	
 }
