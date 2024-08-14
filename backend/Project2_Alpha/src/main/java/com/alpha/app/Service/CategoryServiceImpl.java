@@ -79,7 +79,7 @@ public class CategoryServiceImpl implements ICategoryService {
 //	}
 
 	@Override
-	public ResponseEntity<String> updateCategoryDetails(Long cateId, String updtName, MultipartFile updtImageFile)
+	public ResponseEntity<String> updateCategoryDetails(Long cateId, String updtName, MultipartFile updtImageFile,Boolean isActiveStatus)
 			throws IOException {
 		// TODO Auto-generated method stub
 		Category oldCate = cateRepo.findById(cateId)
@@ -87,7 +87,7 @@ public class CategoryServiceImpl implements ICategoryService {
 		oldCate.setCateName(updtName);
 		// To set which date category was updated
 		oldCate.setCateLastUpdatedOn(LocalDate.now());
-		
+		oldCate.setActive(isActiveStatus);
 			if (oldCate.getCateImageUrl() != null) {
 				Path path = Paths.get(folderName + File.separator + oldCate.getCateImageUrl());
 				Files.delete(path);
@@ -119,6 +119,7 @@ public class CategoryServiceImpl implements ICategoryService {
 		Category addCat = new Category();
 		addCat.setCateCreatedOn(LocalDate.now());
 		addCat.setCateName(name);
+		
 
 		if (!imageFile.isEmpty()) {
 			long currentTimeMillis = System.currentTimeMillis();
@@ -159,15 +160,22 @@ public class CategoryServiceImpl implements ICategoryService {
 	}
 
 	@Override
-	public ResponseEntity<String> updateCategoryNameOnly(Long cateId, String updtName) {
+	public ResponseEntity<String> updateCategoryNameOnly(Long cateId, String updtName,Boolean isActiveStatus) {
 		Category oldCate = cateRepo.findById(cateId)
 				.orElseThrow(() -> new ResourceNotFoundException("Category Not found"));
 		oldCate.setCateName(updtName);
+		oldCate.setActive(isActiveStatus);
 		// To set which date category was updated
 		oldCate.setCateLastUpdatedOn(LocalDate.now());
 		cateRepo.save(oldCate);
 
 		return new ResponseEntity<String>("Category has been Updated!!!", HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<List<Category>> allActiveCategories() {
+		List<Category> activeCate = cateRepo.findByIsActive();
+		return new ResponseEntity<List<Category>>(activeCate,HttpStatus.OK);
 	}
 
 }
