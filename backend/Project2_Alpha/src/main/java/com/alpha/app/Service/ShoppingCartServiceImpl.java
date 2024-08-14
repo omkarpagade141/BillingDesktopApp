@@ -46,7 +46,7 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
 			
 			CartProducts cart = new CartProducts();
 
-			cart.setCurrentCustomer(cust);
+//			cart.setCurrentCustomer(cust);
 			cart.setProducts(prodDetails);
 			cart.setQuantity(quantity);
 			cartProdRepo.save(cart);
@@ -59,28 +59,29 @@ public class ShoppingCartServiceImpl implements IShoppingCartService {
 	}
 
 
-	@Override
-	public List<CartProducts> getCartProductList(long custId) {
-		Customer cust = custRepo.findById(custId).orElseThrow(()-> new ResourceNotFoundException("Invalid Customer details"));
-		return cartProdRepo.findByCurrentCustomer(cust);
-		
-	}
+//	@Override
+//	public List<CartProducts> getCartProductList(long custId) {
+//		Customer cust = custRepo.findById(custId).orElseThrow(()-> new ResourceNotFoundException("Invalid Customer details"));
+//		return cartProdRepo.findByCurrentCustomer(cust);
+//		
+//	}
 
 
-	@Override
-	public void removeSingleProduct(RemoveProductFromCartDTO removeProd) {
-		
-		Customer cust = custRepo.findById(removeProd.getCustId()).orElseThrow(()-> new ResourceNotFoundException("Invalid Customer details"));
-		
-		cartProdRepo.deleteByProductsAndCurrentCustomerAndCartCreatedOn(removeProd.getProdId(),removeProd.getCustId(),LocalDate.now());
-		
-	}
+//	@Override
+//	public void removeSingleProduct(RemoveProductFromCartDTO removeProd) {
+//		
+//		Customer cust = custRepo.findById(removeProd.getCustId()).orElseThrow(()-> new ResourceNotFoundException("Invalid Customer details"));
+//		
+//		cartProdRepo.deleteByProductsAndCurrentCustomerAndCartCreatedOn(removeProd.getProdId(),removeProd.getCustId(),LocalDate.now());
+//		
+//	}
 
 
 	//Trial n Error Purpose
 	@Override
 	public void addAllProductsToCartTest(List<AddProductDTO> addProd) {
 		// TODO Auto-generated method stub
+		
 		
 		
 	}

@@ -13,9 +13,9 @@ public interface IShoppingCartService {
 
 	void addProductToCart(Long custId, Long prodId, int quantity) throws UserHandlingException;
 
-	List<CartProducts> getCartProductList(long custId);
+//	List<CartProducts> getCartProductList(long custId);
 
-	void removeSingleProduct(RemoveProductFromCartDTO removeProd);
+//	void removeSingleProduct(RemoveProductFromCartDTO removeProd);
 
 	void addAllProductsToCartTest(List<AddProductDTO> addProd);
 
