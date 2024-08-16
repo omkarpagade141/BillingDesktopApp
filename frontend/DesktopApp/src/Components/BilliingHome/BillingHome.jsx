@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Button } from 'react-bootstrap';
-import BillingSidebar from "./BillingSidebar";
+import BillingSidebar from './BillingSidebar';
 import ReactDOMServer from 'react-dom/server';
-import "./Billinghome.css";
-import axios from "axios";
-import { styled } from "@mui/material";
-import InvoicePOS from "./BillPrint/InvoicePOS";
+import './Billinghome.css';
+import axios from 'axios';
+import { styled } from '@mui/material';
+import InvoicePOS from './BillPrint/InvoicePOS';
 
 function BillingHome({ triggerMessage, settings }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [products, setProducts] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("All Category");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState('All Category');
+  const [searchQuery, setSearchQuery] = useState('');
   const [cartItems, setCartItems] = useState([]);
-  const [paymentMethod, setPaymentMethod] = useState("Cash");
+  const [paymentMethod, setPaymentMethod] = useState('Cash');
   const [discountPercent, setDiscountPercent] = useState(0);
-  const [discountAmount, setDiscountAmount] = useState(0)
+  const [discountAmount, setDiscountAmount] = useState(0);
   const [taxPercent, setTaxPercent] = useState(0);
-  const [taxAmount, setTaxAmount] = useState(0)
+  const [taxAmount, setTaxAmount] = useState(0);
   const [serviceCharge, setServiceCharge] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
-  const [customerSelected, setCustomerSelected] = useState(null)
+  const [customerSelected, setCustomerSelected] = useState(null);
 
   const printPayload = {
     customerSelected,
@@ -33,57 +33,62 @@ function BillingHome({ triggerMessage, settings }) {
     taxPercent,
     discountAmount,
     discountPercent,
-    paymentMethod
-  }
-
+    paymentMethod,
+  };
 
   const StyledCard = styled(Card)(({ theme }) => ({
     backgroundColor: theme.palette.secondary.main,
   }));
 
-
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const handlePrintBill = async() => {
+  const handlePrintBill = async () => {
     if (customerSelected == null) {
-      triggerMessage('select Customer', 'error')
+      triggerMessage('select Customer', 'error');
       return;
     }
     console.log(cartItems);
     console.log(customerSelected);
 
     try {
-      const response =await axios.post('/myapi/api/order/place-order',
-        {
-          "subTotalAmt": totalAmount,
-          "discountPercentage": discountPercent,
-          "discountAmount": discountAmount,
-          "netAmount": grandTotal,
-          "customer":customerSelected,
-          "orderItems": cartItems
-        }
-      )
-      console.log(response);
-      
-       
-      
+      const orderItems = cartItems.map((item) => ({
+        product: {
+          prodId: item.prodId,
+          prodName: item.prodName,
+          prodPrice: item.prodPrice,
+          prodImageUrl: item.prodImageUrl,
+          prodCreatedOn: item.prodCreatedOn,
+          prodLastUpdatedOn: item.prodLastUpdatedOn,
+        },
+        quantity: item.quantity,
+      }));
 
+      const response = await axios.post('/myapi/api/order/place-order', {
+        subTotalAmt: totalAmount,
+        discountPercentage: discountPercent,
+        discountAmount: discountAmount,
+        netAmount: grandTotal,
+        customer: customerSelected,
+        orderItems: orderItems,
+      });
+
+      console.log(response);
     } catch (error) {
       console.log(error);
       console.log('@@@@@@@@@@@ errrrrr');
-      
-      
-
     }
 
-     
-    
-
-        const printWindow = window.open('', '_blank');
-        const printContent = ReactDOMServer.renderToString(<InvoicePOS settings={settings} cartItems={cartItems} printPayload={printPayload} />);
-        printWindow.document.write(`
+    const printWindow = window.open('', '_blank');
+    const printContent = ReactDOMServer.renderToString(
+      <InvoicePOS
+        settings={settings}
+        cartItems={cartItems}
+        printPayload={printPayload}
+      />
+    );
+    printWindow.document.write(`
           <html>
             <head>
               <title>Bill Details</title>
@@ -217,16 +222,12 @@ function BillingHome({ triggerMessage, settings }) {
             </script>
           </html>
         `);
-        printWindow.document.close();
-
-
-
-  }
+    printWindow.document.close();
+  };
 
   const fetchProducts = async () => {
     const response = await axios.get('/myapi/api/product/allproducts');
     setProducts(response.data);
-
   };
 
   const fetchCategories = async () => {
@@ -241,9 +242,10 @@ function BillingHome({ triggerMessage, settings }) {
 
   const filteredProducts = products.filter((product) => {
     return (
-      (selectedCategory === "All Category" ||
+      (selectedCategory === 'All Category' ||
         product.category.cateName === selectedCategory) &&
-      (searchQuery === "" || product.prodName.toLowerCase().includes(searchQuery))
+      (searchQuery === '' ||
+        product.prodName.toLowerCase().includes(searchQuery))
     );
   });
 
@@ -258,7 +260,9 @@ function BillingHome({ triggerMessage, settings }) {
 
   const handleAddToCart = (product) => {
     setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.prodId === product.prodId);
+      const existingItem = prevItems.find(
+        (item) => item.prodId === product.prodId
+      );
       if (existingItem) {
         return prevItems.map((item) =>
           item.prodId === product.prodId
@@ -291,17 +295,24 @@ function BillingHome({ triggerMessage, settings }) {
   };
 
   useEffect(() => {
-    calculateTotal()
-  }, [totalAmount, cartItems, taxPercent, discountPercent, serviceCharge, setTaxPercent, taxAmount, discountAmount])
+    calculateTotal();
+  }, [
+    totalAmount,
+    cartItems,
+    taxPercent,
+    discountPercent,
+    serviceCharge,
+    setTaxPercent,
+    taxAmount,
+    discountAmount,
+  ]);
 
   const calculateTotal = () => {
-
     let subtotal = cartItems.reduce(
-      (total, item) =>
-        total + parseFloat(item.prodPrice) * item.quantity,
+      (total, item) => total + parseFloat(item.prodPrice) * item.quantity,
       0
     );
-    setTotalAmount(subtotal)
+    setTotalAmount(subtotal);
     setDiscountAmount((subtotal * discountPercent) / 100);
     setTaxAmount((subtotal * taxPercent) / 100);
 
@@ -313,7 +324,10 @@ function BillingHome({ triggerMessage, settings }) {
       <div className="content d-flex flex-grow-1" style={{ maxHeight: '80vh' }}>
         <div className="left flex-grow-1 d-flex flex-column">
           <div className="top-btn d-flex align-items-center mb-4">
-            <div className="dropdown flex-shrink-1 mr-3" style={{ flexBasis: "35%" }}>
+            <div
+              className="dropdown flex-shrink-1 mr-3"
+              style={{ flexBasis: '35%' }}
+            >
               <button
                 className="dropdown-toggle btn btn-light w-100 text-bg-light p-2"
                 onClick={toggleDropdown}
@@ -324,7 +338,7 @@ function BillingHome({ triggerMessage, settings }) {
                 <div className="dropdown-menu show w-100">
                   <button
                     className="dropdown-item"
-                    onClick={() => handleCategorySelect("All Category")}
+                    onClick={() => handleCategorySelect('All Category')}
                   >
                     All Category
                   </button>
@@ -353,22 +367,33 @@ function BillingHome({ triggerMessage, settings }) {
             </div>
           </div>
           <div className="product-list-container">
-            {filteredProducts.map(product => (
-              <StyledCard className="card productCardInPOSHome" key={product.prodId} onClick={() => handleAddToCart(product)}>
+            {filteredProducts.map((product) => (
+              <StyledCard
+                className="card productCardInPOSHome"
+                key={product.prodId}
+                onClick={() => handleAddToCart(product)}
+              >
                 <Card.Img
                   variant="top"
                   src={`/myapi/api/images?imageName=${product.prodImageUrl}`}
                   className="card-img"
                 />
                 <Card.Body className="d-flex flex-column cardBodyInTheProduct">
-                  <Card.Title className="mb-2 textInTheCard text-center">{product.prodName}</Card.Title>
-                  <Card.Text className="textInTheCard text-center">{product.prodPrice}</Card.Text>
+                  <Card.Title className="mb-2 textInTheCard text-center">
+                    {product.prodName}
+                  </Card.Title>
+                  <Card.Text className="textInTheCard text-center">
+                    {product.prodPrice}
+                  </Card.Text>
                 </Card.Body>
               </StyledCard>
             ))}
           </div>
         </div>
-        <div className="right flex-shrink-0" style={{ width: "470px", overflowY: "auto" }}>
+        <div
+          className="right flex-shrink-0"
+          style={{ width: '470px', overflowY: 'auto' }}
+        >
           <BillingSidebar
             cartItems={cartItems}
             onQuantityChange={handleQuantityChange}
@@ -384,7 +409,9 @@ function BillingHome({ triggerMessage, settings }) {
       <footer className="footer d-flex justify-content-between align-items-center p-2 footerInPOSHome">
         <div className="form-container d-flex align-items-center">
           <div className="form-group mb-0 mr-2">
-            <label htmlFor="discount" className="form-label">Discount</label>
+            <label htmlFor="discount" className="form-label">
+              Discount
+            </label>
             <select
               className="form-control form-control-sm"
               id="discount"
@@ -398,7 +425,9 @@ function BillingHome({ triggerMessage, settings }) {
             </select>
           </div>
           <div className="form-group mb-0 mr-2">
-            <label htmlFor="tax" className="form-label">Tax</label>
+            <label htmlFor="tax" className="form-label">
+              Tax
+            </label>
             <input
               type="number"
               className="form-control form-control-sm"
@@ -409,18 +438,24 @@ function BillingHome({ triggerMessage, settings }) {
             />
           </div>
           <div className="form-group mb-0 mr-2">
-            <label htmlFor="serviceCharge" className="form-label">Service Charge</label>
+            <label htmlFor="serviceCharge" className="form-label">
+              Service Charge
+            </label>
             <input
               type="number"
               className="form-control form-control-sm"
               id="serviceCharge"
               value={serviceCharge}
-              onChange={(e) => setServiceCharge(parseFloat(e.target.value) || 0)}
+              onChange={(e) =>
+                setServiceCharge(parseFloat(e.target.value) || 0)
+              }
               placeholder="Service Charge"
             />
           </div>
           <div className="form-group mb-0 mr-2">
-            <label htmlFor="paymentMethod" className="form-label">Payment Method</label>
+            <label htmlFor="paymentMethod" className="form-label">
+              Payment Method
+            </label>
             <select
               className="form-control form-control-sm"
               id="paymentMethod"
@@ -444,7 +479,9 @@ function BillingHome({ triggerMessage, settings }) {
           <button className="btn btn-danger btn-sm" onClick={handleClearCart}>
             Clear All
           </button>
-          <button className="btn btn-dark btn-sm" onClick={handlePrintBill}>Place Order</button>
+          <button className="btn btn-dark btn-sm" onClick={handlePrintBill}>
+            Place Order
+          </button>
         </div>
       </footer>
     </div>
