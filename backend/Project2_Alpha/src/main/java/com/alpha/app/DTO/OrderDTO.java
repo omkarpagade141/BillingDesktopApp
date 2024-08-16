@@ -13,6 +13,7 @@ public class OrderDTO {
 	private int discountPercentage;
 	private double discountAmount;
 	private double netAmount;
+	private String paymentMode;
 	
 	private Customer customer;
 	
@@ -20,16 +21,20 @@ public class OrderDTO {
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	public OrderDTO(List<OrderItemsDTO> orderItems, double subTotalAmt, int discountPercentage, double discountAmount,
-			double netAmount, Customer customer) {
+			double netAmount, String paymentMode, Customer customer) {
 		super();
 		this.orderItems = orderItems;
 		this.subTotalAmt = subTotalAmt;
 		this.discountPercentage = discountPercentage;
 		this.discountAmount = discountAmount;
 		this.netAmount = netAmount;
+		this.paymentMode = paymentMode;
 		this.customer = customer;
 	}
+
+
 
 	public List<OrderItemsDTO> getOrderItems() {
 		return orderItems;
@@ -77,6 +82,16 @@ public class OrderDTO {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+
+	public String getPaymentMode() {
+		return paymentMode;
+	}
+
+
+	public void setPaymentMode(String paymentMode) {
+		this.paymentMode = paymentMode;
 	}
 	
 	
