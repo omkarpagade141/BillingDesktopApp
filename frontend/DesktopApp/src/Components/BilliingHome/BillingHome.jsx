@@ -49,6 +49,7 @@ function BillingHome({ triggerMessage, settings }) {
       triggerMessage('select Customer', 'error');
       return;
     }
+    
     console.log(cartItems);
     console.log(customerSelected);
 
@@ -64,6 +65,10 @@ function BillingHome({ triggerMessage, settings }) {
         },
         quantity: item.quantity,
       }));
+      if (!orderItems.length>0) {
+        triggerMessage('Cart is empty', 'error');
+        return;
+      }
 
       const response = await axios.post('/myapi/api/order/place-order', {
         subTotalAmt: totalAmount,
@@ -75,10 +80,16 @@ function BillingHome({ triggerMessage, settings }) {
       });
 
       console.log(response);
+      if (response.status == 201) {
+        triggerMessage('saved Successfully, Printing...', 'success');
+        handleClearCart()
+
+      }
     } catch (error) {
       console.log(error);
       console.log('@@@@@@@@@@@ errrrrr');
     }
+
 
     const printWindow = window.open('', '_blank');
     const printContent = ReactDOMServer.renderToString(
@@ -316,7 +327,7 @@ function BillingHome({ triggerMessage, settings }) {
     setDiscountAmount((subtotal * discountPercent) / 100);
     setTaxAmount((subtotal * taxPercent) / 100);
 
-    setGrandTotal(subtotal - discountAmount + taxAmount + serviceCharge);
+    setGrandTotal(subtotal - discountAmount + taxAmount + parseFloat(serviceCharge));
   };
 
   return (
@@ -429,11 +440,17 @@ function BillingHome({ triggerMessage, settings }) {
               Tax
             </label>
             <input
-              type="number"
+              type="text"
               className="form-control form-control-sm"
               id="tax"
               value={taxPercent}
-              onChange={(e) => setTaxPercent(parseFloat(e.target.value) || 0)}
+              onChange={(e) => {
+                if (/^\d*(\.\d*)?$/.test(e.target.value)) {
+                  setTaxPercent(e.target.value)
+                } else {
+                  triggerMessage('Price should contain only numbers..', 'error');
+                }
+              }}
               placeholder="Tax (0%)"
             />
           </div>
@@ -442,12 +459,17 @@ function BillingHome({ triggerMessage, settings }) {
               Service Charge
             </label>
             <input
-              type="number"
+              type="text"
               className="form-control form-control-sm"
               id="serviceCharge"
               value={serviceCharge}
-              onChange={(e) =>
-                setServiceCharge(parseFloat(e.target.value) || 0)
+              onChange={(e) =>{
+                if (/^\d*(\.\d*)?$/.test(e.target.value)) {
+                  setServiceCharge(e.target.value || 0)
+                } else {
+                  triggerMessage('Price should contain only numbers..', 'error');
+                }
+              }
               }
               placeholder="Service Charge"
             />

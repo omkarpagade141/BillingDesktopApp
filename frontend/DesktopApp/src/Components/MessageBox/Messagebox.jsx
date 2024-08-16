@@ -24,7 +24,7 @@ const MessageBox = ({ message, severity,timestamp }) => {
     };
 
     return (
-        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}  anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
+        <Snackbar open={open} autoHideDuration={2500} onClose={handleClose}  anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
             <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
                 {message}
             </Alert>
