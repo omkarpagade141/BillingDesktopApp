@@ -16,6 +16,7 @@ function Category({ triggerMessage }) {
     const [categories, setCategories] = useState([]);
     const [updatedCatName, setUpdatedCatName] = useState('')
     const [updatedCatImage, setUpdatedCatImage] = useState(null)
+    const [activeStatus,setActiveStatus]=useState('')
 
 
     const fetchcategories = async () => {
@@ -61,6 +62,7 @@ function Category({ triggerMessage }) {
             const formData = new FormData();
             formData.append('cateName', updatedCatName || category.cateName);
             formData.append('imageName', imageToSend);
+            formData.append('isActive', activeStatus);
             const reponse = await axios.put(`/myapi/api/category/update/${id}`, formData)
             console.log(reponse, '@@@@@@@@@@@@@@@@@@');
             if (reponse.status === 200) {
@@ -73,6 +75,7 @@ function Category({ triggerMessage }) {
             const formData = new FormData();
             formData.append('cateName', updatedCatName || category.cateName);
             formData.append('imageName', updatedCatImage);
+            formData.append('isActive', activeStatus);
             const reponse = await axios.put(`/myapi/api/category/update/${id}`, formData)
             console.log(reponse, '@@@@@@@@@@@@@@@@@@');
             if (reponse.status === 200) {
@@ -130,8 +133,8 @@ function Category({ triggerMessage }) {
                                                         <tr>
                                                             <th>ID</th>
                                                             <th>Name</th>
-
                                                             <th>Image</th>
+                                                            <th>Active/Inaxtive</th>
                                                             <th>Action</th>
 
                                                         </tr>
@@ -158,6 +161,21 @@ function Category({ triggerMessage }) {
                                                                             {/* /myapi/api/images?imageName=${item.cateImageUrl} */}
                                                                             <img src={`/myapi/api/images?imageName=${item.cateImageUrl}`} alt={item.cateName} style={{ width: '30px', height: '30px' }}
                                                                             />
+                                                                        </td>
+
+                                                                }
+                                                                 {
+                                                                    editMode == item.cateId ?
+                                                                        <td>
+                                                                            <input type="radio" name="Active" id=""
+                                                                             onClick={()=>setActiveStatus('True')} />Active 
+                                                                            <input type="radio" name="Inactive" id="" 
+                                                                            onClick={()=>setActiveStatus('False')} />Inactive     
+                                                                            
+                                                                            </td>
+                                                                        :
+                                                                        <td>
+                                                                             {`${item.active}`==`true` ? "active" : "inactive"}
                                                                         </td>
 
                                                                 }
