@@ -66,6 +66,7 @@ public class OrderServiceImpl implements IOrderService {
 		order.setDiscountPercentage(orderDetails.getDiscountPercentage());
 		order.setDiscountAmount(orderDetails.getDiscountAmount());
 		order.setNetAmount(orderDetails.getNetAmount());
+		order.setPaymentMode(orderDetails.getPaymentMode());
 		
 		orderRepo.save(order);
 		

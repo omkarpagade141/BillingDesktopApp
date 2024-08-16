@@ -48,6 +48,9 @@ public class Order {
 	@Column(name="net_amount")
 	private double netAmount;
 	
+	@Column(name="payment_mtd")
+	private String paymentMode;
+	
 	@CreationTimestamp 
 	@Column(name = "order_created_date")
 	private LocalDate orderCreatedOn;
@@ -56,8 +59,10 @@ public class Order {
 		// TODO Auto-generated constructor stub
 	}
 
+
 	public Order(Long orderId, ShoppingCart shoppingCart, Customer customerObj, double subTotalAmt,
-			int discountPercentage, double discountAmount, double netAmount, LocalDate orderCreatedOn) {
+			int discountPercentage, double discountAmount, double netAmount, String paymentMode,
+			LocalDate orderCreatedOn) {
 		super();
 		this.orderId = orderId;
 		this.shoppingCart = shoppingCart;
@@ -66,8 +71,21 @@ public class Order {
 		this.discountPercentage = discountPercentage;
 		this.discountAmount = discountAmount;
 		this.netAmount = netAmount;
+		this.paymentMode = paymentMode;
 		this.orderCreatedOn = orderCreatedOn;
 	}
+
+
+
+	public String getPaymentMode() {
+		return paymentMode;
+	}
+
+
+	public void setPaymentMode(String paymentMode) {
+		this.paymentMode = paymentMode;
+	}
+
 
 	public Long getOrderId() {
 		return orderId;
