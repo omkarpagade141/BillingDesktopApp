@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @CrossOrigin(origins = "*")
 public class FileController {
 
+	// GET Image from image folder of all category, product
 	private final Path imageFolder = Paths.get("images");
 
     @GetMapping("/api/images")
@@ -35,6 +36,31 @@ public class FileController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+    
+    // For GET Image of Bussiness Logo from business_logo folder
+    private final Path businessLogoFolder = Paths.get("business_logo");
+    
+    @GetMapping("/api/business-logo")
+    public ResponseEntity<Resource> getBusinessLogo(@RequestParam String businessLogo)
+    {
+    	try {
+    		
+    		Path logoPath = businessLogoFolder.resolve(businessLogo);
+    		File logoFile = logoPath.toFile();
+    		if(!logoFile.exists())
+    		{
+    			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    		}
+    		Resource logoResource = new org.springframework.core.io.FileSystemResource(logoFile);
+    		
+    		return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, "image/jpeg") // Adjust MIME type based on your image type
+                    .body(logoResource);
+			
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
     }
   
 }

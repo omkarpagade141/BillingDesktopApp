@@ -129,6 +129,11 @@ public class ProjectSetting {
 				+ ", businessGSTNumber=" + businessGSTNumber + ", businessLogoImagePath=" + businessLogoImagePath + "]";
 	}
 	
-	
+	// Helper method to set image path to project settings
+	public String upsertImageToProject(String imagePath)
+	{
+		this.setBusinessLogoImagePath(imagePath);
+		return "Logo set successfully";
+	}
 	
 }

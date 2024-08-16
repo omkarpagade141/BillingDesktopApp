@@ -172,7 +172,8 @@ public class SettingServiceImpl implements ISettingService {
 
                 String targetPath = folderName + File.separator + imageName.getOriginalFilename();
                 Files.copy(imageName.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
-                updt.setBusinessLogoImagePath(imageName.getOriginalFilename());
+//                updt.setBusinessLogoImagePath(imageName.getOriginalFilename());
+                updt.upsertImageToProject(imageName.getOriginalFilename());
             }
             settingRepo.save(updt);
         } else {
@@ -185,7 +186,7 @@ public class SettingServiceImpl implements ISettingService {
             if (imageName != null && !imageName.isEmpty()) {
                 String targetPath = folderName + File.separator + imageName.getOriginalFilename();
                 Files.copy(imageName.getInputStream(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
-                proj.setBusinessLogoImagePath(imageName.getOriginalFilename());
+                proj.upsertImageToProject(imageName.getOriginalFilename());
             }
             settingRepo.save(proj);
         }
