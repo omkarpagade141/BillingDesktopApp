@@ -1,8 +1,11 @@
 package com.alpha.app.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +18,9 @@ import com.alpha.app.Entity.Customer;
 import com.alpha.app.Entity.Order;
 import com.alpha.app.Entity.Product;
 import com.alpha.app.Entity.ShoppingCart;
+import com.alpha.app.Exception.ResourceNotFoundException;
 import com.alpha.app.Repositiory.CartProductsRepositiory;
+import com.alpha.app.Repositiory.CustomerRepositiory;
 import com.alpha.app.Repositiory.OrderRepositiory;
 import com.alpha.app.Repositiory.ShoppingCartRepositiory;
 
@@ -32,7 +37,13 @@ public class OrderServiceImpl implements IOrderService {
 	private CartProductsRepositiory cartProductRepo;
 	
 	@Autowired
+	private CustomerRepositiory custRepo;
+	
+	@Autowired
 	private OrderRepositiory orderRepo;
+	
+	@Autowired
+	private ModelMapper mapper;
 
 	@Override
 	public ResponseEntity<?> placeOrderDetails(OrderDTO orderDetails) {
@@ -71,6 +82,35 @@ public class OrderServiceImpl implements IOrderService {
 		orderRepo.save(order);
 		
 		return new ResponseEntity<>("Order placed for customer "+custDetails.getCustFullName(), HttpStatus.CREATED);
+	}
+
+	@Override
+	public ResponseEntity<?> getCustLatestBill(Long custId) {
+		// TODO Auto-generated method stub
+		Customer cust = custRepo.findById(custId).get();
+		System.out.println("Customer is "+cust);
+		Long shopCart = shopCartRepo.findByCustomerIdAndTodayDate(cust.getCustId(),LocalDate.now());
+		System.out.println("Shopcart is "+shopCart);
+//		List<CartProducts> orderItems= cartProductRepo.findAllByShoppingCartObj(shopCart);
+		List<OrderItemsDTO> orderItems= cartProductRepo.findAllByShoppingCartObj(shopCart);
+		
+//		List<OrderItemsDTO> result = new ArrayList<>();
+//		for (CartProducts i : orderItems) {
+//			Product p = i.getProducts();
+//			int quantity = i.getQuantity();
+//			OrderItemsDTO od = new OrderItemsDTO(p, quantity);
+//			result.add(od);
+//		}
+		
+//		return new ResponseEntity<>(result,HttpStatus.OK);
+		return new ResponseEntity<>(orderItems,HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<?> getListOfTop5MostSellingProducts() {
+		// TODO Auto-generated method stub
+		List<Product> prodList = cartProductRepo.findMostSelling5Products();
+		return new ResponseEntity<>(prodList,HttpStatus.OK);
 	}
 	
 }

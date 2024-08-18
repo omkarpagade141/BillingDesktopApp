@@ -8,13 +8,25 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.alpha.app.DTO.OrderItemsDTO;
 import com.alpha.app.Entity.CartProducts;
 import com.alpha.app.Entity.Customer;
+import com.alpha.app.Entity.Product;
+import com.alpha.app.Entity.ShoppingCart;
 
 @Repository
 public interface CartProductsRepositiory extends JpaRepository<CartProducts, Long>{
 
-//	List<CartProducts> findByCurrentCustomer(Customer cust);
+//	@Query("SELECT o FROM CartProducts o WHERE o.shoppingCartObj.shopCartId =?1")
+//	List<CartProducts> findAllByShoppingCartObj(Long shopCart);
+	
+	@Query("SELECT new com.alpha.app.DTO.OrderItemsDTO(o.products, o.quantity) FROM CartProducts o WHERE o.shoppingCartObj.shopCartId =?1")
+	List<OrderItemsDTO> findAllByShoppingCartObj(Long shopCart);
+
+	@Query("SELECT p.products FROM CartProducts p GROUP BY p.products.prodId ORDER BY COUNT(p.products.prodId) DESC LIMIT 5")
+	List<Product> findMostSelling5Products();
+
+
 
 //	@Modifying
 //	@Query("DELETE FROM CartProducts c WHERE c.products.prodId = ?1 AND c.currentCustomer.custId = ?2 AND c.cartCreatedOn = ?3")
