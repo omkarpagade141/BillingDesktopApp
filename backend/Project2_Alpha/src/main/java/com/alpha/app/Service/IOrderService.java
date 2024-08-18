@@ -8,4 +8,8 @@ public interface IOrderService {
 
 	ResponseEntity<?> placeOrderDetails(OrderDTO orderDetails);
 
+	ResponseEntity<?> getCustLatestBill(Long custId);
+
+	ResponseEntity<?> getListOfTop5MostSellingProducts();
+
 }
