@@ -158,7 +158,7 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
             </div>
           ))}
         </div>
-        {open && <AddCustomer open={open} handleClose={handleClose} triggerMessage={triggerMessage} fetchCustomer={fetchCustomer} customers={customers} />}
+        {open && <AddCustomer open={open} handleClose={handleClose} triggerMessage={triggerMessage} fetchCustomer={fetchCustomer} customers={customers} handleCustomerSelect={handleCustomerSelect} />}
       </div>
     </div>
   );

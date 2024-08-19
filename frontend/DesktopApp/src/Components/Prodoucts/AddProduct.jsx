@@ -30,9 +30,9 @@ const AddProduct = ({ open, handleClose , triggerMessage , fetchProducts }) => {
 
   useEffect(()=>{
     const fetchcategories= async()=>{
-       const response= await axios.get('/myapi/api/category/allcategories')
+       const response= await axios.get('/myapi/api/category/active-categories')
        setCategories(response.data)
-       console.log(response.data,'#############');
+        
     }
     fetchcategories()
 
@@ -101,7 +101,13 @@ const AddProduct = ({ open, handleClose , triggerMessage , fetchProducts }) => {
                           required
                           placeholder="Enter product name"
                           value={productName}
-                          onChange={(e) => setProductName(e.target.value)}
+                          onChange={(e) =>{
+                            if ( /^[A-Za-z]*$/.test(e.target.value) && value.length <= 20) {
+                              setProductName(e.target.value)
+                          }else{
+                              triggerMessage('Only characters allowed..', 'error');
+                          }
+                          } }
                         />
                       </Form.Group>
 
