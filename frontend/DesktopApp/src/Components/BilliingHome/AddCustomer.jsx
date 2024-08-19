@@ -5,42 +5,33 @@ import Button from "@mui/material/Button";
 import { Row, Col, Card, Form } from "react-bootstrap";
 import axios from 'axios';
 
-function AddCustomer({ handleClose, open, triggerMessage, fetchCustomer, customers }) {
+function AddCustomer({ handleClose, open, triggerMessage, fetchCustomer, customers, handleCustomerSelect }) {
     const [customerName, setCustomerName] = useState('');
     const [contactNumber, setContactNumber] = useState('');
-
-    const validateContactNumber = (value) => {
-        // Check if the value contains only digits and is exactly 10 digits long
-        if (value.length > 10 || isNaN(value)) {
-            triggerMessage('Contact number must be exactly 10 digits and contain only numbers.', 'error');
-            return false;
-        }
-        if (value.length === 10) {
-            return true;
-        }
-        return false;
-    };
+    const [contactNumberError, setContactNumberError] = useState('');
 
     const handleContactNumberChange = (e) => {
         const value = e.target.value;
         // Allow only digits and restrict length to 10
         const newValue = value.replace(/[^0-9]/g, '').slice(0, 10);
         setContactNumber(newValue);
+    };
 
-        // Validate the new value
-        if (!validateContactNumber(newValue)) {
-            triggerMessage('Contact number must be exactly 10 digits and contain only numbers.', 'error');
-        } else {
-            // Clear error message if value is valid
-            triggerMessage('', ''); // Clear error message
+    const validateContactNumber = (value) => {
+        // Check if the value contains exactly 10 digits
+        if (value.length !== 10) {
+            setContactNumberError('Contact number must be exactly 10 digits and contain only numbers.');
+            return false;
         }
+        setContactNumberError('');
+        return true;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validate contact number length and numeric value before submission
-        if (!validateContactNumber(contactNumber)) { 
+        if (!validateContactNumber(contactNumber)) {
             return;
         }
 
@@ -59,6 +50,7 @@ function AddCustomer({ handleClose, open, triggerMessage, fetchCustomer, custome
             });
 
             if (response.status === 201) {
+                handleCustomerSelect(response.data);
                 triggerMessage('Customer Added Successfully', 'success');
                 fetchCustomer(); // Fetch updated customer list
                 handleClose(); // Close the dialog
@@ -100,7 +92,10 @@ function AddCustomer({ handleClose, open, triggerMessage, fetchCustomer, custome
                                                     value={contactNumber}
                                                     onChange={handleContactNumberChange}
                                                 />
-                                                {/* Optional: Display the error message */}
+                                                {/* Display the error message only if there is an error */}
+                                                {contactNumberError && (
+                                                    <Form.Text className="text-danger">{contactNumberError}</Form.Text>
+                                                )}
                                             </Form.Group>
 
                                             <Button type="submit" className="mt-3">
