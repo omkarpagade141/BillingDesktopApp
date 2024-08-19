@@ -4,17 +4,31 @@ import { Container, Typography } from '@mui/material';
 import PieChartComponent from './AllBillsPieChart';
 import TimeVsCustomerChart from './TimeVsCustomer';
 import axios from 'axios';
-import './ReportPage.css'
+import { useNavigate } from 'react-router-dom'; 
+
+
+
+
 
 function ReportPage() {
-  const [noOfProd,setNoOfProd]=useState([])
+  const navigate = useNavigate();
+  const [noOfProd, setNoOfProd] = useState([])
   const [customers, setCustomers] = useState([])
+
+
+  const openAllCustomer = () => {
+    navigate('/dashboard/allcustomers')
+  }
+  
+  const openAllProducts = () => {
+    navigate('/dashboard/products')
+  }
 
   const fetchCustomer = async () => {
     const response = await axios.get("/myapi/api/customer/allcustomers")
     setCustomers(response.data)
 
-     
+
   }
 
 
@@ -22,107 +36,103 @@ function ReportPage() {
     const response = await axios.get('/myapi/api/product/allproducts')
     setNoOfProd(response.data)
 
-}
-useEffect(() => {
+  }
+  useEffect(() => {
     fetchProducts()
     fetchCustomer()
-}, [])
+  }, [])
 
   return (
     <div className='scrollToReportDiv p-1'>
       <Row className='mt-4'>
-        <Col md={8}>
+        <Col md={12}>
           <Row>
-            <Col md={6}>
-              <Card className='fixed-card'>
+            <Col md={2}>
+              <Card className='fixed-card' style={{ height: '90px' }}>
                 <Card.Body>
-                  <Card.Title className='text-center'>All Bills</Card.Title>
-                  <Row > 
+                  <Card.Title className='text-center' style={{ fontSize: '15px' }}>All Bills</Card.Title>
+                  <Row >
                     <Col md={12} className='text-center'>
-                    <h3>0</h3>
+                      <h3>0</h3>
                     </Col>
                   </Row>
                 </Card.Body>
               </Card>
             </Col>
-            <Col md={6}>
-              <Card className='fixed-card'>
+            <Col md={2}>
+              <Card className='fixed-card' style={{ height: '90px' }}>
                 <Card.Body>
-                  <Card.Title className='text-center'>Today's Bills</Card.Title>
-                  <Row > 
+                  <Card.Title className='text-center' style={{ fontSize: '15px' }}>Today's Bills</Card.Title>
+                  <Row >
                     <Col md={12} className='text-center'>
-                    <h3>0</h3>
+                      <h3>0</h3>
                     </Col>
                   </Row>
                 </Card.Body>
               </Card>
             </Col>
-          </Row>
-
-
-          <Row className='mt-4'>
-            <Col md={6}>
-              <Card className='fixed-card'>
+            <Col md={2}>
+              <Card className='fixed-card' style={{ height: '90px' }} onClick={openAllCustomer }>
                 <Card.Body>
-                  <Card.Title className='text-center'>Today's Business</Card.Title>
-                  <Row > 
+                  <Card.Title className='text-center' style={{ fontSize: '15px' }}>All Customers</Card.Title>
+                  <Row >
                     <Col md={12} className='text-center'>
-                    <h3>0 Rs</h3>
+                      <h3>{customers.length}</h3>
                     </Col>
                   </Row>
                 </Card.Body>
               </Card>
             </Col>
-            <Col md={6}>
-              <Card className='fixed-card'>
+            <Col md={2}>
+              <Card className='fixed-card' style={{ height: '90px' }} onClick={openAllProducts}>
                 <Card.Body>
-                  <Card.Title className='text-center'>Monthly Business</Card.Title>
-                  <Row > 
+                  <Card.Title className='text-center' style={{ fontSize: '15px' }}>Total Products</Card.Title>
+                  <Row >
                     <Col md={12} className='text-center'>
-                    <h3>0</h3>
+                      <h3>{noOfProd.length}</h3>
                     </Col>
                   </Row>
                 </Card.Body>
               </Card>
             </Col>
-          </Row>
-
-
-
-          <Row className='mt-4'>
-            <Col md={6}>
-              <Card className='fixed-card'>
+            <Col md={2}>
+              <Card className='fixed-card' style={{ height: '90px' }}>
                 <Card.Body>
-                  <Card.Title className='text-center'>Total Products</Card.Title>
-                  <Row > 
+                  <Card.Title className='text-center' style={{ fontSize: '15px' }}>Today's Business</Card.Title>
+                  <Row >
                     <Col md={12} className='text-center'>
-                    <h3>{noOfProd.length}</h3>
+                      <h3>0 Rs</h3>
                     </Col>
                   </Row>
                 </Card.Body>
               </Card>
             </Col>
-            <Col md={6}>
-              <Card className='fixed-card'>
+            <Col md={2}>
+              <Card className='fixed-card' style={{ height: '90px' }}>
                 <Card.Body>
-                  <Card.Title className='text-center'>All Customers</Card.Title>
-                  <Row > 
+                  <Card.Title className='text-center' style={{ fontSize: '15px' }}>Monthly Business</Card.Title>
+                  <Row >
                     <Col md={12} className='text-center'>
-                    <h3>{customers.length}</h3>
+                      <h3>0</h3>
                     </Col>
                   </Row>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
+
+
+           
         </Col>
-        <Col md={4} className=''>
+       
+      </Row>
+      <Row style={{marginTop:'15px'}}>
+      <Col md={4}>
           <Container>
             <PieChartComponent />
-          </Container></Col>
-      </Row>
-      <Row>
-        <Col md={7}>
+          </Container>
+        </Col>
+        <Col md={8}>
           <div >
             <TimeVsCustomerChart />
           </div>

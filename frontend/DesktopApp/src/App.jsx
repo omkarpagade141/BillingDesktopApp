@@ -34,7 +34,7 @@ function App() {
         business_email: response.data.businessEmail,
         business_address: response.data.businessAddress,
         business_gst_number: response.data.businessGSTNumber,
-        business_logo: `http://localhost:8080/api/business-logo?businessLogo=${response.data.businessLogoImagePath}`
+        business_logo: `/myapi/api/business-logo?businessLogo=${response.data.businessLogoImagePath}`
       })
 
     }

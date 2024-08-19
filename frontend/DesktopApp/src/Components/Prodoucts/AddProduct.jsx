@@ -101,13 +101,14 @@ const AddProduct = ({ open, handleClose , triggerMessage , fetchProducts }) => {
                           required
                           placeholder="Enter product name"
                           value={productName}
-                          onChange={(e) =>{
-                            if ( /^[A-Za-z]*$/.test(e.target.value) && value.length <= 20) {
-                              setProductName(e.target.value)
-                          }else{
-                              triggerMessage('Only characters allowed..', 'error');
-                          }
-                          } }
+                          onChange={(e) => {
+                            // Allow letters and spaces, with a maximum length of 20 characters
+                            if (/^[A-Za-z\s]*$/.test(e.target.value) && e.target.value.length <= 20) {
+                                setProductName(e.target.value);
+                            } else {
+                                triggerMessage('Only letters and spaces allowed, up to 20 characters.', 'error');
+                            }
+                        }}
                         />
                       </Form.Group>
 
