@@ -238,11 +238,17 @@ function BillingHome({ triggerMessage, settings }) {
 
   const fetchProducts = async () => {
     const response = await axios.get('/myapi/api/product/allproducts');
-    setProducts(response.data);
+    const Allproducts = response.data;
+    const ActiveProducts=Allproducts.filter(product => product.category.active);
+    setProducts(ActiveProducts)
+
+    
+    console.log(response.data);
+    
   };
 
   const fetchCategories = async () => {
-    const response = await axios.get('/myapi/api/category/allcategories');
+    const response = await axios.get('/myapi/api/category/active-categories');
     setAllCategories(response.data);
   };
 

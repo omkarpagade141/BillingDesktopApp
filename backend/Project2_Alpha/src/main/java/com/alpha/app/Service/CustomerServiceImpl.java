@@ -37,6 +37,6 @@ public class CustomerServiceImpl implements ICustomerService {
 		Customer cust = mapper.map(addCust, Customer.class);
 		cust.setCustCreatedOn(LocalDate.now());
 		custRepo.save(cust);
-		return new ResponseEntity<>("Register done successfully", HttpStatus.CREATED);
+		return new ResponseEntity<>(cust, HttpStatus.CREATED);
 	}
 }

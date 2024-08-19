@@ -17,12 +17,12 @@ const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 const PieChartComponent = () => {
   return (
     <Paper style={{ padding: 20 } } >
-      <PieChart width={350} height={350} >
+      <PieChart width={350} height={390} >
         <Pie
           data={data}
           cx="50%"
           cy="50%"
-          outerRadius={150}
+          outerRadius={130}
           fill="#8884d8"
           dataKey="value"
         >

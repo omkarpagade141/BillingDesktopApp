@@ -30,9 +30,9 @@ const AddProduct = ({ open, handleClose , triggerMessage , fetchProducts }) => {
 
   useEffect(()=>{
     const fetchcategories= async()=>{
-       const response= await axios.get('/myapi/api/category/allcategories')
+       const response= await axios.get('/myapi/api/category/active-categories')
        setCategories(response.data)
-       console.log(response.data,'#############');
+        
     }
     fetchcategories()
 
@@ -101,7 +101,14 @@ const AddProduct = ({ open, handleClose , triggerMessage , fetchProducts }) => {
                           required
                           placeholder="Enter product name"
                           value={productName}
-                          onChange={(e) => setProductName(e.target.value)}
+                          onChange={(e) => {
+                            // Allow letters and spaces, with a maximum length of 20 characters
+                            if (/^[A-Za-z\s]*$/.test(e.target.value) && e.target.value.length <= 20) {
+                                setProductName(e.target.value);
+                            } else {
+                                triggerMessage('Only letters and spaces allowed, up to 20 characters.', 'error');
+                            }
+                        }}
                         />
                       </Form.Group>
 

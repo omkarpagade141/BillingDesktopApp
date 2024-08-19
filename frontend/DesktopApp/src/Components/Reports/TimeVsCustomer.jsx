@@ -18,14 +18,14 @@ const data = [
 ];
 
 const TimeVsCustomerChart = () => (
-  <Card style={{ padding: '20px', marginTop: '20px' }}>
+  <Card style={{ padding: '20px' }}>
     <Typography variant="h6" gutterBottom>
       Time in Month vs. Customers
     </Typography>
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={350}>
       <LineChart
         data={data}
-        margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
+        
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="month" />

@@ -8,6 +8,7 @@ import ReportPage from '../Reports/ReportPage';
 import MessageBox from '../MessageBox/Messagebox';
 import Setting from '../SettingMaster/Setting';
 import InvoicePOS from '../BilliingHome/BillPrint/InvoicePOS';
+import AllCustomerList from '../Reports/AllCustomerList';
 
 
 
@@ -30,6 +31,7 @@ function Dashboard({settings,fetchSetting}) {
         <Route path="/products" element={<Products settings={settings} triggerMessage={triggerMessage}/>} />
         <Route path="/reports" element={<ReportPage settings={settings} triggerMessage={triggerMessage}/>} />
         <Route path="/setting" element={<Setting settings={settings} triggerMessage={triggerMessage} fetchSetting={fetchSetting}/>} />
+        <Route path="/allcustomers" element={<AllCustomerList settings={settings} triggerMessage={triggerMessage}/>} />
       </Routes>
       <Outlet />  
     </div>
