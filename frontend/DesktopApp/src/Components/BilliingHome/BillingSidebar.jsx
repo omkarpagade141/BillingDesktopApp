@@ -116,17 +116,18 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
         </Row>
         <div className="container">
           <div className="row border-bottom mb-2 font-weight-bold">
-            <div className="col-2">Image</div>
+            {/* <div className="col-2">Image</div> */}
             <div className="col-3">Name</div>
             <div className="col-3">Quantity</div>
             <div className="col-2">Price</div>
+            <div className='col-2'>Total</div>
             <div className="col-2">Action</div>
           </div>
           {cartItems.map(item => (
             <div className="row mb-2" key={item.prodId}>
-              <div className="col-2 d-flex align-items-center">
+              {/* <div className="col-2 d-flex align-items-center">
                 <img src={`/myapi/api/images?imageName=${item.prodImageUrl}`} alt={item.title} className="img-thumbnail" style={{ width: '40px', height: '40px' }} />
-              </div>
+              </div> */}
               <div className="col-3 d-flex align-items-center">
                 {item.prodName}
               </div>
@@ -152,6 +153,10 @@ function BillingSidebar({ cartItems, onQuantityChange, onRemoveFromCart, onClear
               <div className="col-2 d-flex align-items-center">
                 {item.prodPrice}
               </div>
+              <div className="col-2 d-flex align-items-center">
+                {item.prodPrice*item.quantity}
+              </div>
+              
               <div className="col-2 d-flex align-items-center">
                 <button className="btn btn-sm btn-outline-danger" onClick={() => onRemoveFromCart(item.prodId)}>🗑</button>
               </div>

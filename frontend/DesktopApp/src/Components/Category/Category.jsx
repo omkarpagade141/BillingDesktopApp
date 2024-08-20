@@ -138,6 +138,7 @@ function Category({ triggerMessage }) {
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                
                                                 {categories.map(item => (
                                                     <tr key={item.cateId} className='TableRowInCategory'>
                                                         <td>{item.cateId}</td>

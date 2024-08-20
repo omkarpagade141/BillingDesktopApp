@@ -9,7 +9,12 @@ const InvoicePOS = ({ settings, cartItems, printPayload }) => {
 
     <div id="invoice-POS">
       <center id="top">
-        <div className="logo"></div>
+        <div className=""><img
+                        src={settings.business_logo}
+                        className='mr-2'
+                        alt="EasyBilling Logo"
+                        style={{ height: '60px',borderRadius:'999px',width:'60px' }}
+                    /></div>
         <div className="info">
           <h2>{settings.business_name}</h2>
         </div>

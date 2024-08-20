@@ -103,10 +103,10 @@ const AddProduct = ({ open, handleClose , triggerMessage , fetchProducts }) => {
                           value={productName}
                           onChange={(e) => {
                             // Allow letters and spaces, with a maximum length of 20 characters
-                            if (/^[A-Za-z\s]*$/.test(e.target.value) && e.target.value.length <= 20) {
+                            if (/^[A-Za-z\s]*$/.test(e.target.value) && e.target.value.length <= 18) {
                                 setProductName(e.target.value);
                             } else {
-                                triggerMessage('Only letters and spaces allowed, up to 20 characters.', 'error');
+                                triggerMessage('Only letters and spaces allowed, up to 18 characters.', 'error');
                             }
                         }}
                         />
@@ -120,7 +120,7 @@ const AddProduct = ({ open, handleClose , triggerMessage , fetchProducts }) => {
                           placeholder="Enter product price"
                           value={productPrice}
                           onChange={(e) => {
-                            if (/^\d*(\.\d*)?$/.test(e.target.value)) {
+                            if (/^\d*(\.\d*)?$/.test(e.target.value) && e.target.value.length<=6) {
                               setproductPrice(e.target.value); 
                             } else {
                               triggerMessage('Price should contain only numbers..', 'error');
