@@ -394,6 +394,7 @@ function BillingHome({ triggerMessage, settings }) {
                   variant="top"
                   src={`/myapi/api/images?imageName=${product.prodImageUrl}`}
                   className="card-img"
+                  style={{padding:'15px'}}
                 />
                 <Card.Body className="d-flex flex-column cardBodyInTheProduct">
                   <Card.Title className="mb-2 textInTheCard text-center">
@@ -501,7 +502,10 @@ function BillingHome({ triggerMessage, settings }) {
           </div>
         </div>
         <div className="summary">
-          <strong>Total:</strong> {grandTotal.toFixed(2)}
+          <strong>Total:</strong> {totalAmount.toFixed(2)}
+        </div>
+        <div className="summary">
+          <strong>Net Total:</strong> {grandTotal.toFixed(2)}
         </div>
         <div className="buttons d-flex gap-2">
           <button className="btn btn-danger btn-sm" onClick={handleClearCart}>

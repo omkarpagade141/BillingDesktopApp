@@ -63,21 +63,21 @@
     min-height: 50px;
 }
 
-#invoice-POS #top .logo {
+/* #invoice-POS #top .logo {
     height: 60px;
     width: 60px;
     background: url(http://michaeltruong.ca/images/logo1.png) no-repeat;
     background-size: 60px 60px;
-}
+} */
 
-#invoice-POS .clientlogo {
+/* #invoice-POS .clientlogo {
     float: left;
     height: 60px;
     width: 60px;
     background: url(http://michaeltruong.ca/images/client.jpg) no-repeat;
     background-size: 60px 60px;
     border-radius: 50px;
-}
+} */
 
 #invoice-POS .info {
     display: block;

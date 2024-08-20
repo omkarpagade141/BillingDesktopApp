@@ -69,11 +69,11 @@ const AddCategory = ({ open, handleClose, fetchcategories, triggerMessage }) => 
                                                     value={categoryName}
                                                     onChange={(e) => {
                                                         const value = e.target.value;
-                                                        if (/^[A-Za-z]*$/.test(value) && value.length <= 20) {
+                                                        if (/^[A-Za-z\s]*$/.test(value) && value.length <= 18) {
                                                             setCategoryName(value);
                                                         } else {
                                                             // Optionally, you could use feedback here
-                                                            triggerMessage('Only characters allowed and max length is 20', 'error');
+                                                            triggerMessage('Only characters allowed and max length is 18', 'error');
                                                         }
                                                     }}
                                                 />
