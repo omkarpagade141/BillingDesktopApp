@@ -12,4 +12,6 @@ public interface IOrderService {
 
 	ResponseEntity<?> getListOfTop5MostSellingProducts();
 
+	ResponseEntity<?> getAllOrders();
+
 }

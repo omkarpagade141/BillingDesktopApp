@@ -41,4 +41,10 @@ public class OrderController {
 	{
 		return orderService.getListOfTop5MostSellingProducts();
 	}
+	
+	@GetMapping("/get-all")
+	ResponseEntity<?> getAllOrderList()
+	{
+		return orderService.getAllOrders();
+	}
 }
