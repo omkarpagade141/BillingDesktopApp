@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.alpha.app.DTO.OrderDTO;
+import com.alpha.app.DTO.OrderDetailsListDTO;
 import com.alpha.app.DTO.OrderItemsDTO;
 import com.alpha.app.Entity.CartProducts;
 import com.alpha.app.Entity.Customer;
@@ -111,6 +112,14 @@ public class OrderServiceImpl implements IOrderService {
 		// TODO Auto-generated method stub
 		List<Product> prodList = cartProductRepo.findMostSelling5Products();
 		return new ResponseEntity<>(prodList,HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<?> getAllOrders() {
+		// TODO Auto-generated method stub
+		List<OrderDetailsListDTO> list =orderRepo.findAllOrdersDetails();	
+		
+		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	
 }
