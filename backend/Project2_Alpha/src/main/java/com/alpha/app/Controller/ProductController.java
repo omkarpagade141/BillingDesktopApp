@@ -47,9 +47,10 @@ public class ProductController {
 	@PutMapping("/update_product/{prodId}")
 	ResponseEntity<?> updateProduct(@PathVariable Long prodId, 
 			@RequestParam("prodName")String updtProdName,@RequestParam("prodPrice")double updtProdPrice,
+			@RequestParam("isActive") Boolean isActiveStatus,
 			@RequestParam("imageName") MultipartFile updtProdImageFile ) throws IOException
 	{
-		return prodService.updateProductDetails(prodId,updtProdName,updtProdPrice,updtProdImageFile);
+		return prodService.updateProductDetails(prodId,updtProdName,updtProdPrice,isActiveStatus,updtProdImageFile);
 	}
 	
 	@DeleteMapping("/delete/{prodId}")

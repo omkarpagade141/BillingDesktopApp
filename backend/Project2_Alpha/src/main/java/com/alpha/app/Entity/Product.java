@@ -41,6 +41,8 @@ public class Product {
 	@Column(name = "prod_last_update_date")
 	private LocalDate prodLastUpdatedOn;
 	
+	@Column(name = "prod_status")
+	private boolean isProdActive;
 	
 	@ManyToOne
 	@JoinColumn(name = "cate_Id")
@@ -55,18 +57,38 @@ public class Product {
 	
 	public Product() {
 		// TODO Auto-generated constructor stub
+		this.isProdActive = true;
 	}
 
+	
+
 	public Product(Long prodId, String prodName, double prodPrice, String prodImageUrl, LocalDate prodCreatedOn,
-			LocalDate prodLastUpdatedOn) {
-		super();
-		this.prodId = prodId;
-		this.prodName = prodName;
-		this.prodPrice = prodPrice;
-		this.prodImageUrl = prodImageUrl;
-		this.prodCreatedOn = prodCreatedOn;
-		this.prodLastUpdatedOn = prodLastUpdatedOn;
+		LocalDate prodLastUpdatedOn,  Category category) {
+	super();
+	this.prodId = prodId;
+	this.prodName = prodName;
+	this.prodPrice = prodPrice;
+	this.prodImageUrl = prodImageUrl;
+	this.prodCreatedOn = prodCreatedOn;
+	this.prodLastUpdatedOn = prodLastUpdatedOn;
+	this.isProdActive = true;
+	this.category = category;
+}
+
+
+	
+
+	public boolean isProdActive() {
+		return isProdActive;
 	}
+
+
+
+	public void setProdActive(boolean isProdActive) {
+		this.isProdActive = isProdActive;
+	}
+
+
 
 	public Long getProdId() {
 		return prodId;
@@ -123,13 +145,15 @@ public class Product {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-
 	
+
 	@Override
 	public String toString() {
 		return "Product [prodId=" + prodId + ", prodName=" + prodName + ", prodPrice=" + prodPrice + ", prodImageUrl="
-				+ prodImageUrl + ", prodCreatedOn=" + prodCreatedOn + ", prodLastUpdatedOn=" + prodLastUpdatedOn + "]";
+				+ prodImageUrl + ", prodCreatedOn=" + prodCreatedOn + ", prodLastUpdatedOn=" + prodLastUpdatedOn
+				+ ", isProdActive=" + isProdActive + ", category=" + category + "]";
 	}
+
 
 	// Helper method to set image path to product
 	public String addImageToProduct(String imagePath) {
