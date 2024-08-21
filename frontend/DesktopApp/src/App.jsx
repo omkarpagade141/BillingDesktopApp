@@ -1,13 +1,13 @@
 import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import './App.css'
+import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import theme from './Components/Themes.js'
+import theme from './Components/Themes.js';
 import Login from './Components/Login/Login.jsx';
 import Dashboard from './Components/Dashboard/Dashboard.jsx';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import logo from './assets/assetsLocal/logo.png'
+import logo from './assets/assetsLocal/logo.png';
 
 function App() {
   const [settings, setSettings] = useState({
@@ -17,14 +17,11 @@ function App() {
     business_email: 'omkarpagade141@gmail.com',
     business_address: 'Wagholi',
     business_gst_number: '12121212',
-    business_logo: logo
-
-
-  }) 
+    business_logo: logo,
+  });
 
   const fetchSetting = async () => {
-    const response = await axios.get('/myapi/api/settings')
-    
+    const response = await axios.get('/myapi/api/settings');
 
     if (response.status == 200) {
       setSettings({
@@ -34,19 +31,14 @@ function App() {
         business_email: response.data.businessEmail,
         business_address: response.data.businessAddress,
         business_gst_number: response.data.businessGSTNumber,
-        business_logo: `/myapi/api/business-logo?businessLogo=${response.data.businessLogoImagePath}`
-      })
-
+        business_logo: `/myapi/api/business-logo?businessLogo=${response.data.businessLogoImagePath}`,
+      });
     }
-  }
- 
+  };
 
   useEffect(() => {
-    fetchSetting()
-  },[])
-
-
-
+    fetchSetting();
+  }, []);
 
   return (
     <>
@@ -55,14 +47,18 @@ function App() {
           <div>
             <Routes>
               <Route path="/" element={<Login settings={settings} />} />
-              <Route path="/dashboard/*" element={<Dashboard settings={settings} fetchSetting={fetchSetting} />} />
+              <Route
+                path="/dashboard/*"
+                element={
+                  <Dashboard settings={settings} fetchSetting={fetchSetting} />
+                }
+              />
             </Routes>
           </div>
         </Router>
       </ThemeProvider>
     </>
-
-  )
+  );
 }
 
-export default App
+export default App;

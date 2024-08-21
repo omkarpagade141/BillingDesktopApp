@@ -19,9 +19,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alpha.app.DTO.ProductDTO;
+import com.alpha.app.Entity.CartProducts;
 import com.alpha.app.Entity.Category;
 import com.alpha.app.Entity.Product;
 import com.alpha.app.Exception.ResourceNotFoundException;
+import com.alpha.app.Repositiory.CartProductsRepositiory;
 import com.alpha.app.Repositiory.CategoryRepositiory;
 import com.alpha.app.Repositiory.ProductRepositiory;
 
@@ -39,6 +41,9 @@ public class ProductServiceImpl implements IProductService {
 
 	@Autowired
 	private ModelMapper mapper;
+	
+	@Autowired
+	private CartProductsRepositiory cartProductRepo;
 
 	// For Image set
 	@Value("${content.upload.folder}")
@@ -92,6 +97,13 @@ public class ProductServiceImpl implements IProductService {
 		// TODO Auto-generated method stub
 		Product prod = productRepo.findById(prodId)
 				.orElseThrow(() -> new ResourceNotFoundException("Error!!Product Not found!!"));
+		
+		List<Long> cpList = cartProductRepo.findByProduct(prod.getProdId());
+		if(!cpList.isEmpty())
+		{
+			return new ResponseEntity<String>("Errro!!! "+prod.getProdName()+" not deleted due to products present in this Order section. ", HttpStatus.BAD_REQUEST);
+		}
+		
 		if (prod.getProdImageUrl() != null) {
 			Path prodImgPath = Paths.get(folderName+File.separator+prod.getProdImageUrl());
 			Files.delete(prodImgPath);
@@ -102,13 +114,14 @@ public class ProductServiceImpl implements IProductService {
 	}
 
 	@Override
-	public ResponseEntity<?> updateProductDetails(Long prodId, String updtProdName, double updtProdPrice,
+	public ResponseEntity<?> updateProductDetails(Long prodId, String updtProdName, double updtProdPrice,Boolean isActiveStatus,
 			MultipartFile updtProdImageFile) throws IOException {
 
 		Product oldProd = productRepo.findById(prodId)
 				.orElseThrow(() -> new ResourceNotFoundException("Product Not found!!!"));
 		oldProd.setProdName(updtProdName);
 		oldProd.setProdPrice(updtProdPrice);
+		oldProd.setProdActive(isActiveStatus);
 		//Set on which date product was updated
 		oldProd.setProdLastUpdatedOn(LocalDate.now());
 		if (oldProd.getProdImageUrl() != null) {
