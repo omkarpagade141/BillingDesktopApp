@@ -14,7 +14,7 @@ function BillingHome({ triggerMessage, settings }) {
   const [selectedCategory, setSelectedCategory] = useState('All Category');
   const [searchQuery, setSearchQuery] = useState('');
   const [cartItems, setCartItems] = useState([]);
-  const [paymentMethod, setPaymentMethod] = useState('Cash');
+  const [paymentMethod, setPaymentMethod] = useState('Not Selected');
   const [discountPercent, setDiscountPercent] = useState(0);
   const [discountAmount, setDiscountAmount] = useState(0);
   const [taxPercent, setTaxPercent] = useState(0);
@@ -75,6 +75,7 @@ function BillingHome({ triggerMessage, settings }) {
         discountPercentage: discountPercent,
         discountAmount: discountAmount,
         netAmount: grandTotal,
+        paymentMode:paymentMethod,
         customer: customerSelected,
         orderItems: orderItems,
       });
@@ -491,13 +492,11 @@ function BillingHome({ triggerMessage, settings }) {
               value={paymentMethod}
               onChange={(e) => setPaymentMethod(e.target.value)}
             >
+              <option>Not Selected</option>
               <option>Cash</option>
-              <option>Wallet</option>
               <option>Card Payment</option>
-              <option>Bar Code / QR Code Scan</option>
-              <option>Net Banking</option>
-              <option>Online Payment</option>
-              <option>Other</option>
+              <option>UPI</option>
+             
             </select>
           </div>
         </div>
