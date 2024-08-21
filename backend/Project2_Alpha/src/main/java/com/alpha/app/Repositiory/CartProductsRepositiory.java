@@ -26,6 +26,9 @@ public interface CartProductsRepositiory extends JpaRepository<CartProducts, Lon
 	@Query("SELECT p.products FROM CartProducts p GROUP BY p.products.prodId ORDER BY COUNT(p.products.prodId) DESC LIMIT 5")
 	List<Product> findMostSelling5Products();
 
+	@Query("SELECT cp.cartProdId FROM CartProducts cp WHERE cp.products.prodId = ?1")
+	List<Long> findByProduct(Long long1);
+
 
 
 //	@Modifying

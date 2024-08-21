@@ -17,7 +17,7 @@ public interface IProductService {
 
 	ResponseEntity<String> deleteProductById(Long prodId) throws IOException;
 
-	ResponseEntity<?> updateProductDetails(Long prodId, String updtProdName, double updtProdPrice,
+	ResponseEntity<?> updateProductDetails(Long prodId, String updtProdName, double updtProdPrice,Boolean isActiveStatus,
 			MultipartFile updtProdImageFile) throws IOException;
 
 	
