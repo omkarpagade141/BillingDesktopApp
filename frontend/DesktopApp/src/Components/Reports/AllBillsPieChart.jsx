@@ -1,20 +1,25 @@
 // src/PieChartComponent.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { Paper } from '@mui/material';
 
 // Sample data
-const data = [
-  { name: 'Cash', value: 10 },
-  { name: 'UPI', value: 30 },
-  { name: 'Not Selected', value: 300 },
+// const data = [
+//   { name: 'Cash', value: 10 },
+//   { name: 'Card Payment', value: 10 },
+//   { name: 'UPI', value: 30 },
+//   { name: 'Not Selected', value: 300 },
    
-];
+// ];
 
 // Define colors for the pie chart segments
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
-const PieChartComponent = () => {
+const PieChartComponent = ({data }) => {
+  
+
+
+
   return (
     <Paper style={{ padding: 20 } } >
       <PieChart width={350} height={390} >
